@@ -93,10 +93,10 @@
                 <!-- Right elements -->
                 <div class="d-flex align-items-center">
                   <!-- Icon -->
-                  <a class="text-light me-3" href="#">
+                  <a class="text-light me-3" href="https://www.facebook.com/firehousetattoomx">
                     <i class="fab fa-facebook-f"></i>
                   </a>
-                  <a class="text-light me-3" href="#">
+                  <a class="text-light me-3" href="https://www.instagram.com/firehouse_tattoo/">
                     <i class="fab fa-instagram"></i>
                   </a>
                 </div>
@@ -314,7 +314,14 @@
                               Lunes a Domingo 10am a 7pm
                             </p>
                             <p class="card-text">
-                              <small class="text-muted">Last updated 3 mins ago</small>
+                              Playa de Oro, Puerto Vallarta, Mexico, 48333 Dirección
+                            </p>
+                            <p class="card-text">
+                              322 291 7850
+                            </p>
+
+                            <p class="card-text">
+                              <small class="text-muted">FIREHOUSE PV TATTOO-PIERCING</small>
                             </p>
                           </div>
                         </div>
@@ -326,6 +333,7 @@
               <div class="col-sm-12 col-lg-6">
                 <div class="card">
                   <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
                     <div class="input-group mb-3">
                       
                       <input
@@ -345,6 +353,10 @@
                         aria-label="email"
                         aria-describedby="basic-addon2"
                       />
+                    </div>
+                    <div class="form-outline">
+                      <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                      <label class="form-label" for="textAreaExample">Message</label>
                     </div>
                     
                   </div>
