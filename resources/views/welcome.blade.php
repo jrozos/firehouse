@@ -350,7 +350,8 @@
                     <div class="col">
                       <h6 class="">Contácto</h6>
                       <p class="card-text ">
-                        <i class="fab fa-whatsapp"></i> 322 291 7850
+                        <a href=" https://wa.me/+5213222917850" target="_Blank"><i class="fab fa-whatsapp"></i> 322 291 7850</a>
+                        
                       </p>
                     </div>
                   </div>
