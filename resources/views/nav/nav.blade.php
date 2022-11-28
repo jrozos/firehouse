@@ -53,17 +53,15 @@
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Tattoos</a>
+              <a class="nav-link" href="#tattoos">Tattoos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Piercings</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Reserva</a>
+              <a class="nav-link" href="#reserva">Reserva</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Conócenos</a>
-            </li>
+            
           </ul>
         </div>
         <!-- Right elements -->

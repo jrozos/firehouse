@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                <h5 class="card-title">Carlos</h5>
+                <h3 class="card-title">Carlos</h3>
                 <p class="card-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
                 </p>
@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                <h5 class="card-title">Mario</h5>
+                <h3 class="card-title">Mario</h3>
                 <p class="card-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
                 </p>
@@ -69,12 +69,12 @@
                 <img
                     alt="example"
                     class="img-fluid rounded-circle"
-                    src="img/team/RekZone.jpg"
+                    src="img/team/rekzone.jpg"
                 />
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                <h5 class="card-title">RekZone</h5>
+                <h3 class="card-title">RekZone</h3>
                 <p class="card-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
                 </p>
@@ -99,12 +99,12 @@
                 <img
                     alt="example"
                     class="img-fluid rounded-circle"
-                    src="img/team/Lukas.jpg"
+                    src="img/team/lukas.jpg"
                 />
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                <h5 class="card-title">Luis Carlos</h5>
+                <h3 class="card-title">Luis Carlos</h3>
                 <p class="card-text">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
                 </p>

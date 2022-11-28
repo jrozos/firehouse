@@ -20,10 +20,23 @@ a {
 [hidden] {
     display: none;
 }
+@font-face {
+    font-family: Harmony;
+    src: url("/fonts/HARMONY.otf");
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Harmony !important;
+    font-weight: 700 !important;
+}
 html {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-        Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
-        Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    // font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    //     Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
+    //     Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     line-height: 1.5;
 }
 *,
