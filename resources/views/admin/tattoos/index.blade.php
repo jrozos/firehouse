@@ -1,4 +1,6 @@
 {{-- Tattoos --}}
+<div id="tattoos"> 
+</div>
 <div class="container-fluid" style="background-color: #273036">
     <div class="row mt-5 py-5">
         <div class="col-sm-12 col-lg-7">
@@ -6,15 +8,6 @@
             @for ($i = 1; $i < 10; $i++)
             <div class="col">
             <img src="img/tattoos/{{$i}}.jpg" class="card-img-top rounded-3" alt="Hollywood Sign on The Hill"/>
-            {{-- <div class="card">
-                
-                <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">
-                    
-                </p>
-                </div>
-            </div> --}}
             </div>
             @endfor
         </div>
