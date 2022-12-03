@@ -27,18 +27,13 @@
                         <li class="list-group-item border-0 text-lg text-muted">Domigo - Cerrado</li>
                     </ul>
                 </div>
-                <div class="col-lg-4 col-md-8 col-sm-12 mb-5">
-                    <h3 class="">Dirección</h3>
-                    <p class="text-lg ">
-                        Playa de Oro, Puerto Vallarta, Mexico, 48333 Dirección
-                    </p>
-                </div>
+                
                 <div class="col-lg-4 col-md-8 col-sm-12 mb-5">
                     <h3 class="">Contácto</h3>
                     <p class="text-lg">
-                    <a href=" https://wa.me/+5213222917850" target="_Blank"><i class="fab fa-whatsapp"></i> 322 291 7850</a>
-                    
+                        <a href=" https://wa.me/+5213222917850" target="_Blank"><i class="fab fa-whatsapp"></i> 322 291 7850</a>
                     </p>
+                    <p class="text-lg"><a href=" tel:3222917850"><i class="fas fa-phone-alt"></i> 322 291 7850</a></p>
                 </div>
                 </div>
                 
