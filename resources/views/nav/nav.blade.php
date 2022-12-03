@@ -56,7 +56,10 @@
               <a class="nav-link" href="#tattoos">Tattoos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Piercings</a>
+              <a class="nav-link" href="#piercings">Piercings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#estudio">Estudio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#reserva">Reserva</a>

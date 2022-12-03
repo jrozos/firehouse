@@ -4,14 +4,10 @@
         
         <div class="col-md-4">
             <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-                This is a wider card with supporting text below as a natural lead-in to
-                additional content. This content is a little bit longer.
-            </p>
-            <p class="card-text">
-                <small class="text-muted">Last updated 3 mins ago</small>
-            </p>
+                <h3>Dirección</h3>
+                    <p class="text-lg ">
+                        Playa de Oro, Puerto Vallarta, Mexico, 48333 Dirección
+                    </p>
             </div>
         </div>
         <div class="col-md-8">
