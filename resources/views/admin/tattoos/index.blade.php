@@ -23,7 +23,12 @@
             <img src="img/banner.jpg" class="card-img-top" alt="Fissure in Sandstone"/>
             <div class="card-body">
             <h5 class="card-title">Carlos Munguia</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">¡Hola! Mi nombre es Carlos Munguía, tengo 27 años de edad y cuento con 8 años en la práctica del tatuaje, pero solo 4 años cómo tatuador de tiempo completo. <br><br>
+                Mi carrera como artista me ha llevado a tatuar a otros países y eso ha influido mucho en el desarrollo y práctica en varios estilos de tatuaje. He sido reconocido por mi habilidad en tatuajes a color y en micro realismo donde intento plasmar el mayor detalle a tatuajes pequeños y minuciosos, y los colores más radiantes utilizándolos de manera armoniosa para la elaboración de un gran tatuaje. <br><br>
+                Me considero un artista que pone atención al detalle y echa a volar su imaginación para crear diseños surrealistas llenos de vida y color. <br><br>
+                Yo, junto con mi esposa Aida Hurtado Creamos y fundamos Firehouse Tattoo, un estudio cuyo concepto ha sido basado e influenciado por mi carrera como bombero profesional, una profesión que desempeñe en California. <br><br>
+                No obstante, mi corazón con raíces mexicanas quedó anclado en nuestro bello Puerto Vallarta en donde decidimos sería hogar de nuestro estudio madre los headquarters de FIREHOUSE TATTOO.
+                </p>
             </div>
         </div>
         </div>
