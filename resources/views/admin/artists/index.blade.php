@@ -16,7 +16,7 @@
                 <div class="card-body">
                 <h3 class="card-title">Carlos</h3>
                 <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
+                    ¡Hola! Mi nombre es Carlos Munguía, tengo 27 años de edad y cuento con 8 años en la práctica del tatuaje, pero solo 4 años cómo tatuador de tiempo completo. Mi carrera como artista me ha llevado a tatuar
                 </p>
                             <!-- Facebook -->
                 <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
@@ -46,7 +46,7 @@
                 <div class="card-body">
                 <h3 class="card-title">Mario</h3>
                 <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
+                    Mario Garcia 23 años el tatuador más joven de estudio con 2 años de experiencia el el arte del tatuaje con una personalidad extrovertida y alegre enfocado mayormente en el estilo neotradicional y black work.
                 </p>
                             <!-- Facebook -->
                 <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
@@ -76,7 +76,7 @@
                 <div class="card-body">
                 <h3 class="card-title">RekZone</h3>
                 <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
+                    "Rekzone” tatuador proveniente de Guadalajara jalisco actualmente vivo en Puerto Vallarta, artista urbano  hace aproximadamente 10 años , inicie en el mundo del tatuaje  experimentando  en varios estilos el cual desarrollando una
                 </p>
                             <!-- Facebook -->
                 <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
@@ -106,7 +106,7 @@
                     <div class="card-body">
                     <h3 class="card-title">Luis Carlos</h3>
                     <p class="card-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
+                        Como licenciado en enfermería   siempre eh buscado la manera de brindar la atención y los mejores cuidados a las personas, como perforador me permite ir mas allá y puedo hacer que las personas se sientan seguros de
                     </p>
                                 <!-- Facebook -->
                     <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
@@ -136,7 +136,7 @@
                     <div class="card-body">
                     <h3 class="card-title">Aida</h3>
                     <p class="card-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, reiciendis.
+                        Soy Aida y estoy aprendiendo el arte del tatuaje, empecé hace tres meses a practicar en piel real. He estado aprendiendo desde hace tiempo la teoría del tatuaje gracias a mi esposo a quien he visto tatuar desde hace años.
                     </p>
                                 <!-- Facebook -->
                     <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"

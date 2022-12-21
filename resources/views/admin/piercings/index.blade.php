@@ -23,7 +23,8 @@
             <img src="img/banner_2.jpg" class="card-img-top" alt="Fissure in Sandstone"/>
             <div class="card-body">
             <h5 class="card-title">Luis Carlos</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">Como licenciado en enfermería   siempre eh buscado la manera de brindar la atención y los mejores cuidados a las personas, como perforador me permite ir mas allá y puedo hacer que las personas se sientan seguros de si mismas o pueda  resaltar alguna parte de su cuerpo. <br><br>
+                Dense la oportunidad de visitarnos ponerse un piercing y lograr un mejor estado fisico y emocional con un detalle como este.</p>
             </div>
         </div>
         </div>
