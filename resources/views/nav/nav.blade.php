@@ -14,7 +14,7 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarExample01">
-          <a class="navbar-brand mt-2 mt-lg-0" href="#">
+          <a class="navbar-brand mt-2 mt-lg-0" href="/">
             <img
               src="img/firehouse-logo.png"
               class="me-2"
@@ -39,16 +39,19 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li>
-                  <a class="dropdown-item" href="#">Carlos</a>
+                  <a class="dropdown-item" href="/carlos">Carlos</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">Mario</a>
+                  <a class="dropdown-item" href="/mario">Mario</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">RekZone</a>
+                  <a class="dropdown-item" href="/rekzone">RekZone</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">Luis Carlos</a>
+                  <a class="dropdown-item" href="/lukas">Luis Carlos</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/aida">Aida</a>
                 </li>
               </ul>
             </li>

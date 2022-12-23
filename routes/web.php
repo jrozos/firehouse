@@ -30,5 +30,10 @@ Route::get('/key-generate', function (){
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/carlos', [App\Http\Controllers\ArtistsController::class, 'artistCarlos'])->name('carlos');
+Route::get('/aida', [App\Http\Controllers\ArtistsController::class, 'artistAida'])->name('aida');
+Route::get('/mario', [App\Http\Controllers\ArtistsController::class, 'artistMario'])->name('mario');
+Route::get('/rekzone', [App\Http\Controllers\ArtistsController::class, 'artistRekzone'])->name('rekzone');
+Route::get('/lukas', [App\Http\Controllers\ArtistsController::class, 'artistLukas'])->name('lukas');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
