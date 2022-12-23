@@ -1,6 +1,5 @@
 {{-- Tattoos --}}
-<div id="tattoos" class="mt-5- pt-5" style="background-color: #273036"> 
-    
+<div id="tattoos" class="mt-5- pt-5" style="background-color: #273036">   
 </div>
 <div class="container-fluid" style="background-color: #273036">
     <div class="row mt-5- py-5">
