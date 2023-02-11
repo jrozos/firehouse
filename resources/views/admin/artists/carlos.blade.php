@@ -24,15 +24,6 @@ Yo, junto con mi esposa Aida Hurtado Creamos y fundamos Firehouse Tattoo, un est
 No obstante, mi corazón con raíces mexicanas quedó anclado en nuestro bello Puerto Vallarta en donde decidimos sería hogar de nuestro estudio madre los headquarters de FIREHOUSE TATTOO.
 
                         </p>
-                                    <!-- Facebook -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-facebook-f"></i
-                        ></a>
-                    
-                        <!-- Instagram -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-instagram"></i
-                        ></a>
                         </div>
                     </div>
                 </div>

@@ -45,21 +45,12 @@
                   <a class="dropdown-item" href="/mario">Mario</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="/rekzone">RekZone</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/lukas">Luis Carlos</a>
-                </li>
-                <li>
                   <a class="dropdown-item" href="/aida">Aida</a>
                 </li>
               </ul>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#tattoos">Tattoos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#piercings">Piercings</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#estudio">Estudio</a>

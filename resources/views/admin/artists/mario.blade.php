@@ -19,15 +19,6 @@
                         <p class="card-text">
                             Mario Garcia 23 años el tatuador más joven de estudio con 2 años de experiencia el el arte del tatuaje con una personalidad extrovertida y alegre enfocado mayormente en el estilo neotradicional y black work
                         </p>
-                                    <!-- Facebook -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-facebook-f"></i
-                        ></a>
-                    
-                        <!-- Instagram -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-instagram"></i
-                        ></a>
                         </div>
                     </div>
                 </div>

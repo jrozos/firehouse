@@ -23,15 +23,6 @@ La pintura ha sido de gran influencia y me ha hecho mejorar bastante en mis tatu
 
 
                         </p>
-                                    <!-- Facebook -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-facebook-f"></i
-                        ></a>
-                    
-                        <!-- Instagram -->
-                        <a class="btn btn-outline-dark btn-floating m-1" href="#!" role="button"
-                            ><i class="fab fa-instagram"></i
-                        ></a>
                         </div>
                     </div>
                 </div>
