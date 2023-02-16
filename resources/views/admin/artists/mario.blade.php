@@ -33,9 +33,9 @@
         </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             
-                @for ($i = 1; $i < 10; $i++)
+                @for ($i = 1; $i < 7; $i++)
                 <div class="col">
-                <img src="img/tattoos/{{$i}}.jpg" class="card-img-top rounded-3" alt="Hollywood Sign on The Hill"/>
+                <img src="img/tattoos/mario/{{$i}}.jpg" class="card-img-top rounded-3" alt="Hollywood Sign on The Hill"/>
                 </div>
                 @endfor
         </div>
