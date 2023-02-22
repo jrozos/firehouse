@@ -16,10 +16,10 @@
         <div class="collapse navbar-collapse" id="navbarExample01">
           <a class="navbar-brand mt-2 mt-lg-0" href="/">
             <img
-              src="img/firehouse-logo.jpg"
+              src="img/fh-logo-w.png"
               class="me-2"
               {{-- class="me-2" --}}
-              height="50"
+              height="75"
               alt="Fire House Logo"
               loading="lazy"
             />
@@ -89,7 +89,7 @@
               src="img/firehouse-logo.jpg"
               class="me-2 img-fluid"
               {{-- class="me-2" --}}
-              alt="Fire House Logo"
+              alt="Fire House Logo Banner"
               loading="lazy"
             />
         </div>
