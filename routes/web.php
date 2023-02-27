@@ -24,9 +24,9 @@ Route::get('/key-generate', function (){
     return 'Done';
 });
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard.index');
+});
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
