@@ -22,8 +22,13 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-
-  @yield('content')
+  <div id="app">
+    @include('nav.sidenav')
+    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+      @include('nav.dash-navbar')
+    @yield('content')
+    </main>
+  </div>
 
   
   <!--   Core JS Files   -->

@@ -47,9 +47,7 @@
     
         <main class="vh-100- container-">
             {{-- @routes --}}
-            <div id="app">
-                @yield('content')
-            </div>
+            @yield('content')
         </main>
 
         @include('footer.footer')
