@@ -2,7 +2,7 @@
 @section('content')
     
     <!-- Content -->
-    <dashboard-index></dashboard-index>
+    <clients-index></clients-index>
     <!-- End Content -->
     
 @endsection
