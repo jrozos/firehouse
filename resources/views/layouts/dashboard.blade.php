@@ -12,6 +12,7 @@
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
 
+
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <!-- Nucleo Icons -->
@@ -30,33 +31,44 @@
     </head>
 
 <body class="g-sidenav-show bg-gray-100">
-  <div id="app">
-    @include('nav.sidenav')
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-      @include('nav.dash-navbar')
-      <div class="container-fluid py-4">
+  @include('nav.sidenav')
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    @include('nav.dash-navbar')
+    <div class="container-fluid py-4">
+      <div id="app">
         @yield('content')
-        @include('footer.dash-footer')
+        
       </div>
-    </main>
-  </div>
-
+      @include('footer.dash-footer')
+    </div>
+  </main>
   
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="{{ asset('assets/js/core/popper.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
 
-  <!-- Plugin for the charts, full documentation here: https://www.chartjs.org/ -->
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <script src="../assets/js/plugins/Chart.extension.js"></script>
-  @yield('scripts')
+  <!-- Plugin for the charts, full documentation here: https://www.chartjs.org/ 
+  <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
+  <script src="{{ asset('assets/js/plugins/Chart.extension.js')}}"></script>
+  -->
+  <script>
+
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/soft-ui-dashboard.min.js"></script>
+  <script src="{{ asset('assets/js/soft-ui-dashboard.min.js')}}"></script>
+
+  
 </body>
 
 </html>
