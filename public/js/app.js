@@ -5513,9 +5513,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
@@ -28845,16 +28842,10 @@ var staticRenderFns = [
                         { staticClass: "text-xs font-weight-bold mb-0" },
                         [
                           _vm._v(
-                            "\n                                        Manager\n                                    "
+                            "\n                                        322-72-85-289\n                                    "
                           ),
                         ]
                       ),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "text-xs text-secondary mb-0" }, [
-                        _vm._v(
-                          "\n                                        Organization\n                                    "
-                        ),
-                      ]),
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "align-middle text-center" }, [

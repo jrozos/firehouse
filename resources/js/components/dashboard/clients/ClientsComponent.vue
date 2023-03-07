@@ -168,10 +168,7 @@
                                         <p
                                             class="text-xs font-weight-bold mb-0"
                                         >
-                                            Manager
-                                        </p>
-                                        <p class="text-xs text-secondary mb-0">
-                                            Organization
+                                            322-72-85-289
                                         </p>
                                     </td>
 

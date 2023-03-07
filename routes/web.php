@@ -24,13 +24,6 @@ Route::get('/key-generate', function (){
     return 'Done';
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard.index');
-});
-Route::get('/clients', function () {
-    return view('dashboard.clients.index');
-});
-
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/carlos', [App\Http\Controllers\ArtistsController::class, 'artistCarlos'])->name('carlos');
@@ -38,5 +31,12 @@ Route::get('/aida', [App\Http\Controllers\ArtistsController::class, 'artistAida'
 Route::get('/mario', [App\Http\Controllers\ArtistsController::class, 'artistMario'])->name('mario');
 Route::get('/rekzone', [App\Http\Controllers\ArtistsController::class, 'artistRekzone'])->name('rekzone');
 Route::get('/lukas', [App\Http\Controllers\ArtistsController::class, 'artistLukas'])->name('lukas');
+
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard.index');
+});
+Route::get('/clients', function () {
+    return view('dashboard.clients.index');
+});
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
