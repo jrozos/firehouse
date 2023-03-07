@@ -32,11 +32,13 @@ Route::get('/mario', [App\Http\Controllers\ArtistsController::class, 'artistMari
 Route::get('/rekzone', [App\Http\Controllers\ArtistsController::class, 'artistRekzone'])->name('rekzone');
 Route::get('/lukas', [App\Http\Controllers\ArtistsController::class, 'artistLukas'])->name('lukas');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard.index');
-});
-Route::get('/clients', function () {
-    return view('dashboard.clients.index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard.dashboard.index');
+    });
+    Route::get('/clients', function () {
+        return view('dashboard.clients.index');
+    });
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
