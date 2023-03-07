@@ -3,7 +3,117 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Clientes</h6>
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <h6 class="mb-0">Clientes</h6>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button
+                                type="button"
+                                class="btn btn-block btn-info mb-0"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-form"
+                            >
+                                Crear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="modal fade"
+                    id="modal-form"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="modal-form"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="modal-dialog modal-dialog-centered modal-lg"
+                        role="document"
+                    >
+                        <div class="modal-content">
+                            <div class="modal-body p-0">
+                                <div class="card card-plain">
+                                    <div class="card-header pb-0 text-left">
+                                        <h3
+                                            class="font-weight-bolder text-info text-gradient"
+                                        >
+                                            Nuevo cliente
+                                        </h3>
+                                        <p class="mb-0">
+                                            Ingresa la información del cliente
+                                        </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form role="form text-left">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label>Nombre</label>
+                                                    <div
+                                                        class="input-group mb-3"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            placeholder="Nombre"
+                                                            aria-label="Nombre"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label>Apellido</label>
+                                                    <div
+                                                        class="input-group mb-3"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            placeholder="Apellido"
+                                                            aria-label="Apellido"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label>E-mail</label>
+                                                    <div
+                                                        class="input-group mb-3"
+                                                    >
+                                                        <input
+                                                            type="email"
+                                                            class="form-control"
+                                                            placeholder="E-mail"
+                                                            aria-label="E-mail"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label>Cel</label>
+                                                    <div
+                                                        class="input-group mb-3"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            placeholder="Cel"
+                                                            aria-label="Cel"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0"
+                                                >
+                                                    Crear
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">

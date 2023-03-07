@@ -5406,6 +5406,116 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
@@ -28477,8 +28587,168 @@ var staticRenderFns = [
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card mb-4" }, [
           _c("div", { staticClass: "card-header pb-0" }, [
-            _c("h6", [_vm._v("Clientes")]),
+            _c("div", { staticClass: "row align-items-center" }, [
+              _c("div", { staticClass: "col-6" }, [
+                _c("h6", { staticClass: "mb-0" }, [_vm._v("Clientes")]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-6 text-end" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-block btn-info mb-0",
+                    attrs: {
+                      type: "button",
+                      "data-bs-toggle": "modal",
+                      "data-bs-target": "#modal-form",
+                    },
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Crear\n                        "
+                    ),
+                  ]
+                ),
+              ]),
+            ]),
           ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "modal fade",
+              attrs: {
+                id: "modal-form",
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "modal-form",
+                "aria-hidden": "true",
+              },
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "modal-dialog modal-dialog-centered modal-lg",
+                  attrs: { role: "document" },
+                },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _c("div", { staticClass: "modal-body p-0" }, [
+                      _c("div", { staticClass: "card card-plain" }, [
+                        _c(
+                          "div",
+                          { staticClass: "card-header pb-0 text-left" },
+                          [
+                            _c(
+                              "h3",
+                              {
+                                staticClass:
+                                  "font-weight-bolder text-info text-gradient",
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        Nuevo cliente\n                                    "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "mb-0" }, [
+                              _vm._v(
+                                "\n                                        Ingresa la información del cliente\n                                    "
+                              ),
+                            ]),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("form", { attrs: { role: "form text-left" } }, [
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-6" }, [
+                                _c("label", [_vm._v("Nombre")]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "input-group mb-3" }, [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      placeholder: "Nombre",
+                                      "aria-label": "Nombre",
+                                    },
+                                  }),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-6" }, [
+                                _c("label", [_vm._v("Apellido")]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "input-group mb-3" }, [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      placeholder: "Apellido",
+                                      "aria-label": "Apellido",
+                                    },
+                                  }),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-6" }, [
+                                _c("label", [_vm._v("E-mail")]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "input-group mb-3" }, [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "email",
+                                      placeholder: "E-mail",
+                                      "aria-label": "E-mail",
+                                    },
+                                  }),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-6" }, [
+                                _c("label", [_vm._v("Cel")]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "input-group mb-3" }, [
+                                  _c("input", {
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      placeholder: "Cel",
+                                      "aria-label": "Cel",
+                                    },
+                                  }),
+                                ]),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "text-center" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0",
+                                  attrs: { type: "button" },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                                Crear\n                                            "
+                                  ),
+                                ]
+                              ),
+                            ]),
+                          ]),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                ]
+              ),
+            ]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "card-body px-0 pt-0 pb-2" }, [
             _c("div", { staticClass: "table-responsive p-0" }, [
