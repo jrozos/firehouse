@@ -87,7 +87,7 @@
         <div class="d-flex justify-content-center align-items-center h-100">
           <img
               src="img/firehouse-logo.jpg"
-              class="me-2 img-fluid"
+              class="me-2 img-fluid wow animate__animated animate__slideInDown"
               {{-- class="me-2" --}}
               alt="Fire House Logo Banner"
               loading="lazy"

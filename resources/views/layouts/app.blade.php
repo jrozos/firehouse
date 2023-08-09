@@ -56,5 +56,13 @@
     </div>
     <!-- MDB -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script src="{{ asset('js/wow.min.js')}}"></script>
+    <script>
+		new WOW().init();
+		// const observer = lozad();
+		// observer.observe();
+		const observer = lozad();
+		observer.observe();
+	</script>
 </body>
 </html>
