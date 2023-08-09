@@ -4,7 +4,7 @@
     <div class="row">
         {{-- Carlos --}}
         <div class="col-md-6">
-            <div class="card rounded-3 mb-3 animate__animated animate__fadeIn">
+            <div class="card rounded-3 mb-3 wow animate__animated animate__fadeIn">
                 <div class="row g-0">
                 <div class="col-md-4 py-3 ps-3">
                     <img
@@ -28,7 +28,7 @@
         </div>
         {{-- Mario --}}
         <div class="col-md-6">
-            <div class="card rounded-3 mb-3 animate__animated animate__fadeIn">
+            <div class="card rounded-3 mb-3 wow animate__animated animate__fadeIn">
                 <div class="row g-0">
                 <div class="col-md-4 py-3 ps-3">
                     <img
@@ -52,7 +52,7 @@
         </div>
         {{-- Aida --}}
         <div class="col-md-6">
-            <div class="card rounded-3 mb-3 animate__animated animate__fadeIn">
+            <div class="card rounded-3 mb-3 wow animate__animated animate__fadeIn">
                 <div class="row g-0">
                 <div class="col-md-4 py-3 ps-3">
                     <img
