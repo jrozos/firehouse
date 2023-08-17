@@ -28,6 +28,10 @@ Vue.component(
     "clients-index",
     require("./components/dashboard/clients/ClientsComponent.vue").default
 );
+Vue.component(
+    "artists-index",
+    require("./components/dashboard/artists/ArtistsComponent.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
