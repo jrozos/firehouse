@@ -24,7 +24,7 @@ Route::get('/key-generate', function (){
     return 'Done';
 });
 
-Auth::routes();
+Auth::routes(["register"=>false]);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/carlos', [App\Http\Controllers\ArtistsController::class, 'artistCarlos'])->name('carlos');
 Route::get('/aida', [App\Http\Controllers\ArtistsController::class, 'artistAida'])->name('aida');
