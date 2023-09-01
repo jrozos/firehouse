@@ -11,88 +11,81 @@
               <button
                 type="button"
                 class="btn btn-block btn-info mb-0"
-                data-bs-toggle="modal"
-                data-bs-target="#modal-form"
+                @click="Info.Show = true"
               >
                 Crear
               </button>
             </div>
           </div>
         </div>
-        <div
-          class="modal fade"
-          id="modal-form"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="modal-form"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-dialog-centered modal-lg"
-            role="document"
-          >
-            <div class="modal-content">
-              <div class="modal-body p-0">
-                <div class="card card-plain">
-                  <div class="card-header pb-0 text-left">
-                    <h3 class="font-weight-bolder text-info text-gradient">
-                      Nuevo artista
-                    </h3>
-                    <p class="mb-0">Ingresa la información del artista</p>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-6">
-                        <label>Nombre</label>
-                        <div class="input-group mb-3">
-                          <input
-                            v-model="Info.Name"
-                            type="text"
-                            class="form-control"
-                            placeholder="Nombre"
-                            aria-label="Nombre"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <label>Apellido</label>
-                        <div class="input-group mb-3">
-                          <input
-                            v-model="Info.LastName"
-                            type="text"
-                            class="form-control"
-                            placeholder="Apellido"
-                            aria-label="Apellido"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <label>E-mail</label>
-                        <div class="input-group mb-3">
-                          <input
-                            v-model="Info.Email"
-                            type="email"
-                            class="form-control"
-                            placeholder="E-mail"
-                            aria-label="E-mail"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <label>Cel</label>
-                        <div class="input-group mb-3">
-                          <input
-                            v-model="Info.Phone"
-                            type="text"
-                            class="form-control"
-                            placeholder="Cel"
-                            aria-label="Cel"
-                          />
-                        </div>
+        <div v-if="Info.Show" class="confirm-bg">
+          <div class="row">
+            <div class="col-12 col-sm-10 col-md-6 col-lg-6 center-center">
+              <div
+                class="card shadow-sm wow animate__animated animate__fadeInUp"
+              >
+                <div class="card-header pb-0 text-left">
+                  <h3 class="card-title text-center">Nuevo artista</h3>
+                  <p class="mb-0">Ingresa la información del artista</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <label>Nombre</label>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.Name"
+                          type="text"
+                          class="form-control"
+                          placeholder="Nombre"
+                          aria-label="Nombre"
+                        />
                       </div>
                     </div>
-                    <div class="text-center">
+                    <div class="col-6">
+                      <label>Apellido</label>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.LastName"
+                          type="text"
+                          class="form-control"
+                          placeholder="Apellido"
+                          aria-label="Apellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label>E-mail</label>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.Email"
+                          type="email"
+                          class="form-control"
+                          placeholder="E-mail"
+                          aria-label="E-mail"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label>Cel</label>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.Phone"
+                          type="text"
+                          class="form-control"
+                          placeholder="Cel"
+                          aria-label="Cel"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <div v-if="loaderSave">
+                      <span class="display-6"
+                        ><i class="fa-solid fa-spinner fa-spin"></i
+                      ></span>
+                    </div>
+                    <div v-else>
                       <button
                         type="button"
                         class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0"
@@ -197,10 +190,10 @@
               <div class="row">
                 <div class="col-12 pt-3 text-center">
                   <button
-                    :class="'btn-danger btn-sm btn-rounded'"
+                    class="btn btn-round bg-gradient-danger btn-lg w-100 mt-4 mb-0"
                     @click="Alert.Show = false"
                   >
-                    <i class="fas fa-times"></i>
+                    Cerrar
                   </button>
                 </div>
               </div>
@@ -219,8 +212,9 @@ export default {
       // activeSave:false,
       // activeReset:false,
       // aproved:false,
-      // loaderSave:false,
+      loaderSave: false,
       Info: {
+        Show: false,
         Name: '',
         LastName: '',
         Email: '',
@@ -248,10 +242,6 @@ export default {
         })
         .then((res) => {
           // this.rates = res.data;
-          this.resetRatePanel();
-          if (res.data.FlagReloadRates) {
-            this.searchRates();
-          }
         })
         .catch((error) => {
           // this.errorNewVilla = error.response.data.errors.name[0];

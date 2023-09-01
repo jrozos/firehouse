@@ -49,6 +49,8 @@ class ArtistController extends Controller
     public function store(Request $request){
         if ($request->ajax()) {
             dd($request);
+
+            
         } else {
             abort(404);
         }

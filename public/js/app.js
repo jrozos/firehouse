@@ -3467,13 +3467,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3481,8 +3474,9 @@ __webpack_require__.r(__webpack_exports__);
       // activeSave:false,
       // activeReset:false,
       // aproved:false,
-      // loaderSave:false,
+      loaderSave: false,
       Info: {
+        Show: false,
         Name: '',
         LastName: '',
         Email: '',
@@ -3508,10 +3502,6 @@ __webpack_require__.r(__webpack_exports__);
         Phone: this.Info.Phone
       }).then(function (res) {
         // this.rates = res.data;
-        _this.resetRatePanel();
-        if (res.data.FlagReloadRates) {
-          _this.searchRates();
-        }
       })["catch"](function (error) {
         // this.errorNewVilla = error.response.data.errors.name[0];
         console.log('------------ Errors ------------');
@@ -28542,6 +28532,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/dashboard.scss":
+/*!***************************************!*\
+  !*** ./resources/sass/dashboard.scss ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./resources/js/components/dashboard/artists/ArtistsComponent.vue":
 /*!************************************************************************!*\
   !*** ./resources/js/components/dashboard/artists/ArtistsComponent.vue ***!
@@ -28777,211 +28780,228 @@ var render = function () {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-12" }, [
       _c("div", { staticClass: "card mb-4" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "card-header pb-0" }, [
+          _c("div", { staticClass: "row align-items-center" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-6 text-end" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-block btn-info mb-0",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function ($event) {
+                      _vm.Info.Show = true
+                    },
+                  },
+                },
+                [_vm._v("\n              Crear\n            ")]
+              ),
+            ]),
+          ]),
+        ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "modal fade",
-            attrs: {
-              id: "modal-form",
-              "data-bs-backdrop": "static",
-              "data-bs-keyboard": "false",
-              tabindex: "-1",
-              "aria-labelledby": "modal-form",
-              "aria-hidden": "true",
-            },
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "modal-dialog modal-dialog-centered modal-lg",
-                attrs: { role: "document" },
-              },
-              [
-                _c("div", { staticClass: "modal-content" }, [
-                  _c("div", { staticClass: "modal-body p-0" }, [
-                    _c("div", { staticClass: "card card-plain" }, [
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("label", [_vm._v("Nombre")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "input-group mb-3" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.Info.Name,
-                                    expression: "Info.Name",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Nombre",
-                                  "aria-label": "Nombre",
-                                },
-                                domProps: { value: _vm.Info.Name },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.Info,
-                                      "Name",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("label", [_vm._v("Apellido")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "input-group mb-3" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.Info.LastName,
-                                    expression: "Info.LastName",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Apellido",
-                                  "aria-label": "Apellido",
-                                },
-                                domProps: { value: _vm.Info.LastName },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.Info,
-                                      "LastName",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("label", [_vm._v("E-mail")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "input-group mb-3" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.Info.Email,
-                                    expression: "Info.Email",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "email",
-                                  placeholder: "E-mail",
-                                  "aria-label": "E-mail",
-                                },
-                                domProps: { value: _vm.Info.Email },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.Info,
-                                      "Email",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("label", [_vm._v("Cel")]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "input-group mb-3" }, [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.Info.Phone,
-                                    expression: "Info.Phone",
-                                  },
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Cel",
-                                  "aria-label": "Cel",
-                                },
-                                domProps: { value: _vm.Info.Phone },
-                                on: {
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.Info,
-                                      "Phone",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              }),
-                            ]),
-                          ]),
-                        ]),
+        _vm.Info.Show
+          ? _c("div", { staticClass: "confirm-bg" }, [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-sm-10 col-md-6 col-lg-6 center-center",
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card shadow-sm wow animate__animated animate__fadeInUp",
+                      },
+                      [
+                        _vm._m(1),
                         _vm._v(" "),
-                        _c("div", { staticClass: "text-center" }, [
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.saveInfo($event)
-                                },
-                              },
-                            },
-                            [
-                              _vm._v(
-                                "\n                      Crear\n                    "
-                              ),
-                            ]
-                          ),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Nombre")]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Name,
+                                      expression: "Info.Name",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Nombre",
+                                    "aria-label": "Nombre",
+                                  },
+                                  domProps: { value: _vm.Info.Name },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Name",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Apellido")]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.LastName,
+                                      expression: "Info.LastName",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Apellido",
+                                    "aria-label": "Apellido",
+                                  },
+                                  domProps: { value: _vm.Info.LastName },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "LastName",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("E-mail")]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Email,
+                                      expression: "Info.Email",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "email",
+                                    placeholder: "E-mail",
+                                    "aria-label": "E-mail",
+                                  },
+                                  domProps: { value: _vm.Info.Email },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Email",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Cel")]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Phone,
+                                      expression: "Info.Phone",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Cel",
+                                    "aria-label": "Cel",
+                                  },
+                                  domProps: { value: _vm.Info.Phone },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Phone",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-center" }, [
+                            _vm.loaderSave
+                              ? _c("div", [_vm._m(2)])
+                              : _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.saveInfo($event)
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                      Crear\n                    "
+                                      ),
+                                    ]
+                                  ),
+                                ]),
+                          ]),
                         ]),
-                      ]),
-                    ]),
-                  ]),
-                ]),
-              ]
-            ),
-          ]
-        ),
+                      ]
+                    ),
+                  ]
+                ),
+              ]),
+            ])
+          : _vm._e(),
         _vm._v(" "),
-        _vm._m(2),
+        _vm._m(3),
       ]),
     ]),
     _vm._v(" "),
@@ -29024,14 +29044,19 @@ var render = function () {
                         _c(
                           "button",
                           {
-                            class: "btn-danger btn-sm btn-rounded",
+                            staticClass:
+                              "btn btn-round bg-gradient-danger btn-lg w-100 mt-4 mb-0",
                             on: {
                               click: function ($event) {
                                 _vm.Alert.Show = false
                               },
                             },
                           },
-                          [_c("i", { staticClass: "fas fa-times" })]
+                          [
+                            _vm._v(
+                              "\n                  Cerrar\n                "
+                            ),
+                          ]
                         ),
                       ]),
                     ]),
@@ -29049,27 +29074,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header pb-0" }, [
-      _c("div", { staticClass: "row align-items-center" }, [
-        _c("div", { staticClass: "col-6" }, [
-          _c("h6", { staticClass: "mb-0" }, [_vm._v("Artistas")]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-6 text-end" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-block btn-info mb-0",
-              attrs: {
-                type: "button",
-                "data-bs-toggle": "modal",
-                "data-bs-target": "#modal-form",
-              },
-            },
-            [_vm._v("\n              Crear\n            ")]
-          ),
-        ]),
-      ]),
+    return _c("div", { staticClass: "col-6" }, [
+      _c("h6", { staticClass: "mb-0" }, [_vm._v("Artistas")]),
     ])
   },
   function () {
@@ -29077,13 +29083,21 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header pb-0 text-left" }, [
-      _c("h3", { staticClass: "font-weight-bolder text-info text-gradient" }, [
-        _vm._v("\n                    Nuevo artista\n                  "),
+      _c("h3", { staticClass: "card-title text-center" }, [
+        _vm._v("Nuevo artista"),
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "mb-0" }, [
         _vm._v("Ingresa la información del artista"),
       ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "display-6" }, [
+      _c("i", { staticClass: "fa-solid fa-spinner fa-spin" }),
     ])
   },
   function () {
@@ -45179,6 +45193,7 @@ module.exports = axios;
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
+/******/ 			"css/dashboard": 0,
 /******/ 			"css/app": 0
 /******/ 		};
 /******/ 		
@@ -45229,8 +45244,9 @@ module.exports = axios;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/dashboard","css/app"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/dashboard","css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/dashboard","css/app"], () => (__webpack_require__("./resources/sass/dashboard.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
