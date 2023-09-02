@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Artist;
+use App\Models\Artist;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ArtistRequest;
+
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class ArtistController extends Controller
 {

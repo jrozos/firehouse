@@ -3583,7 +3583,7 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.InfoErrors.Name && !this.InfoErrors.LastName && !this.InfoErrors.Email && !this.InfoErrors.Phone) {
         // Form is valid, you can submit it or perform further actions.
         console.log('Form is valid!');
-        saveInfo();
+        this.saveInfo();
       }
     },
     validEmail: function validEmail(email) {
@@ -3596,6 +3596,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     saveInfo: function saveInfo() {
       var _this2 = this;
+      this.loaderSave = true;
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.isValid = '';
       axios.post('/dashboard/artists/store', {
         name: this.Info.Name,
         last_name: this.Info.LastName,
@@ -3603,7 +3609,8 @@ __webpack_require__.r(__webpack_exports__);
         phone_number: this.Info.Phone
       }).then(function (res) {
         _this2.artist = res.data.artist;
-        if (res.data.message === 'success') {
+        if (res.data.message === 'Success') {
+          _this2.Info.Show = false;
           _this2.Alert.Show = true;
           _this2.Alert.Type = true;
           _this2.Alert.Message = res.data.message;
@@ -3622,7 +3629,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log('------------ Errors ------------');
         console.log(error);
       })["finally"](function (fin) {
-        _this2.loaderSave = !1;
+        _this2.loaderSave = false;
         console.log(_this2.Alert);
       });
     }

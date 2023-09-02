@@ -342,7 +342,7 @@ export default {
       ) {
         // Form is valid, you can submit it or perform further actions.
         console.log('Form is valid!');
-        saveInfo();
+        this.saveInfo();
       }
     },
     validEmail: function (email) {
@@ -355,6 +355,12 @@ export default {
       return re.test(phone);
     },
     saveInfo() {
+      this.loaderSave = true;
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.isValid = '';
       axios
         .post('/dashboard/artists/store', {
           name: this.Info.Name,
@@ -364,7 +370,8 @@ export default {
         })
         .then((res) => {
           this.artist = res.data.artist;
-          if (res.data.message === 'success') {
+          if (res.data.message === 'Success') {
+            this.Info.Show = false;
             this.Alert.Show = true;
             this.Alert.Type = true;
             this.Alert.Message = res.data.message;
@@ -386,7 +393,7 @@ export default {
           console.log(error);
         })
         .finally((fin) => {
-          this.loaderSave = !1;
+          this.loaderSave = false;
           console.log(this.Alert);
         });
     },
