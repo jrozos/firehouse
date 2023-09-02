@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Artist;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ArtistRequest;
 
 class ArtistController extends Controller
 {
@@ -35,9 +39,23 @@ class ArtistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function list(Request $request){
+        if ($request->ajax()) {
+            $artists = DB::table('artists')
+            ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','created_at as Created')
+            ->where('deleted_at','=',null)
+            ->orderBy('Created','desc')
+            ->get();
+            
+            foreach ($artists as $key => $artist) {
+                $artistModel = Artist::find($artist->_Artist);
+                $artist->_Artist = Crypt::encrypt($artist->_Artist);
+            }
+            return response()->json(["message"=>"Success", "artists"=>$artists], 200);
+
+        } else{
+            abort(404);
+        }
     }
 
     /**
@@ -46,11 +64,14 @@ class ArtistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(ArtistRequest $request){
         if ($request->ajax()) {
-            dd($request);
+            // dd($request);
+            $artist = (new Artist)->fill($request->validated());
+            $artist->save();
 
-            
+            return response()->json(["message"=>"Success", "artist"=>$artist], 200);
+
         } else {
             abort(404);
         }

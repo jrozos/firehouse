@@ -36,11 +36,26 @@
                         <input
                           v-model="Info.Name"
                           type="text"
-                          class="form-control"
+                          :class="[
+                            (Info.Name != '') & (InfoErrors.Name === '')
+                              ? 'is-valid'
+                              : InfoErrors.Name != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
                           placeholder="Nombre"
                           aria-label="Nombre"
                         />
                       </div>
+                      <p
+                        v-if="InfoErrors.Name"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Name }}
+                        </small>
+                      </p>
                     </div>
                     <div class="col-6">
                       <label>Apellido</label>
@@ -48,11 +63,26 @@
                         <input
                           v-model="Info.LastName"
                           type="text"
-                          class="form-control"
+                          :class="[
+                            (Info.LastName != '') & (InfoErrors.LastName === '')
+                              ? 'is-valid'
+                              : InfoErrors.LastName != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
                           placeholder="Apellido"
                           aria-label="Apellido"
                         />
                       </div>
+                      <p
+                        v-if="InfoErrors.LastName"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.LastName }}
+                        </small>
+                      </p>
                     </div>
                     <div class="col-6">
                       <label>E-mail</label>
@@ -60,23 +90,53 @@
                         <input
                           v-model="Info.Email"
                           type="email"
-                          class="form-control"
+                          :class="[
+                            (Info.Email != '') & (InfoErrors.Email === '')
+                              ? 'is-valid'
+                              : InfoErrors.Email != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
                           placeholder="E-mail"
                           aria-label="E-mail"
                         />
                       </div>
+                      <p
+                        v-if="InfoErrors.Email"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Email }}
+                        </small>
+                      </p>
                     </div>
                     <div class="col-6">
                       <label>Cel</label>
                       <div class="input-group mb-3">
                         <input
                           v-model="Info.Phone"
-                          type="text"
-                          class="form-control"
-                          placeholder="Cel"
+                          type="tel"
+                          :class="[
+                            (Info.Phone != '') & (InfoErrors.Phone === '')
+                              ? 'is-valid'
+                              : InfoErrors.Phone != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
+                          placeholder="999-99-99-99-9"
                           aria-label="Cel"
                         />
                       </div>
+                      <p
+                        v-if="InfoErrors.Phone"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Phone }}
+                        </small>
+                      </p>
                     </div>
                   </div>
                   <div class="text-center">
@@ -89,7 +149,7 @@
                       <button
                         type="button"
                         class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0"
-                        @click="saveInfo($event)"
+                        @click="validateForm()"
                       >
                         Crear
                       </button>
@@ -212,6 +272,8 @@ export default {
       // activeSave:false,
       // activeReset:false,
       // aproved:false,
+      artists: [],
+
       loaderSave: false,
       Info: {
         Show: false,
@@ -219,6 +281,14 @@ export default {
         LastName: '',
         Email: '',
         Phone: '',
+      },
+
+      InfoErrors: {
+        Name: '',
+        LastName: '',
+        Email: '',
+        Phone: '',
+        isValid: '',
       },
 
       Alert: {
@@ -230,61 +300,90 @@ export default {
     };
   },
   methods: {
-    saveInfo() {
-      this.loaderSave = true;
-
+    startComponent() {
       axios
-        .post('/dashboard/create', {
-          Name: this.Info.Name,
-          LastName: this.Info.LastName,
-          Email: this.Info.Email,
-          Phone: this.Info.Phone,
-        })
+        .get('/dashboard/artists/list')
         .then((res) => {
-          // this.rates = res.data;
+          this.artists = res.data.artists;
         })
         .catch((error) => {
           // this.errorNewVilla = error.response.data.errors.name[0];
+        })
+        .finally((fin) => {
+          // this.loadingVilla = false;
+        });
+    },
+    validateForm() {
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.isValid = '';
+
+      this.InfoErrors.Name =
+        this.Info.Name.trim() === '' ? 'El nombre es requerido.' : '';
+      this.InfoErrors.LastName =
+        this.Info.LastName.trim() === '' ? 'El apellido es requerido.' : '';
+      this.InfoErrors.Email =
+        !this.Info.Email.trim() === ''
+          ? 'El e-mail es requerido.'
+          : !this.validEmail(this.Info.Email)
+          ? 'E-mail invalido ej: aaa@aaa.aaa'
+          : '';
+      this.InfoErrors.Phone = !this.validatePhoneNumber(this.Info.Phone)
+        ? 'Teléfono invalido ej: 999-99-99-99-9'
+        : '';
+
+      if (
+        !this.InfoErrors.Name &&
+        !this.InfoErrors.LastName &&
+        !this.InfoErrors.Email &&
+        !this.InfoErrors.Phone
+      ) {
+        // Form is valid, you can submit it or perform further actions.
+        console.log('Form is valid!');
+        saveInfo();
+      }
+    },
+    validEmail: function (email) {
+      var re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+    validatePhoneNumber(phone) {
+      var re = /^\d{10}$/;
+      return re.test(phone);
+    },
+    saveInfo() {
+      axios
+        .post('/dashboard/artists/store', {
+          name: this.Info.Name,
+          last_name: this.Info.LastName,
+          email: this.Info.Email,
+          phone_number: this.Info.Phone,
+        })
+        .then((res) => {
+          this.artist = res.data.artist;
+          if (res.data.message === 'success') {
+            this.Alert.Show = true;
+            this.Alert.Type = true;
+            this.Alert.Message = res.data.message;
+
+            this.startComponent();
+          } else {
+            this.InfoErrors.Name = res.data.name;
+            this.InfoErrors.LastName = res.data.last_name;
+            this.InfoErrors.Email = res.data.email;
+            this.InfoErrors.Phone = res.data.phone_number;
+          }
+        })
+        .catch((error) => {
+          this.InfoErrors.Name = error.response.data.errors.name;
+          this.InfoErrors.LastName = error.response.data.errors.last_name;
+          this.InfoErrors.Email = error.response.data.errors.email;
+          this.InfoErrors.Phone = error.response.data.errors.phone_number;
           console.log('------------ Errors ------------');
           console.log(error);
-          // console.log(error.response);
-          // console.log(error.response.status);
-          // console.log(error.response.data);
-          this.Alert.Show = true;
-          this.Alert.Type = false;
-          if (
-            typeof error.response === 'undefined' ||
-            error.response.status === 0
-          ) {
-            this.Alert.Title = 'Network Error';
-            this.Alert.Message =
-              '<div class="col-12">' +
-              '<h4 class="text-white">Check your network connection.</h4>' +
-              '</div>';
-          } else {
-            const errors = error.response.data;
-            this.Alert.Title = errors.message;
-            this.Alert.Message = '';
-            if (error.response.status === 500) {
-              this.Alert.Message =
-                '<div class="col-12">' +
-                '<h4 class="text-white text-center">Try to reload the page.</h4>' +
-                '<h4 class="text-white text-center">If the problem persist contact of administrator.</h4>' +
-                '</div>';
-            } else {
-              errors.errors.forEach((err, key) => {
-                let style = '';
-                if (key === 0) {
-                  style = ' style="margin-top: -1rem;"';
-                }
-                this.Alert.Message +=
-                  `<div class="col-12"${style}>` +
-                  `<h5 class="text-white mb-0 mt-3"><b>${err.Tag}:</b></h5>` +
-                  `<h6 class="text-white my-0">${err.Error}</h6>` +
-                  '</div>';
-              });
-            }
-          }
         })
         .finally((fin) => {
           this.loaderSave = !1;
@@ -292,7 +391,9 @@ export default {
         });
     },
   },
+  computed: {},
   mounted() {
+    this.startComponent();
     console.log('Component mounted.');
   },
 };

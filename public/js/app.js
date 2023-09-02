@@ -3467,6 +3467,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3474,6 +3534,7 @@ __webpack_require__.r(__webpack_exports__);
       // activeSave:false,
       // activeReset:false,
       // aproved:false,
+      artists: [],
       loaderSave: false,
       Info: {
         Show: false,
@@ -3481,6 +3542,13 @@ __webpack_require__.r(__webpack_exports__);
         LastName: '',
         Email: '',
         Phone: ''
+      },
+      InfoErrors: {
+        Name: '',
+        LastName: '',
+        Email: '',
+        Phone: '',
+        isValid: ''
       },
       Alert: {
         Show: false,
@@ -3492,51 +3560,76 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    saveInfo: function saveInfo() {
+    startComponent: function startComponent() {
       var _this = this;
-      this.loaderSave = true;
-      axios.post('/dashboard/create', {
-        Name: this.Info.Name,
-        LastName: this.Info.LastName,
-        Email: this.Info.Email,
-        Phone: this.Info.Phone
-      }).then(function (res) {
-        // this.rates = res.data;
+      axios.get('/dashboard/artists/list').then(function (res) {
+        _this.artists = res.data.artists;
       })["catch"](function (error) {
         // this.errorNewVilla = error.response.data.errors.name[0];
+      })["finally"](function (fin) {
+        // this.loadingVilla = false;
+      });
+    },
+    validateForm: function validateForm() {
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.isValid = '';
+      this.InfoErrors.Name = this.Info.Name.trim() === '' ? 'El nombre es requerido.' : '';
+      this.InfoErrors.LastName = this.Info.LastName.trim() === '' ? 'El apellido es requerido.' : '';
+      this.InfoErrors.Email = !this.Info.Email.trim() === '' ? 'El e-mail es requerido.' : !this.validEmail(this.Info.Email) ? 'E-mail invalido ej: aaa@aaa.aaa' : '';
+      this.InfoErrors.Phone = !this.validatePhoneNumber(this.Info.Phone) ? 'Teléfono invalido ej: 999-99-99-99-9' : '';
+      if (!this.InfoErrors.Name && !this.InfoErrors.LastName && !this.InfoErrors.Email && !this.InfoErrors.Phone) {
+        // Form is valid, you can submit it or perform further actions.
+        console.log('Form is valid!');
+        saveInfo();
+      }
+    },
+    validEmail: function validEmail(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+    validatePhoneNumber: function validatePhoneNumber(phone) {
+      var re = /^\d{10}$/;
+      return re.test(phone);
+    },
+    saveInfo: function saveInfo() {
+      var _this2 = this;
+      axios.post('/dashboard/artists/store', {
+        name: this.Info.Name,
+        last_name: this.Info.LastName,
+        email: this.Info.Email,
+        phone_number: this.Info.Phone
+      }).then(function (res) {
+        _this2.artist = res.data.artist;
+        if (res.data.message === 'success') {
+          _this2.Alert.Show = true;
+          _this2.Alert.Type = true;
+          _this2.Alert.Message = res.data.message;
+          _this2.startComponent();
+        } else {
+          _this2.InfoErrors.Name = res.data.name;
+          _this2.InfoErrors.LastName = res.data.last_name;
+          _this2.InfoErrors.Email = res.data.email;
+          _this2.InfoErrors.Phone = res.data.phone_number;
+        }
+      })["catch"](function (error) {
+        _this2.InfoErrors.Name = error.response.data.errors.name;
+        _this2.InfoErrors.LastName = error.response.data.errors.last_name;
+        _this2.InfoErrors.Email = error.response.data.errors.email;
+        _this2.InfoErrors.Phone = error.response.data.errors.phone_number;
         console.log('------------ Errors ------------');
         console.log(error);
-        // console.log(error.response);
-        // console.log(error.response.status);
-        // console.log(error.response.data);
-        _this.Alert.Show = true;
-        _this.Alert.Type = false;
-        if (typeof error.response === 'undefined' || error.response.status === 0) {
-          _this.Alert.Title = 'Network Error';
-          _this.Alert.Message = '<div class="col-12">' + '<h4 class="text-white">Check your network connection.</h4>' + '</div>';
-        } else {
-          var errors = error.response.data;
-          _this.Alert.Title = errors.message;
-          _this.Alert.Message = '';
-          if (error.response.status === 500) {
-            _this.Alert.Message = '<div class="col-12">' + '<h4 class="text-white text-center">Try to reload the page.</h4>' + '<h4 class="text-white text-center">If the problem persist contact of administrator.</h4>' + '</div>';
-          } else {
-            errors.errors.forEach(function (err, key) {
-              var style = '';
-              if (key === 0) {
-                style = ' style="margin-top: -1rem;"';
-              }
-              _this.Alert.Message += "<div class=\"col-12\"".concat(style, ">") + "<h5 class=\"text-white mb-0 mt-3\"><b>".concat(err.Tag, ":</b></h5>") + "<h6 class=\"text-white my-0\">".concat(err.Error, "</h6>") + '</div>';
-            });
-          }
-        }
       })["finally"](function (fin) {
-        _this.loaderSave = !1;
-        console.log(_this.Alert);
+        _this2.loaderSave = !1;
+        console.log(_this2.Alert);
       });
     }
   },
+  computed: {},
   mounted: function mounted() {
+    this.startComponent();
     console.log('Component mounted.');
   }
 });
@@ -28836,7 +28929,15 @@ var render = function () {
                                       expression: "Info.Name",
                                     },
                                   ],
-                                  staticClass: "form-control",
+                                  class: [
+                                    (_vm.Info.Name != "") &
+                                    (_vm.InfoErrors.Name === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.Name != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
                                   attrs: {
                                     type: "text",
                                     placeholder: "Nombre",
@@ -28857,6 +28958,29 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.Name
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.Name) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-6" }, [
@@ -28872,7 +28996,15 @@ var render = function () {
                                       expression: "Info.LastName",
                                     },
                                   ],
-                                  staticClass: "form-control",
+                                  class: [
+                                    (_vm.Info.LastName != "") &
+                                    (_vm.InfoErrors.LastName === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.LastName != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
                                   attrs: {
                                     type: "text",
                                     placeholder: "Apellido",
@@ -28893,6 +29025,29 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.LastName
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.LastName) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-6" }, [
@@ -28908,7 +29063,15 @@ var render = function () {
                                       expression: "Info.Email",
                                     },
                                   ],
-                                  staticClass: "form-control",
+                                  class: [
+                                    (_vm.Info.Email != "") &
+                                    (_vm.InfoErrors.Email === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.Email != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
                                   attrs: {
                                     type: "email",
                                     placeholder: "E-mail",
@@ -28929,6 +29092,29 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.Email
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.Email) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "col-6" }, [
@@ -28944,10 +29130,18 @@ var render = function () {
                                       expression: "Info.Phone",
                                     },
                                   ],
-                                  staticClass: "form-control",
+                                  class: [
+                                    (_vm.Info.Phone != "") &
+                                    (_vm.InfoErrors.Phone === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.Phone != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
                                   attrs: {
-                                    type: "text",
-                                    placeholder: "Cel",
+                                    type: "tel",
+                                    placeholder: "999-99-99-99-9",
                                     "aria-label": "Cel",
                                   },
                                   domProps: { value: _vm.Info.Phone },
@@ -28965,6 +29159,29 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.Phone
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.Phone) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
                             ]),
                           ]),
                           _vm._v(" "),
@@ -28980,7 +29197,7 @@ var render = function () {
                                       attrs: { type: "button" },
                                       on: {
                                         click: function ($event) {
-                                          return _vm.saveInfo($event)
+                                          return _vm.validateForm()
                                         },
                                       },
                                     },
