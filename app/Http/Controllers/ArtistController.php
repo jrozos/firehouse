@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArtistRequest;
 use App\Models\Artist;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ArtistRequest;
-
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
@@ -69,8 +68,8 @@ class ArtistController extends Controller
      */
     public function store(ArtistRequest $request){
         if ($request->ajax()) {
-            // dd($request);
-            $artist = (new Artist)->fill($request->validated());
+            $validatedData = $request->validated();
+            $artist = (new Artist)->fill($validatedData);
             $artist->save();
 
             return response()->json(["message"=>"Success", "artist"=>$artist], 200);

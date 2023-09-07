@@ -10,7 +10,7 @@
             <div class="col-6 text-end">
               <button
                 type="button"
-                class="btn btn-block btn-info mb-0"
+                class="btn btn-outline-dark"
                 @click="Info.Show = true"
               >
                 Crear
@@ -146,13 +146,23 @@
                       ></span>
                     </div>
                     <div v-else>
-                      <button
-                        type="button"
-                        class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0"
-                        @click="validateForm()"
-                      >
-                        Crear
-                      </button>
+                      <div class="row justify-content-end">
+                        <div class="col-6 pt-3">
+                          <button
+                            type="button"
+                            class="btn bg-gradient-info btn-lg mb-0"
+                            @click="validateForm()"
+                          >
+                            Crear
+                          </button>
+                          <button
+                            class="btn bg-gradient-danger btn-lg mb-0"
+                            @click="clearErrors()"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -161,6 +171,11 @@
           </div>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
+          <div v-if="loaderSave" class="text-center">
+            <span class="display-6"
+              ><i class="fa-solid fa-droplet fa-bounce"></i
+            ></span>
+          </div>
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
               <thead>
@@ -185,7 +200,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-for="artist in artists" :key="artist.id">
                   <td>
                     <div class="d-flex px-2 py-1">
                       <div>
@@ -196,21 +211,25 @@
                         />
                       </div>
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">John Michael</h6>
+                        <h6 class="mb-0 text-sm">
+                          {{ artist.Name }} {{ artist.LastName }}
+                        </h6>
                         <p class="text-xs text-secondary mb-0">
-                          john@creative-tim.com
+                          {{ artist.Email }}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0">322-72-85-289</p>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{ artist.Phone }}
+                    </p>
                   </td>
 
                   <td class="align-middle text-center">
-                    <span class="text-secondary text-xs font-weight-bold"
-                      >23/04/18</span
-                    >
+                    <span class="text-secondary text-xs font-weight-bold">{{
+                      formatFriendlyDate(artist.Created)
+                    }}</span>
                   </td>
                   <td class="align-middle">
                     <a
@@ -219,7 +238,7 @@
                       data-toggle="tooltip"
                       data-original-title="Edit user"
                     >
-                      Edit
+                      Editar
                     </a>
                   </td>
                 </tr>
@@ -266,6 +285,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   data() {
     return {
@@ -301,6 +321,7 @@ export default {
   },
   methods: {
     startComponent() {
+      this.loaderSave = true;
       axios
         .get('/dashboard/artists/list')
         .then((res) => {
@@ -310,8 +331,20 @@ export default {
           // this.errorNewVilla = error.response.data.errors.name[0];
         })
         .finally((fin) => {
-          // this.loadingVilla = false;
+          this.loaderSave = false;
         });
+    },
+    formatFriendlyDate(date) {
+      moment.locale('es-mx');
+      return moment(date).format('L');
+    },
+    clearErrors() {
+      this.Info.Show = false;
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.isValid = '';
     },
     validateForm() {
       this.InfoErrors.Name = '';
@@ -385,16 +418,19 @@ export default {
           }
         })
         .catch((error) => {
-          this.InfoErrors.Name = error.response.data.errors.name;
-          this.InfoErrors.LastName = error.response.data.errors.last_name;
-          this.InfoErrors.Email = error.response.data.errors.email;
-          this.InfoErrors.Phone = error.response.data.errors.phone_number;
+          this.InfoErrors.Name = error.response.data.errors.name[0];
+          this.InfoErrors.LastName = error.response.data.errors.last_name[0];
+          this.InfoErrors.Email = error.response.data.errors.email[0];
+          this.InfoErrors.Phone = error.response.data.errors.phone_number[0];
           console.log('------------ Errors ------------');
           console.log(error);
         })
         .finally((fin) => {
           this.loaderSave = false;
-          console.log(this.Alert);
+          this.Info.Name = '';
+          this.Info.LastName = '';
+          this.Info.Email = '';
+          this.Info.Phone = '';
         });
     },
   },
