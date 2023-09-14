@@ -147,16 +147,16 @@
                     </div>
                     <div v-else>
                       <div class="row justify-content-end">
-                        <div class="col-6 pt-3">
+                        <div class="col-6 pt-3 text-end">
                           <button
                             type="button"
-                            class="btn bg-gradient-info btn-lg mb-0"
+                            class="btn bg-gradient-info btn-sm mb-0"
                             @click="validateForm()"
                           >
                             Crear
                           </button>
                           <button
-                            class="btn bg-gradient-danger btn-lg mb-0"
+                            class="btn bg-gradient-danger btn-sm mb-0"
                             @click="clearErrors()"
                           >
                             Cancelar
@@ -194,7 +194,12 @@
                   <th
                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                   >
-                    Registro
+                    Creado
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
+                    Editado
                   </th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -202,7 +207,7 @@
               <tbody>
                 <tr v-for="artist in artists" :key="artist.id">
                   <td>
-                    <div class="d-flex px-2 py-1">
+                    <div class="d-flex py-1">
                       <div>
                         <img
                           src="/assets/img/team-2.jpg"
@@ -231,14 +236,33 @@
                       formatFriendlyDate(artist.Created)
                     }}</span>
                   </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{
+                      formatFriendlyDate(artist.Created)
+                    }}</span>
+                  </td>
                   <td class="align-middle">
                     <a
                       href="javascript:;"
-                      class="text-secondary font-weight-bold text-xs"
-                      data-toggle="tooltip"
-                      data-original-title="Edit user"
+                      class="text-secondary font-weight-bold text-xs pe-4"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Editar"
+                      data-container="body"
+                      data-animation="true"
                     >
-                      Editar
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a
+                      href="javascript:;"
+                      class="text-secondary font-weight-bold text-xs"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="Borrar"
+                      data-container="body"
+                      data-animation="true"
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
                     </a>
                   </td>
                 </tr>
@@ -405,10 +429,6 @@ export default {
           this.artist = res.data.artist;
           if (res.data.message === 'Success') {
             this.Info.Show = false;
-            this.Alert.Show = true;
-            this.Alert.Type = true;
-            this.Alert.Message = res.data.message;
-
             this.startComponent();
           } else {
             this.InfoErrors.Name = res.data.name;
@@ -437,7 +457,6 @@ export default {
   computed: {},
   mounted() {
     this.startComponent();
-    console.log('Component mounted.');
   },
 };
 </script>

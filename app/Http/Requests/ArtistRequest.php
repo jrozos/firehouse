@@ -26,9 +26,9 @@ class ArtistRequest extends FormRequest
         return [
             'name'=> 'required|min:4|max:255',
             'last_name'=> 'required|min:4|max:255',
-            'email'=> 'unique:users,email|required|min:4|max:255',
+            'email'=> 'unique:artists,email|required|min:4|max:255',
             'phone_number'=> 'min:4|max:255',
-            'description'=> 'min:4|max:255'
+            'description'=> 'min:4|max:255',
         ];
     }
 }

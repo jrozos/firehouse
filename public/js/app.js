@@ -3548,6 +3548,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3646,9 +3670,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.artist = res.data.artist;
         if (res.data.message === 'Success') {
           _this2.Info.Show = false;
-          _this2.Alert.Show = true;
-          _this2.Alert.Type = true;
-          _this2.Alert.Message = res.data.message;
           _this2.startComponent();
         } else {
           _this2.InfoErrors.Name = res.data.name;
@@ -3675,7 +3696,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {},
   mounted: function mounted() {
     this.startComponent();
-    console.log('Component mounted.');
   }
 });
 
@@ -50828,44 +50848,48 @@ var render = function () {
                                     "div",
                                     { staticClass: "row justify-content-end" },
                                     [
-                                      _c("div", { staticClass: "col-6 pt-3" }, [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn bg-gradient-info btn-lg mb-0",
-                                            attrs: { type: "button" },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.validateForm()
+                                      _c(
+                                        "div",
+                                        { staticClass: "col-6 pt-3 text-end" },
+                                        [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn bg-gradient-info btn-sm mb-0",
+                                              attrs: { type: "button" },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.validateForm()
+                                                },
                                               },
                                             },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                          Crear\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn bg-gradient-danger btn-lg mb-0",
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.clearErrors()
+                                            [
+                                              _vm._v(
+                                                "\n                          Crear\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass:
+                                                "btn bg-gradient-danger btn-sm mb-0",
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.clearErrors()
+                                                },
                                               },
                                             },
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                          Cancelar\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
+                                            [
+                                              _vm._v(
+                                                "\n                          Cancelar\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]
+                                      ),
                                     ]
                                   ),
                                 ]),
@@ -50893,7 +50917,7 @@ var render = function () {
                 _vm._l(_vm.artists, function (artist) {
                   return _c("tr", { key: artist.id }, [
                     _c("td", [
-                      _c("div", { staticClass: "d-flex px-2 py-1" }, [
+                      _c("div", { staticClass: "d-flex py-1" }, [
                         _vm._m(5, true),
                         _vm._v(" "),
                         _c(
@@ -50940,6 +50964,17 @@ var render = function () {
                               "\n                  "
                           ),
                         ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "align-middle text-center" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-secondary text-xs font-weight-bold",
+                        },
+                        [_vm._v(_vm._s(_vm.formatFriendlyDate(artist.Created)))]
                       ),
                     ]),
                     _vm._v(" "),
@@ -51098,7 +51133,16 @@ var staticRenderFns = [
             staticClass:
               "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
           },
-          [_vm._v("\n                  Registro\n                ")]
+          [_vm._v("\n                  Creado\n                ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          },
+          [_vm._v("\n                  Editado\n                ")]
         ),
         _vm._v(" "),
         _c("th", { staticClass: "text-secondary opacity-7" }),
@@ -51124,14 +51168,33 @@ var staticRenderFns = [
       _c(
         "a",
         {
+          staticClass: "text-secondary font-weight-bold text-xs pe-4",
+          attrs: {
+            href: "javascript:;",
+            "data-bs-toggle": "tooltip",
+            "data-bs-placement": "top",
+            title: "Editar",
+            "data-container": "body",
+            "data-animation": "true",
+          },
+        },
+        [_c("i", { staticClass: "fa-solid fa-pen-to-square" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
           staticClass: "text-secondary font-weight-bold text-xs",
           attrs: {
             href: "javascript:;",
-            "data-toggle": "tooltip",
-            "data-original-title": "Edit user",
+            "data-bs-toggle": "tooltip",
+            "data-bs-placement": "top",
+            title: "Borrar",
+            "data-container": "body",
+            "data-animation": "true",
           },
         },
-        [_vm._v("\n                    Editar\n                  ")]
+        [_c("i", { staticClass: "fa-solid fa-trash-can" })]
       ),
     ])
   },
