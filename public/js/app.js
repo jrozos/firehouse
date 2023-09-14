@@ -3572,6 +3572,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3587,13 +3605,15 @@ __webpack_require__.r(__webpack_exports__);
         Name: '',
         LastName: '',
         Email: '',
-        Phone: ''
+        Phone: '',
+        Description: ''
       },
       InfoErrors: {
         Name: '',
         LastName: '',
         Email: '',
         Phone: '',
+        Description: '',
         isValid: ''
       },
       Alert: {
@@ -3627,6 +3647,7 @@ __webpack_require__.r(__webpack_exports__);
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
     validateForm: function validateForm() {
@@ -3634,6 +3655,7 @@ __webpack_require__.r(__webpack_exports__);
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
       this.InfoErrors.Name = this.Info.Name.trim() === '' ? 'El nombre es requerido.' : '';
       this.InfoErrors.LastName = this.Info.LastName.trim() === '' ? 'El apellido es requerido.' : '';
@@ -3660,14 +3682,17 @@ __webpack_require__.r(__webpack_exports__);
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
       axios.post('/dashboard/artists/store', {
         name: this.Info.Name,
         last_name: this.Info.LastName,
         email: this.Info.Email,
-        phone_number: this.Info.Phone
+        phone_number: this.Info.Phone,
+        description: this.Info.Description
       }).then(function (res) {
         _this2.artist = res.data.artist;
+        console.log('then');
         if (res.data.message === 'Success') {
           _this2.Info.Show = false;
           _this2.startComponent();
@@ -3676,20 +3701,27 @@ __webpack_require__.r(__webpack_exports__);
           _this2.InfoErrors.LastName = res.data.last_name;
           _this2.InfoErrors.Email = res.data.email;
           _this2.InfoErrors.Phone = res.data.phone_number;
+          _this2.InfoErrors.Description = res.data.description;
+          console.log('then-else');
         }
       })["catch"](function (error) {
-        _this2.InfoErrors.Name = error.response.data.errors.name[0];
-        _this2.InfoErrors.LastName = error.response.data.errors.last_name[0];
-        _this2.InfoErrors.Email = error.response.data.errors.email[0];
-        _this2.InfoErrors.Phone = error.response.data.errors.phone_number[0];
+        if (error.response && error.response.data && error.response.data.errors) {
+          _this2.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
+          _this2.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
+          _this2.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
+          _this2.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this2.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
+        } else {
+          console.error('Invalid error response structure:', error.response);
+        }
         console.log('------------ Errors ------------');
-        console.log(error);
       })["finally"](function (fin) {
         _this2.loaderSave = false;
         _this2.Info.Name = '';
         _this2.Info.LastName = '';
         _this2.Info.Email = '';
         _this2.Info.Phone = '';
+        _this2.Info.Description = '';
       });
     }
   },
@@ -50574,6 +50606,29 @@ var render = function () {
                             _c("div", { staticClass: "col-6" }, [
                               _c("label", [_vm._v("Nombre")]),
                               _vm._v(" "),
+                              _vm.InfoErrors.Name
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.Name) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
                               _c("div", { staticClass: "input-group mb-3" }, [
                                 _c("input", {
                                   directives: [
@@ -50613,8 +50668,12 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Apellido")]),
                               _vm._v(" "),
-                              _vm.InfoErrors.Name
+                              _vm.InfoErrors.LastName
                                 ? _c(
                                     "p",
                                     {
@@ -50628,7 +50687,7 @@ var render = function () {
                                         [
                                           _vm._v(
                                             "\n                        " +
-                                              _vm._s(_vm.InfoErrors.Name) +
+                                              _vm._s(_vm.InfoErrors.LastName) +
                                               "\n                      "
                                           ),
                                         ]
@@ -50636,10 +50695,6 @@ var render = function () {
                                     ]
                                   )
                                 : _vm._e(),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6" }, [
-                              _c("label", [_vm._v("Apellido")]),
                               _vm._v(" "),
                               _c("div", { staticClass: "input-group mb-3" }, [
                                 _c("input", {
@@ -50680,8 +50735,12 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("E-mail")]),
                               _vm._v(" "),
-                              _vm.InfoErrors.LastName
+                              _vm.InfoErrors.Email
                                 ? _c(
                                     "p",
                                     {
@@ -50695,7 +50754,7 @@ var render = function () {
                                         [
                                           _vm._v(
                                             "\n                        " +
-                                              _vm._s(_vm.InfoErrors.LastName) +
+                                              _vm._s(_vm.InfoErrors.Email) +
                                               "\n                      "
                                           ),
                                         ]
@@ -50703,10 +50762,6 @@ var render = function () {
                                     ]
                                   )
                                 : _vm._e(),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6" }, [
-                              _c("label", [_vm._v("E-mail")]),
                               _vm._v(" "),
                               _c("div", { staticClass: "input-group mb-3" }, [
                                 _c("input", {
@@ -50747,8 +50802,12 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Cel")]),
                               _vm._v(" "),
-                              _vm.InfoErrors.Email
+                              _vm.InfoErrors.Phone
                                 ? _c(
                                     "p",
                                     {
@@ -50762,7 +50821,7 @@ var render = function () {
                                         [
                                           _vm._v(
                                             "\n                        " +
-                                              _vm._s(_vm.InfoErrors.Email) +
+                                              _vm._s(_vm.InfoErrors.Phone) +
                                               "\n                      "
                                           ),
                                         ]
@@ -50770,10 +50829,6 @@ var render = function () {
                                     ]
                                   )
                                 : _vm._e(),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6" }, [
-                              _c("label", [_vm._v("Cel")]),
                               _vm._v(" "),
                               _c("div", { staticClass: "input-group mb-3" }, [
                                 _c("input", {
@@ -50814,8 +50869,12 @@ var render = function () {
                                   },
                                 }),
                               ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-12" }, [
+                              _c("label", [_vm._v("Descripcion")]),
                               _vm._v(" "),
-                              _vm.InfoErrors.Phone
+                              _vm.InfoErrors.Description
                                 ? _c(
                                     "p",
                                     {
@@ -50829,7 +50888,9 @@ var render = function () {
                                         [
                                           _vm._v(
                                             "\n                        " +
-                                              _vm._s(_vm.InfoErrors.Phone) +
+                                              _vm._s(
+                                                _vm.InfoErrors.Description
+                                              ) +
                                               "\n                      "
                                           ),
                                         ]
@@ -50837,6 +50898,34 @@ var render = function () {
                                     ]
                                   )
                                 : _vm._e(),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Description,
+                                      expression: "Info.Description",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { rows: "3" },
+                                  domProps: { value: _vm.Info.Description },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Description",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
                             ]),
                           ]),
                           _vm._v(" "),

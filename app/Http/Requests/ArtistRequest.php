@@ -28,7 +28,7 @@ class ArtistRequest extends FormRequest
             'last_name'=> 'required|min:4|max:255',
             'email'=> 'unique:artists,email|required|min:4|max:255',
             'phone_number'=> 'min:4|max:255',
-            'description'=> 'min:4|max:255',
+            'description'=> 'max:255',
         ];
     }
 }

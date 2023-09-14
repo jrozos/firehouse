@@ -32,6 +32,14 @@
                   <div class="row">
                     <div class="col-6">
                       <label>Nombre</label>
+                      <p
+                        v-if="InfoErrors.Name"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Name }}
+                        </small>
+                      </p>
                       <div class="input-group mb-3">
                         <input
                           v-model="Info.Name"
@@ -48,17 +56,17 @@
                           aria-label="Nombre"
                         />
                       </div>
-                      <p
-                        v-if="InfoErrors.Name"
-                        class="wow animate__animated animate__headShake"
-                      >
-                        <small class="text-danger">
-                          {{ InfoErrors.Name }}
-                        </small>
-                      </p>
                     </div>
                     <div class="col-6">
                       <label>Apellido</label>
+                      <p
+                        v-if="InfoErrors.LastName"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.LastName }}
+                        </small>
+                      </p>
                       <div class="input-group mb-3">
                         <input
                           v-model="Info.LastName"
@@ -75,17 +83,17 @@
                           aria-label="Apellido"
                         />
                       </div>
-                      <p
-                        v-if="InfoErrors.LastName"
-                        class="wow animate__animated animate__headShake"
-                      >
-                        <small class="text-danger">
-                          {{ InfoErrors.LastName }}
-                        </small>
-                      </p>
                     </div>
                     <div class="col-6">
                       <label>E-mail</label>
+                      <p
+                        v-if="InfoErrors.Email"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Email }}
+                        </small>
+                      </p>
                       <div class="input-group mb-3">
                         <input
                           v-model="Info.Email"
@@ -102,17 +110,17 @@
                           aria-label="E-mail"
                         />
                       </div>
-                      <p
-                        v-if="InfoErrors.Email"
-                        class="wow animate__animated animate__headShake"
-                      >
-                        <small class="text-danger">
-                          {{ InfoErrors.Email }}
-                        </small>
-                      </p>
                     </div>
                     <div class="col-6">
                       <label>Cel</label>
+                      <p
+                        v-if="InfoErrors.Phone"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Phone }}
+                        </small>
+                      </p>
                       <div class="input-group mb-3">
                         <input
                           v-model="Info.Phone"
@@ -129,14 +137,24 @@
                           aria-label="Cel"
                         />
                       </div>
+                    </div>
+                    <div class="col-12">
+                      <label>Descripcion</label>
                       <p
-                        v-if="InfoErrors.Phone"
+                        v-if="InfoErrors.Description"
                         class="wow animate__animated animate__headShake"
                       >
                         <small class="text-danger">
-                          {{ InfoErrors.Phone }}
+                          {{ InfoErrors.Description }}
                         </small>
                       </p>
+                      <div class="input-group mb-3">
+                        <textarea
+                          v-model="Info.Description"
+                          class="form-control"
+                          rows="3"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                   <div class="text-center">
@@ -325,6 +343,7 @@ export default {
         LastName: '',
         Email: '',
         Phone: '',
+        Description: '',
       },
 
       InfoErrors: {
@@ -332,6 +351,7 @@ export default {
         LastName: '',
         Email: '',
         Phone: '',
+        Description: '',
         isValid: '',
       },
 
@@ -368,6 +388,7 @@ export default {
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
     validateForm() {
@@ -375,6 +396,7 @@ export default {
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
 
       this.InfoErrors.Name =
@@ -417,6 +439,7 @@ export default {
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
       axios
         .post('/dashboard/artists/store', {
@@ -424,9 +447,11 @@ export default {
           last_name: this.Info.LastName,
           email: this.Info.Email,
           phone_number: this.Info.Phone,
+          description: this.Info.Description,
         })
         .then((res) => {
           this.artist = res.data.artist;
+          console.log('then');
           if (res.data.message === 'Success') {
             this.Info.Show = false;
             this.startComponent();
@@ -435,15 +460,35 @@ export default {
             this.InfoErrors.LastName = res.data.last_name;
             this.InfoErrors.Email = res.data.email;
             this.InfoErrors.Phone = res.data.phone_number;
+            this.InfoErrors.Description = res.data.description;
+            console.log('then-else');
           }
         })
         .catch((error) => {
-          this.InfoErrors.Name = error.response.data.errors.name[0];
-          this.InfoErrors.LastName = error.response.data.errors.last_name[0];
-          this.InfoErrors.Email = error.response.data.errors.email[0];
-          this.InfoErrors.Phone = error.response.data.errors.phone_number[0];
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.errors
+          ) {
+            this.InfoErrors.Name = error.response.data.errors.name
+              ? error.response.data.errors.name[0]
+              : '';
+            this.InfoErrors.LastName = error.response.data.errors.last_name
+              ? error.response.data.errors.last_name[0]
+              : '';
+            this.InfoErrors.Email = error.response.data.errors.email
+              ? error.response.data.errors.email[0]
+              : '';
+            this.InfoErrors.Phone = error.response.data.errors.phone_number
+              ? error.response.data.errors.phone_number[0]
+              : '';
+            this.InfoErrors.Description = error.response.data.errors.description
+              ? error.response.data.errors.description[0]
+              : '';
+          } else {
+            console.error('Invalid error response structure:', error.response);
+          }
           console.log('------------ Errors ------------');
-          console.log(error);
         })
         .finally((fin) => {
           this.loaderSave = false;
@@ -451,6 +496,7 @@ export default {
           this.Info.LastName = '';
           this.Info.Email = '';
           this.Info.Phone = '';
+          this.Info.Description = '';
         });
     },
   },
