@@ -44,10 +44,13 @@ class ArtistController extends Controller
      */
     public function list(Request $request){
         if ($request->ajax()) {
-            $artists = DB::table('artists')
-            ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','created_at as Created')
-            ->where('deleted_at','=',null)
-            ->orderBy('Created','desc')
+            $artists = DB::table('artists as ART')
+            ->leftJoin('users as createdByUser', 'createdByUser.id', '=', 'ART.created_by')
+            ->leftJoin('users as updatedByUser', 'updatedByUser.id', '=', 'ART.updated_by')
+            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.created_at as Created','createdByUser.name as CreatedBy', 
+            'updatedByUser.name as UpdatedBy')
+            ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
+            ->orderBy('Created', 'desc')
             ->get();
             
             foreach ($artists as $key => $artist) {

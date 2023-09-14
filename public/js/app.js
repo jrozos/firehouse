@@ -50985,7 +50985,7 @@ var render = function () {
                           staticClass:
                             "text-secondary text-xs font-weight-bold",
                         },
-                        [_vm._v(_vm._s(_vm.formatFriendlyDate(artist.Created)))]
+                        [_vm._v(_vm._s(artist.CreatedBy))]
                       ),
                     ]),
                     _vm._v(" "),

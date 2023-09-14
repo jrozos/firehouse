@@ -238,7 +238,7 @@
                   </td>
                   <td class="align-middle text-center">
                     <span class="text-secondary text-xs font-weight-bold">{{
-                      formatFriendlyDate(artist.Created)
+                      artist.CreatedBy
                     }}</span>
                   </td>
                   <td class="align-middle">
