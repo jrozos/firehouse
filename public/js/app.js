@@ -3692,7 +3692,6 @@ __webpack_require__.r(__webpack_exports__);
         description: this.Info.Description
       }).then(function (res) {
         _this2.artist = res.data.artist;
-        console.log('then');
         if (res.data.message === 'Success') {
           _this2.Info.Show = false;
           _this2.startComponent();
@@ -3702,7 +3701,6 @@ __webpack_require__.r(__webpack_exports__);
           _this2.InfoErrors.Email = res.data.email;
           _this2.InfoErrors.Phone = res.data.phone_number;
           _this2.InfoErrors.Description = res.data.description;
-          console.log('then-else');
         }
       })["catch"](function (error) {
         if (error.response && error.response.data && error.response.data.errors) {

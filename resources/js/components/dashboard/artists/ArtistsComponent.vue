@@ -451,7 +451,6 @@ export default {
         })
         .then((res) => {
           this.artist = res.data.artist;
-          console.log('then');
           if (res.data.message === 'Success') {
             this.Info.Show = false;
             this.startComponent();
@@ -461,7 +460,6 @@ export default {
             this.InfoErrors.Email = res.data.email;
             this.InfoErrors.Phone = res.data.phone_number;
             this.InfoErrors.Description = res.data.description;
-            console.log('then-else');
           }
         })
         .catch((error) => {
