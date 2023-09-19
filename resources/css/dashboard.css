@@ -1,0 +1,22 @@
+.confirm-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+.confirm-bg .center-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: flex ease 0.3s, max-width ease 0.3s, transform ease 1s;
+}
+.confirm-bg .card {
+    max-height: calc(100vh - 100px);
+}
+.confirm-bg .card .card-body {
+    overflow: auto;
+}

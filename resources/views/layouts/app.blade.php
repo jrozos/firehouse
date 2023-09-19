@@ -27,10 +27,10 @@
         <link rel="manifest" href="/site.webmanifest">
         <!-- MDB -->
         <link rel="stylesheet" href="css/mdb.min.css" />
-        <link
+        {{-- <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-      />
+      /> --}}
 
         <!-- Styles -->
         {{-- <style>
@@ -59,10 +59,6 @@
     <script src="{{ asset('js/wow.min.js')}}"></script>
     <script>
 		new WOW().init();
-		// const observer = lozad();
-		// observer.observe();
-		const observer = lozad();
-		observer.observe();
 	</script>
 </body>
 </html>

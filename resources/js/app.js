@@ -4,9 +4,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require("./bootstrap");
+require('./bootstrap');
 
-window.Vue = require("vue").default;
+window.Vue = require('vue').default;
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,12 +21,16 @@ window.Vue = require("vue").default;
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component(
-    "dashboard-index",
-    require("./components/dashboard/dashboard/DashboardComponent.vue").default
+  'dashboard-index',
+  require('./components/dashboard/dashboard/DashboardComponent.vue').default,
 );
 Vue.component(
-    "clients-index",
-    require("./components/dashboard/clients/ClientsComponent.vue").default
+  'clients-index',
+  require('./components/dashboard/clients/ClientsComponent.vue').default,
+);
+Vue.component(
+  'artists-index',
+  require('./components/dashboard/artists/ArtistsComponent.vue').default,
 );
 
 /**
@@ -36,5 +40,5 @@ Vue.component(
  */
 
 const app = new Vue({
-    el: "#app",
+  el: '#app',
 });

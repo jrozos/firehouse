@@ -2,14 +2,13 @@
 // Timeline
 //
 
-
 .timeline {
     position: relative;
 
     // Axis
 
     &:before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: $timeline-left;
@@ -17,8 +16,6 @@
         border-right: $timeline-axis-width solid $timeline-axis-color;
     }
 }
-
-
 
 // Timeline blocks
 
@@ -59,12 +56,11 @@
     font-weight: $font-weight-bold;
     z-index: 1;
 
-    svg, i {
+    svg,
+    i {
         line-height: $timeline-step-line-height;
     }
 }
-
-
 
 // Timeline content and body
 .timeline-content {
@@ -81,7 +77,6 @@
     }
 }
 
-
 @include media-breakpoint-up(lg) {
     .timeline {
         &:before {
@@ -95,7 +90,6 @@
     }
 
     .timeline-content {
-
         width: 38%;
     }
 
