@@ -100,9 +100,24 @@ class ArtistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit(Request $request){
+        if ($request->ajax()) {
+            // dd($request->_Artist);
+            try {
+                $_Artist = Crypt::decrypt($request->_Artist);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
+            
+            $artist = Artist::where('id',$_Artist)
+            ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','description as Description')
+            ->first();
+
+            return response()->json(["message"=>"Success", "artist"=>$artist], 200);
+
+        } else {
+            abort(404);
+        }
     }
 
     /**
@@ -114,7 +129,13 @@ class ArtistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $artist->name = $request->name;
+        //     $artist->last_name = $request->last_name;
+        //     $artist->email = $request->email;
+        //     $artist->phone_number = $request->phone_number;
+        //     $artist->description = $request->description;
+            
+        //     $artist->update();
     }
 
     /**

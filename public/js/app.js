@@ -3590,6 +3590,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3602,6 +3603,7 @@ __webpack_require__.r(__webpack_exports__);
       loaderSave: false,
       Info: {
         Show: false,
+        _Artist: '',
         Name: '',
         LastName: '',
         Email: '',
@@ -3720,6 +3722,38 @@ __webpack_require__.r(__webpack_exports__);
         console.log('------------ Errors ------------');
       })["finally"](function (fin) {
         _this2.loaderSave = false;
+      });
+    },
+    editInfo: function editInfo(_Artist) {
+      var _this3 = this;
+      this._Artist = _Artist;
+      axios.get('/dashboard/artists/edit', {
+        params: {
+          _Artist: this._Artist
+        }
+      }).then(function (res) {
+        if (res.data.message === 'Success') {
+          _this3.Info.Show = true;
+          _this3.Info.Name = res.data.artist.Name;
+          _this3.Info.LastName = res.data.artist.LastName;
+          _this3.Info.Email = res.data.artist.Email;
+          _this3.Info.Phone = res.data.artist.Phone;
+          _this3.Info.Description = res.data.artist.Description;
+        } else {
+          // Handle the case where the server response indicates an error
+          console.error('Server response indicates an error:', res.data);
+          // You can display an error message to the user if needed
+          // this.errorMessage = 'An error occurred while fetching artist information.';
+        }
+      })["catch"](function (error) {
+        // Handle Axios or network errors
+        console.error('An error occurred:', error);
+        // You can set an error message or perform other error handling actions here
+        // this.errorMessage = 'An error occurred while fetching artist information.';
+      })["finally"](function () {
+        // This block is executed whether the request succeeds or fails
+        // You can use it to clean up, e.g., hiding loaders
+        _this3.loaderSave = false;
       });
     }
   },
@@ -51076,7 +51110,31 @@ var render = function () {
                       ),
                     ]),
                     _vm._v(" "),
-                    _vm._m(6, true),
+                    _c("td", { staticClass: "align-middle" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-secondary font-weight-bold text-xs pe-4",
+                          attrs: {
+                            href: "javascript:;",
+                            "data-bs-toggle": "tooltip",
+                            "data-bs-placement": "top",
+                            title: "Editar",
+                            "data-container": "body",
+                            "data-animation": "true",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.editInfo(artist._Artist)
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "fa-solid fa-pen-to-square" })]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(6, true),
+                    ]),
                   ])
                 }),
                 0
@@ -51251,39 +51309,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "align-middle" }, [
-      _c(
-        "a",
-        {
-          staticClass: "text-secondary font-weight-bold text-xs pe-4",
-          attrs: {
-            href: "javascript:;",
-            "data-bs-toggle": "tooltip",
-            "data-bs-placement": "top",
-            title: "Editar",
-            "data-container": "body",
-            "data-animation": "true",
-          },
+    return _c(
+      "a",
+      {
+        staticClass: "text-secondary font-weight-bold text-xs",
+        attrs: {
+          href: "javascript:;",
+          "data-bs-toggle": "tooltip",
+          "data-bs-placement": "top",
+          title: "Borrar",
+          "data-container": "body",
+          "data-animation": "true",
         },
-        [_c("i", { staticClass: "fa-solid fa-pen-to-square" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "text-secondary font-weight-bold text-xs",
-          attrs: {
-            href: "javascript:;",
-            "data-bs-toggle": "tooltip",
-            "data-bs-placement": "top",
-            title: "Borrar",
-            "data-container": "body",
-            "data-animation": "true",
-          },
-        },
-        [_c("i", { staticClass: "fa-solid fa-trash-can" })]
-      ),
-    ])
+      },
+      [_c("i", { staticClass: "fa-solid fa-trash-can" })]
+    )
   },
 ]
 render._withStripped = true

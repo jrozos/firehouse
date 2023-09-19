@@ -44,6 +44,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/artists', [App\Http\Controllers\ArtistController::class, 'index'])->name('/dashboard/artists');
         Route::group(['prefix' => 'artists'], function() {
             Route::post('/store', [App\Http\Controllers\ArtistController::class, 'store'])->name('/dashboard/artists/store');
+            Route::get('/edit', [App\Http\Controllers\ArtistController::class, 'edit'])->name('/dashboard/artists/edit');
+            Route::post('/update', [App\Http\Controllers\ArtistController::class, 'update'])->name('/dashboard/artists/update');
             Route::get('/list', [App\Http\Controllers\ArtistController::class, 'list'])->name('/dashboard/artists/list');
         });
     });

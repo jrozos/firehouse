@@ -268,6 +268,7 @@
                       title="Editar"
                       data-container="body"
                       data-animation="true"
+                      @click="editInfo(artist._Artist)"
                     >
                       <i class="fa-solid fa-pen-to-square"></i>
                     </a>
@@ -339,6 +340,7 @@ export default {
       loaderSave: false,
       Info: {
         Show: false,
+        _Artist: '',
         Name: '',
         LastName: '',
         Email: '',
@@ -494,6 +496,42 @@ export default {
           console.log('------------ Errors ------------');
         })
         .finally((fin) => {
+          this.loaderSave = false;
+        });
+    },
+    editInfo(_Artist) {
+      this._Artist = _Artist;
+
+      axios
+        .get('/dashboard/artists/edit', {
+          params: {
+            _Artist: this._Artist,
+          },
+        })
+        .then((res) => {
+          if (res.data.message === 'Success') {
+            this.Info.Show = true;
+            this.Info.Name = res.data.artist.Name;
+            this.Info.LastName = res.data.artist.LastName;
+            this.Info.Email = res.data.artist.Email;
+            this.Info.Phone = res.data.artist.Phone;
+            this.Info.Description = res.data.artist.Description;
+          } else {
+            // Handle the case where the server response indicates an error
+            console.error('Server response indicates an error:', res.data);
+            // You can display an error message to the user if needed
+            // this.errorMessage = 'An error occurred while fetching artist information.';
+          }
+        })
+        .catch((error) => {
+          // Handle Axios or network errors
+          console.error('An error occurred:', error);
+          // You can set an error message or perform other error handling actions here
+          // this.errorMessage = 'An error occurred while fetching artist information.';
+        })
+        .finally(() => {
+          // This block is executed whether the request succeeds or fails
+          // You can use it to clean up, e.g., hiding loaders
           this.loaderSave = false;
         });
     },
