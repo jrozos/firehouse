@@ -11,7 +11,7 @@
               <button
                 type="button"
                 class="btn btn-outline-dark"
-                @click="Info.Show = true"
+                @click="createInfo()"
               >
                 Crear
               </button>
@@ -24,9 +24,16 @@
               <div
                 class="card shadow-sm wow animate__animated animate__fadeInUp"
               >
-                <div class="card-header pb-0 text-left">
+                <div
+                  v-if="Button.flag === 'create'"
+                  class="card-header pb-0 text-left"
+                >
                   <h3 class="card-title text-center">Nuevo artista</h3>
                   <p class="mb-0">Ingresa la información del artista</p>
+                </div>
+                <div v-else class="card-header pb-0 text-left">
+                  <h3 class="card-title text-center">Actualizar artista</h3>
+                  <p class="mb-0">Editar la información del artista</p>
                 </div>
                 <div class="card-body">
                   <div class="row">
@@ -167,11 +174,20 @@
                       <div class="row justify-content-end">
                         <div class="col-6 pt-3 text-end">
                           <button
+                            v-if="Button.flag === 'create'"
                             type="button"
                             class="btn bg-gradient-info btn-sm mb-0"
                             @click="validateForm()"
                           >
                             Crear
+                          </button>
+                          <button
+                            v-else
+                            type="button"
+                            class="btn bg-gradient-info btn-sm mb-0"
+                            @click="validateForm(Info._Artist)"
+                          >
+                            Actualizar
                           </button>
                           <button
                             class="btn bg-gradient-danger btn-sm mb-0"
@@ -217,6 +233,11 @@
                   <th
                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                   >
+                    Actualizado
+                  </th>
+                  <th
+                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  >
                     Editado
                   </th>
                   <th class="text-secondary opacity-7"></th>
@@ -252,6 +273,11 @@
                   <td class="align-middle text-center">
                     <span class="text-secondary text-xs font-weight-bold">{{
                       formatFriendlyDate(artist.Created)
+                    }}</span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs font-weight-bold">{{
+                      formatFriendlyDate(artist.Updated)
                     }}</span>
                   </td>
                   <td class="align-middle text-center">
@@ -357,6 +383,10 @@ export default {
         isValid: '',
       },
 
+      Button: {
+        flag: 'create',
+      },
+
       Alert: {
         Show: false,
         Type: false, // false to Error or true to Success
@@ -384,6 +414,11 @@ export default {
       moment.locale('es-mx');
       return moment(date).format('L');
     },
+    createInfo() {
+      this.Info.Show = true;
+      this.Button.flag = 'create';
+      this.clearInfo();
+    },
     clearErrors() {
       this.Info.Show = false;
       this.InfoErrors.Name = '';
@@ -393,7 +428,15 @@ export default {
       this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
-    validateForm() {
+    clearInfo() {
+      this.Info._Artist = '';
+      this.Info.Name = '';
+      this.Info.LastName = '';
+      this.Info.Email = '';
+      this.Info.Phone = '';
+      this.Info.Description = '';
+    },
+    validateForm(_Artist) {
       this.InfoErrors.Name = '';
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
@@ -423,7 +466,11 @@ export default {
       ) {
         // Form is valid, you can submit it or perform further actions.
         console.log('Form is valid!');
-        this.saveInfo();
+        if (_Artist) {
+          this.updateInfo(_Artist);
+        } else {
+          this.saveInfo();
+        }
       }
     },
     validEmail: function (email) {
@@ -455,11 +502,67 @@ export default {
           this.artist = res.data.artist;
           if (res.data.message === 'Success') {
             this.Info.Show = false;
-            this.Info.Name = '';
-            this.Info.LastName = '';
-            this.Info.Email = '';
-            this.Info.Phone = '';
-            this.Info.Description = '';
+            this.clearInfo();
+            this.startComponent();
+          } else {
+            this.InfoErrors.Name = res.data.name;
+            this.InfoErrors.LastName = res.data.last_name;
+            this.InfoErrors.Email = res.data.email;
+            this.InfoErrors.Phone = res.data.phone_number;
+            this.InfoErrors.Description = res.data.description;
+          }
+        })
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.errors
+          ) {
+            this.InfoErrors.Name = error.response.data.errors.name
+              ? error.response.data.errors.name[0]
+              : '';
+            this.InfoErrors.LastName = error.response.data.errors.last_name
+              ? error.response.data.errors.last_name[0]
+              : '';
+            this.InfoErrors.Email = error.response.data.errors.email
+              ? error.response.data.errors.email[0]
+              : '';
+            this.InfoErrors.Phone = error.response.data.errors.phone_number
+              ? error.response.data.errors.phone_number[0]
+              : '';
+            this.InfoErrors.Description = error.response.data.errors.description
+              ? error.response.data.errors.description[0]
+              : '';
+          } else {
+            console.error('Invalid error response structure:', error.response);
+          }
+          console.log('------------ Errors ------------');
+        })
+        .finally((fin) => {
+          this.loaderSave = false;
+        });
+    },
+    updateInfo(_Artist) {
+      this.loaderSave = true;
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
+      this.InfoErrors.isValid = '';
+      axios
+        .post('/dashboard/artists/update', {
+          _Artist: _Artist,
+          name: this.Info.Name,
+          last_name: this.Info.LastName,
+          email: this.Info.Email,
+          phone_number: this.Info.Phone,
+          description: this.Info.Description,
+        })
+        .then((res) => {
+          if (res.data.message === 'Success') {
+            this.Info.Show = false;
+            this.clearInfo();
             this.startComponent();
           } else {
             this.InfoErrors.Name = res.data.name;
@@ -501,6 +604,7 @@ export default {
     },
     editInfo(_Artist) {
       this._Artist = _Artist;
+      this.Button.flag = 'update';
 
       axios
         .get('/dashboard/artists/edit', {
@@ -511,6 +615,7 @@ export default {
         .then((res) => {
           if (res.data.message === 'Success') {
             this.Info.Show = true;
+            this.Info._Artist = res.data.artist._Artist;
             this.Info.Name = res.data.artist.Name;
             this.Info.LastName = res.data.artist.LastName;
             this.Info.Email = res.data.artist.Email;

@@ -3591,6 +3591,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3618,6 +3644,9 @@ __webpack_require__.r(__webpack_exports__);
         Description: '',
         isValid: ''
       },
+      Button: {
+        flag: 'create'
+      },
       Alert: {
         Show: false,
         Type: false,
@@ -3643,6 +3672,11 @@ __webpack_require__.r(__webpack_exports__);
       moment__WEBPACK_IMPORTED_MODULE_0___default().locale('es-mx');
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('L');
     },
+    createInfo: function createInfo() {
+      this.Info.Show = true;
+      this.Button.flag = 'create';
+      this.clearInfo();
+    },
     clearErrors: function clearErrors() {
       this.Info.Show = false;
       this.InfoErrors.Name = '';
@@ -3652,7 +3686,15 @@ __webpack_require__.r(__webpack_exports__);
       this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
-    validateForm: function validateForm() {
+    clearInfo: function clearInfo() {
+      this.Info._Artist = '';
+      this.Info.Name = '';
+      this.Info.LastName = '';
+      this.Info.Email = '';
+      this.Info.Phone = '';
+      this.Info.Description = '';
+    },
+    validateForm: function validateForm(_Artist) {
       this.InfoErrors.Name = '';
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
@@ -3666,7 +3708,11 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.InfoErrors.Name && !this.InfoErrors.LastName && !this.InfoErrors.Email && !this.InfoErrors.Phone) {
         // Form is valid, you can submit it or perform further actions.
         console.log('Form is valid!');
-        this.saveInfo();
+        if (_Artist) {
+          this.updateInfo(_Artist);
+        } else {
+          this.saveInfo();
+        }
       }
     },
     validEmail: function validEmail(email) {
@@ -3696,11 +3742,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.artist = res.data.artist;
         if (res.data.message === 'Success') {
           _this2.Info.Show = false;
-          _this2.Info.Name = '';
-          _this2.Info.LastName = '';
-          _this2.Info.Email = '';
-          _this2.Info.Phone = '';
-          _this2.Info.Description = '';
+          _this2.clearInfo();
           _this2.startComponent();
         } else {
           _this2.InfoErrors.Name = res.data.name;
@@ -3724,21 +3766,66 @@ __webpack_require__.r(__webpack_exports__);
         _this2.loaderSave = false;
       });
     },
-    editInfo: function editInfo(_Artist) {
+    updateInfo: function updateInfo(_Artist) {
       var _this3 = this;
+      this.loaderSave = true;
+      this.InfoErrors.Name = '';
+      this.InfoErrors.LastName = '';
+      this.InfoErrors.Email = '';
+      this.InfoErrors.Phone = '';
+      this.InfoErrors.Description = '';
+      this.InfoErrors.isValid = '';
+      axios.post('/dashboard/artists/update', {
+        _Artist: _Artist,
+        name: this.Info.Name,
+        last_name: this.Info.LastName,
+        email: this.Info.Email,
+        phone_number: this.Info.Phone,
+        description: this.Info.Description
+      }).then(function (res) {
+        if (res.data.message === 'Success') {
+          _this3.Info.Show = false;
+          _this3.clearInfo();
+          _this3.startComponent();
+        } else {
+          _this3.InfoErrors.Name = res.data.name;
+          _this3.InfoErrors.LastName = res.data.last_name;
+          _this3.InfoErrors.Email = res.data.email;
+          _this3.InfoErrors.Phone = res.data.phone_number;
+          _this3.InfoErrors.Description = res.data.description;
+        }
+      })["catch"](function (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          _this3.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
+          _this3.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
+          _this3.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
+          _this3.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this3.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
+        } else {
+          console.error('Invalid error response structure:', error.response);
+        }
+        console.log('------------ Errors ------------');
+      })["finally"](function (fin) {
+        _this3.loaderSave = false;
+      });
+    },
+    editInfo: function editInfo(_Artist) {
+      var _this4 = this;
       this._Artist = _Artist;
+      this.Button.flag = 'update';
       axios.get('/dashboard/artists/edit', {
         params: {
           _Artist: this._Artist
         }
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this3.Info.Show = true;
-          _this3.Info.Name = res.data.artist.Name;
-          _this3.Info.LastName = res.data.artist.LastName;
-          _this3.Info.Email = res.data.artist.Email;
-          _this3.Info.Phone = res.data.artist.Phone;
-          _this3.Info.Description = res.data.artist.Description;
+          _this4.Info.Show = true;
+          _this4.Info._Artist = res.data.artist._Artist;
+          _this4.Info.Name = res.data.artist.Name;
+          _this4.Info.LastName = res.data.artist.LastName;
+          _this4.Info.Email = res.data.artist.Email;
+          _this4.Info.Phone = res.data.artist.Phone;
+          _this4.Info.Description = res.data.artist.Description;
         } else {
           // Handle the case where the server response indicates an error
           console.error('Server response indicates an error:', res.data);
@@ -3753,7 +3840,7 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         // This block is executed whether the request succeeds or fails
         // You can use it to clean up, e.g., hiding loaders
-        _this3.loaderSave = false;
+        _this4.loaderSave = false;
       });
     }
   },
@@ -50604,7 +50691,7 @@ var render = function () {
                   attrs: { type: "button" },
                   on: {
                     click: function ($event) {
-                      _vm.Info.Show = true
+                      return _vm.createInfo()
                     },
                   },
                 },
@@ -50631,7 +50718,37 @@ var render = function () {
                           "card shadow-sm wow animate__animated animate__fadeInUp",
                       },
                       [
-                        _vm._m(1),
+                        _vm.Button.flag === "create"
+                          ? _c(
+                              "div",
+                              { staticClass: "card-header pb-0 text-left" },
+                              [
+                                _c(
+                                  "h3",
+                                  { staticClass: "card-title text-center" },
+                                  [_vm._v("Nuevo artista")]
+                                ),
+                                _vm._v(" "),
+                                _c("p", { staticClass: "mb-0" }, [
+                                  _vm._v("Ingresa la información del artista"),
+                                ]),
+                              ]
+                            )
+                          : _c(
+                              "div",
+                              { staticClass: "card-header pb-0 text-left" },
+                              [
+                                _c(
+                                  "h3",
+                                  { staticClass: "card-title text-center" },
+                                  [_vm._v("Actualizar artista")]
+                                ),
+                                _vm._v(" "),
+                                _c("p", { staticClass: "mb-0" }, [
+                                  _vm._v("Editar la información del artista"),
+                                ]),
+                              ]
+                            ),
                         _vm._v(" "),
                         _c("div", { staticClass: "card-body" }, [
                           _c("div", { staticClass: "row" }, [
@@ -50963,7 +51080,7 @@ var render = function () {
                           _vm._v(" "),
                           _c("div", { staticClass: "text-center" }, [
                             _vm.loaderSave
-                              ? _c("div", [_vm._m(2)])
+                              ? _c("div", [_vm._m(1)])
                               : _c("div", [
                                   _c(
                                     "div",
@@ -50973,24 +51090,45 @@ var render = function () {
                                         "div",
                                         { staticClass: "col-6 pt-3 text-end" },
                                         [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn bg-gradient-info btn-sm mb-0",
-                                              attrs: { type: "button" },
-                                              on: {
-                                                click: function ($event) {
-                                                  return _vm.validateForm()
+                                          _vm.Button.flag === "create"
+                                            ? _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "btn bg-gradient-info btn-sm mb-0",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function ($event) {
+                                                      return _vm.validateForm()
+                                                    },
+                                                  },
                                                 },
-                                              },
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                          Crear\n                        "
+                                                [
+                                                  _vm._v(
+                                                    "\n                          Crear\n                        "
+                                                  ),
+                                                ]
+                                              )
+                                            : _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "btn bg-gradient-info btn-sm mb-0",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function ($event) {
+                                                      return _vm.validateForm(
+                                                        _vm.Info._Artist
+                                                      )
+                                                    },
+                                                  },
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                          Actualizar\n                        "
+                                                  ),
+                                                ]
                                               ),
-                                            ]
-                                          ),
                                           _vm._v(" "),
                                           _c(
                                             "button",
@@ -51026,12 +51164,12 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "card-body px-0 pt-0 pb-2" }, [
           _vm.loaderSave
-            ? _c("div", { staticClass: "text-center" }, [_vm._m(3)])
+            ? _c("div", { staticClass: "text-center" }, [_vm._m(2)])
             : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "table-responsive p-0" }, [
             _c("table", { staticClass: "table align-items-center mb-0" }, [
-              _vm._m(4),
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -51039,7 +51177,7 @@ var render = function () {
                   return _c("tr", { key: artist.id }, [
                     _c("td", [
                       _c("div", { staticClass: "d-flex py-1" }, [
-                        _vm._m(5, true),
+                        _vm._m(4, true),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -51106,6 +51244,17 @@ var render = function () {
                           staticClass:
                             "text-secondary text-xs font-weight-bold",
                         },
+                        [_vm._v(_vm._s(_vm.formatFriendlyDate(artist.Updated)))]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "align-middle text-center" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "text-secondary text-xs font-weight-bold",
+                        },
                         [_vm._v(_vm._s(artist.CreatedBy))]
                       ),
                     ]),
@@ -51133,7 +51282,7 @@ var render = function () {
                         [_c("i", { staticClass: "fa-solid fa-pen-to-square" })]
                       ),
                       _vm._v(" "),
-                      _vm._m(6, true),
+                      _vm._m(5, true),
                     ]),
                   ])
                 }),
@@ -51222,20 +51371,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header pb-0 text-left" }, [
-      _c("h3", { staticClass: "card-title text-center" }, [
-        _vm._v("Nuevo artista"),
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-0" }, [
-        _vm._v("Ingresa la información del artista"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("span", { staticClass: "display-6" }, [
       _c("i", { staticClass: "fa-solid fa-spinner fa-spin" }),
     ])
@@ -51279,6 +51414,15 @@ var staticRenderFns = [
               "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
           },
           [_vm._v("\n                  Creado\n                ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass:
+              "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7",
+          },
+          [_vm._v("\n                  Actualizado\n                ")]
         ),
         _vm._v(" "),
         _c(

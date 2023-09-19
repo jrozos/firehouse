@@ -47,7 +47,7 @@ class ArtistController extends Controller
             $artists = DB::table('artists as ART')
             ->leftJoin('users as createdByUser', 'createdByUser.id', '=', 'ART.created_by')
             ->leftJoin('users as updatedByUser', 'updatedByUser.id', '=', 'ART.updated_by')
-            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.created_at as Created','createdByUser.name as CreatedBy', 
+            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.created_at as Created','ART.updated_at as Updated','createdByUser.name as CreatedBy', 
             'updatedByUser.name as UpdatedBy')
             ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
             ->orderBy('Created', 'desc')
@@ -113,6 +113,10 @@ class ArtistController extends Controller
             ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','description as Description')
             ->first();
 
+            
+            $artist->_Artist = Crypt::encrypt($artist->_Artist);
+            
+
             return response()->json(["message"=>"Success", "artist"=>$artist], 200);
 
         } else {
@@ -127,15 +131,32 @@ class ArtistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        // $artist->name = $request->name;
-        //     $artist->last_name = $request->last_name;
-        //     $artist->email = $request->email;
-        //     $artist->phone_number = $request->phone_number;
-        //     $artist->description = $request->description;
+    public function update(Request $request) {
+        if ($request->ajax()) {
+            // dd($request->_Artist);
+            try {
+                $_Artist = Crypt::decrypt($request->_Artist);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
             
-        //     $artist->update();
+            $artist = Artist::where('id',$_Artist)->first();
+
+            
+            $artist->name = $request->name;
+            $artist->last_name = $request->last_name;
+            $artist->email = $request->email;
+            $artist->phone_number = $request->phone_number;
+            $artist->description = $request->description;
+            
+            $artist->update();
+            
+
+            return response()->json(["message"=>"Success", "artist"=>$artist], 200);
+
+        } else {
+            abort(404);
+        }
     }
 
     /**
