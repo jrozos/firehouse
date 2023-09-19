@@ -3617,6 +3617,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3706,8 +3707,6 @@ __webpack_require__.r(__webpack_exports__);
       this.InfoErrors.Email = !this.Info.Email.trim() === '' ? 'El e-mail es requerido.' : !this.validEmail(this.Info.Email) ? 'E-mail invalido ej: aaa@aaa.aaa' : '';
       this.InfoErrors.Phone = !this.validatePhoneNumber(this.Info.Phone) ? 'Teléfono invalido ej: 999-99-99-99-9' : '';
       if (!this.InfoErrors.Name && !this.InfoErrors.LastName && !this.InfoErrors.Email && !this.InfoErrors.Phone) {
-        // Form is valid, you can submit it or perform further actions.
-        console.log('Form is valid!');
         if (_Artist) {
           this.updateInfo(_Artist);
         } else {
@@ -3766,8 +3765,42 @@ __webpack_require__.r(__webpack_exports__);
         _this2.loaderSave = false;
       });
     },
-    updateInfo: function updateInfo(_Artist) {
+    editInfo: function editInfo(_Artist) {
       var _this3 = this;
+      this._Artist = _Artist;
+      this.Button.flag = 'update';
+      axios.get('/dashboard/artists/edit', {
+        params: {
+          _Artist: this._Artist
+        }
+      }).then(function (res) {
+        if (res.data.message === 'Success') {
+          _this3.Info.Show = true;
+          _this3.Info._Artist = res.data.artist._Artist;
+          _this3.Info.Name = res.data.artist.Name;
+          _this3.Info.LastName = res.data.artist.LastName;
+          _this3.Info.Email = res.data.artist.Email;
+          _this3.Info.Phone = res.data.artist.Phone;
+          _this3.Info.Description = res.data.artist.Description;
+        } else {
+          // Handle the case where the server response indicates an error
+          console.error('Server response indicates an error:', res.data);
+          // You can display an error message to the user if needed
+          // this.errorMessage = 'An error occurred while fetching artist information.';
+        }
+      })["catch"](function (error) {
+        // Handle Axios or network errors
+        console.error('An error occurred:', error);
+        // You can set an error message or perform other error handling actions here
+        // this.errorMessage = 'An error occurred while fetching artist information.';
+      })["finally"](function () {
+        // This block is executed whether the request succeeds or fails
+        // You can use it to clean up, e.g., hiding loaders
+        _this3.loaderSave = false;
+      });
+    },
+    updateInfo: function updateInfo(_Artist) {
+      var _this4 = this;
       this.loaderSave = true;
       this.InfoErrors.Name = '';
       this.InfoErrors.LastName = '';
@@ -3784,48 +3817,41 @@ __webpack_require__.r(__webpack_exports__);
         description: this.Info.Description
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this3.Info.Show = false;
-          _this3.clearInfo();
-          _this3.startComponent();
+          _this4.Info.Show = false;
+          _this4.clearInfo();
+          _this4.startComponent();
         } else {
-          _this3.InfoErrors.Name = res.data.name;
-          _this3.InfoErrors.LastName = res.data.last_name;
-          _this3.InfoErrors.Email = res.data.email;
-          _this3.InfoErrors.Phone = res.data.phone_number;
-          _this3.InfoErrors.Description = res.data.description;
+          _this4.InfoErrors.Name = res.data.name;
+          _this4.InfoErrors.LastName = res.data.last_name;
+          _this4.InfoErrors.Email = res.data.email;
+          _this4.InfoErrors.Phone = res.data.phone_number;
+          _this4.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
         if (error.response && error.response.data && error.response.data.errors) {
-          _this3.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
-          _this3.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
-          _this3.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
-          _this3.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
-          _this3.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
+          _this4.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
+          _this4.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
+          _this4.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
+          _this4.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this4.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
         }
         console.log('------------ Errors ------------');
       })["finally"](function (fin) {
-        _this3.loaderSave = false;
+        _this4.loaderSave = false;
       });
     },
-    editInfo: function editInfo(_Artist) {
-      var _this4 = this;
-      this._Artist = _Artist;
-      this.Button.flag = 'update';
-      axios.get('/dashboard/artists/edit', {
+    deleteInfo: function deleteInfo(_Artist) {
+      var _this5 = this;
+      this.loaderSave = true;
+      axios.get('/dashboard/artists/delete', {
         params: {
-          _Artist: this._Artist
+          _Artist: _Artist
         }
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this4.Info.Show = true;
-          _this4.Info._Artist = res.data.artist._Artist;
-          _this4.Info.Name = res.data.artist.Name;
-          _this4.Info.LastName = res.data.artist.LastName;
-          _this4.Info.Email = res.data.artist.Email;
-          _this4.Info.Phone = res.data.artist.Phone;
-          _this4.Info.Description = res.data.artist.Description;
+          _this5.startComponent();
         } else {
           // Handle the case where the server response indicates an error
           console.error('Server response indicates an error:', res.data);
@@ -3840,7 +3866,7 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         // This block is executed whether the request succeeds or fails
         // You can use it to clean up, e.g., hiding loaders
-        _this4.loaderSave = false;
+        _this5.loaderSave = false;
       });
     }
   },
@@ -51282,7 +51308,27 @@ var render = function () {
                         [_c("i", { staticClass: "fa-solid fa-pen-to-square" })]
                       ),
                       _vm._v(" "),
-                      _vm._m(5, true),
+                      _c(
+                        "a",
+                        {
+                          staticClass:
+                            "text-secondary font-weight-bold text-xs",
+                          attrs: {
+                            href: "javascript:;",
+                            "data-bs-toggle": "tooltip",
+                            "data-bs-placement": "top",
+                            title: "Borrar",
+                            "data-container": "body",
+                            "data-animation": "true",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.deleteInfo(artist._Artist)
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "fa-solid fa-trash-can" })]
+                      ),
                     ]),
                   ])
                 }),
@@ -51448,26 +51494,6 @@ var staticRenderFns = [
         attrs: { src: "/assets/img/team-2.jpg", alt: "user1" },
       }),
     ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "text-secondary font-weight-bold text-xs",
-        attrs: {
-          href: "javascript:;",
-          "data-bs-toggle": "tooltip",
-          "data-bs-placement": "top",
-          title: "Borrar",
-          "data-container": "body",
-          "data-animation": "true",
-        },
-      },
-      [_c("i", { staticClass: "fa-solid fa-trash-can" })]
-    )
   },
 ]
 render._withStripped = true

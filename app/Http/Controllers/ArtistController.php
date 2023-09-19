@@ -82,24 +82,6 @@ class ArtistController extends Controller
             abort(404);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request){
         if ($request->ajax()) {
             // dd($request->_Artist);
@@ -128,7 +110,6 @@ class ArtistController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request) {
@@ -162,11 +143,27 @@ class ArtistController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function delete(Request $request){
+        if ($request->ajax()) {
+            // dd($request->_Artist);
+            try {
+                $_Artist = Crypt::decrypt($request->_Artist);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
+            
+            $artist = Artist::where('id',$_Artist)->first();
+
+            
+            $artist->delete();
+            
+
+            return response()->json(["message"=>"Success"], 200);
+
+        } else {
+            abort(404);
+        }
     }
 }
