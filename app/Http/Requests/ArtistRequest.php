@@ -24,10 +24,10 @@ class ArtistRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|min:4|max:255',
-            'last_name'=> 'required|min:4|max:255',
-            'email'=> 'unique:artists,email|required|min:4|max:255',
-            'phone_number'=> 'min:4|max:255',
+            'name'=> 'required|min:2|max:20',
+            'last_name'=> 'required|min:2|max:20',
+            'email'=> 'unique:artists,email|required',
+            'phone_number'=> 'min:10|max:12',
             'description'=> 'max:255',
         ];
     }

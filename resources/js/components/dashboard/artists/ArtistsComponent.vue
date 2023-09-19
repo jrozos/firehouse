@@ -453,6 +453,11 @@ export default {
           this.artist = res.data.artist;
           if (res.data.message === 'Success') {
             this.Info.Show = false;
+            this.Info.Name = '';
+            this.Info.LastName = '';
+            this.Info.Email = '';
+            this.Info.Phone = '';
+            this.Info.Description = '';
             this.startComponent();
           } else {
             this.InfoErrors.Name = res.data.name;
@@ -490,11 +495,6 @@ export default {
         })
         .finally((fin) => {
           this.loaderSave = false;
-          this.Info.Name = '';
-          this.Info.LastName = '';
-          this.Info.Email = '';
-          this.Info.Phone = '';
-          this.Info.Description = '';
         });
     },
   },

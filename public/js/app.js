@@ -3694,6 +3694,11 @@ __webpack_require__.r(__webpack_exports__);
         _this2.artist = res.data.artist;
         if (res.data.message === 'Success') {
           _this2.Info.Show = false;
+          _this2.Info.Name = '';
+          _this2.Info.LastName = '';
+          _this2.Info.Email = '';
+          _this2.Info.Phone = '';
+          _this2.Info.Description = '';
           _this2.startComponent();
         } else {
           _this2.InfoErrors.Name = res.data.name;
@@ -3715,11 +3720,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log('------------ Errors ------------');
       })["finally"](function (fin) {
         _this2.loaderSave = false;
-        _this2.Info.Name = '';
-        _this2.Info.LastName = '';
-        _this2.Info.Email = '';
-        _this2.Info.Phone = '';
-        _this2.Info.Description = '';
       });
     }
   },
