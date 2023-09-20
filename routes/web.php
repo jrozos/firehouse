@@ -35,7 +35,7 @@ Route::get('/lukas', [App\Http\Controllers\ArtistController::class, 'artistLukas
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard.index');
-    });
+    })->name('/dashboard');
     Route::get('/clients', function () {
         return view('dashboard.clients.index');
     });
