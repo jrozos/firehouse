@@ -42,18 +42,17 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
 <body>
-    <div id="app">
-        @include('nav.nav')
+    @include('nav.nav')
     
-        <main class="vh-100- container-">
-            {{-- @routes --}}
+    <main class="vh-100- container-">
+        <div id="app">
             @yield('content')
-        </main>
+        </div>
+    </main>
 
-        @include('footer.footer')
+    @include('footer.footer')
             
           
-    </div>
     <!-- MDB -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
     <script src="{{ asset('js/wow.min.js')}}"></script>
