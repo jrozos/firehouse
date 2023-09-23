@@ -377,3 +377,16 @@ video {
     color: rgba(203, 213, 224, var(--text-opacity));
   }
 }
+.text-preline {
+  white-space: pre-line;
+}
+
+.clip-1 {
+  -webkit-clip-path: circle(60% at 40% 30%);
+          clip-path: circle(60% at 40% 30%);
+}
+
+.clip-2 {
+  -webkit-clip-path: circle(60% at 60% 30%);
+          clip-path: circle(60% at 60% 30%);
+}

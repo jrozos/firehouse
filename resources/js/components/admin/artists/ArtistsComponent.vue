@@ -2,47 +2,36 @@
   <div class="container my-5 py-5">
     <div class="row">
       <!-- {{-- Carlos --}} -->
-      <div v-for="artist in artists" class="col-lg-4" :key="artist.id">
-        <div class="card">
+      <div
+        v-for="artist in artists"
+        class="mt-5 col-12 col-md-6 col-lg-4"
+        :key="artist.id"
+      >
+        <div class="card rounded-3 wow animate__animated animate__fadeIn">
           <img
             src="img/team/mario.jpg"
-            class="card-img-top"
+            class="card-img-top clip-1"
             :alt="
               'Portrait of ' +
               artist.Name +
+              ' ' +
+              artist.LastName +
               ', a tattoo artist at Firehouse Tattoo'
             "
           />
           <div class="card-body">
             <h5 class="card-title">{{ artist.Name }} {{ artist.LastName }}</h5>
-            <p class="card-text">
-              {{ artist.Description }}
+            <p class="card-text text-preline">
+              {{ truncatedDescription(artist.Description) }}
             </p>
-            <a
-              class="btn btn-outline-dark btn-floating m-1"
-              href="#!"
-              role="button"
-              ><i class="fab fa-instagram fs-5"></i
-            ></a>
+            <a href="" class="btn btn-outline-dark btn-rounded">Ver más</a>
+          </div>
+          <div class="card-footer">
+            <a class="float-end" href="#!" role="button">
+              <i class="fab fa-instagram fs-4"></i>
+            </a>
           </div>
         </div>
-        <!-- <div class="card rounded-3 mb-3 wow animate__animated animate__fadeIn">
-          <div class="row g-0">
-            <div class="col-md-4 py-3 ps-3">
-              <img alt="example" class="img-fluid" src="img/team/carlos.jpg" />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h3 class="card-title">
-                  {{ artist.Name }} {{ artist.LastName }}
-                </h3>
-                <p class="card-text">
-                  {{ artist.Description }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -53,9 +42,19 @@ export default {
   data() {
     return {
       artists: [],
+      maxWords: 20, // Set your desired maximum description length
     };
   },
   methods: {
+    truncatedDescription(description) {
+      if (!description) return ''; // Handle empty description
+      const words = description.split(' ');
+      if (words.length <= this.maxWords) {
+        return description;
+      } else {
+        return words.slice(0, this.maxWords).join(' ') + '...';
+      }
+    },
     startComponent() {
       this.loaderSave = true;
       axios
@@ -64,9 +63,9 @@ export default {
           this.artists = res.data.artists;
         })
         .catch((error) => {
-          // this.errorNewVilla = error.response.data.errors.name[0];
+          // Handle errors
         })
-        .finally((fin) => {
+        .finally(() => {
           this.loaderSave = false;
         });
     },

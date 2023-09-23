@@ -3299,33 +3299,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      artists: []
+      artists: [],
+      maxWords: 20 // Set your desired maximum description length
     };
   },
+
   methods: {
+    truncatedDescription: function truncatedDescription(description) {
+      if (!description) return ''; // Handle empty description
+      var words = description.split(' ');
+      if (words.length <= this.maxWords) {
+        return description;
+      } else {
+        return words.slice(0, this.maxWords).join(' ') + '...';
+      }
+    },
     startComponent: function startComponent() {
       var _this = this;
       this.loaderSave = true;
       axios.get('/admin/artists/list').then(function (res) {
         _this.artists = res.data.artists;
       })["catch"](function (error) {
-        // this.errorNewVilla = error.response.data.errors.name[0];
-      })["finally"](function (fin) {
+        // Handle errors
+      })["finally"](function () {
         _this.loaderSave = false;
       });
     }
@@ -50868,34 +50868,58 @@ var render = function () {
       "div",
       { staticClass: "row" },
       _vm._l(_vm.artists, function (artist) {
-        return _c("div", { key: artist.id, staticClass: "col-lg-4" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("img", {
-              staticClass: "card-img-top",
-              attrs: {
-                src: "img/team/mario.jpg",
-                alt:
-                  "Portrait of " +
-                  artist.Name +
-                  ", a tattoo artist at Firehouse Tattoo",
+        return _c(
+          "div",
+          { key: artist.id, staticClass: "mt-5 col-12 col-md-6 col-lg-4" },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "card rounded-3 wow animate__animated animate__fadeIn",
               },
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("h5", { staticClass: "card-title" }, [
-                _vm._v(_vm._s(artist.Name) + " " + _vm._s(artist.LastName)),
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "card-text" }, [
-                _vm._v(
-                  "\n            " + _vm._s(artist.Description) + "\n          "
-                ),
-              ]),
-              _vm._v(" "),
-              _vm._m(0, true),
-            ]),
-          ]),
-        ])
+              [
+                _c("img", {
+                  staticClass: "card-img-top clip-1",
+                  attrs: {
+                    src: "img/team/mario.jpg",
+                    alt:
+                      "Portrait of " +
+                      artist.Name +
+                      " " +
+                      artist.LastName +
+                      ", a tattoo artist at Firehouse Tattoo",
+                  },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(artist.Name) + " " + _vm._s(artist.LastName)),
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text text-preline" }, [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.truncatedDescription(artist.Description)) +
+                        "\n          "
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-outline-dark btn-rounded",
+                      attrs: { href: "" },
+                    },
+                    [_vm._v("Ver más")]
+                  ),
+                ]),
+                _vm._v(" "),
+                _vm._m(0, true),
+              ]
+            ),
+          ]
+        )
       }),
       0
     ),
@@ -50906,14 +50930,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "btn btn-outline-dark btn-floating m-1",
-        attrs: { href: "#!", role: "button" },
-      },
-      [_c("i", { staticClass: "fab fa-instagram fs-5" })]
-    )
+    return _c("div", { staticClass: "card-footer" }, [
+      _c(
+        "a",
+        { staticClass: "float-end", attrs: { href: "#!", role: "button" } },
+        [_c("i", { staticClass: "fab fa-instagram fs-4" })]
+      ),
+    ])
   },
 ]
 render._withStripped = true
