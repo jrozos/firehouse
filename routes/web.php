@@ -32,6 +32,12 @@ Route::get('/mario', [App\Http\Controllers\ArtistController::class, 'artistMario
 Route::get('/rekzone', [App\Http\Controllers\ArtistController::class, 'artistRekzone'])->name('rekzone');
 Route::get('/lukas', [App\Http\Controllers\ArtistController::class, 'artistLukas'])->name('lukas');
 
+Route::prefix('admin')->group(function () {
+    Route::group(['prefix' => 'artists'], function() {
+        Route::get('/list', [App\Http\Controllers\ArtistController::class, 'list'])->name('/admin/artists/list');
+    });
+});
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard.index');

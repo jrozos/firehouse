@@ -32,6 +32,10 @@ Vue.component(
   'artists-index',
   require('./components/dashboard/artists/ArtistsComponent.vue').default,
 );
+Vue.component(
+  'artists-admin-index',
+  require('./components/admin/artists/ArtistsComponent.vue').default,
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

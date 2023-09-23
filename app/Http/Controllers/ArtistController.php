@@ -47,7 +47,7 @@ class ArtistController extends Controller
             $artists = DB::table('artists as ART')
             ->leftJoin('users as createdByUser', 'createdByUser.id', '=', 'ART.created_by')
             ->leftJoin('users as updatedByUser', 'updatedByUser.id', '=', 'ART.updated_by')
-            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.created_at as Created','ART.updated_at as Updated','createdByUser.name as CreatedBy', 
+            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.description as Description','ART.created_at as Created','ART.updated_at as Updated','createdByUser.name as CreatedBy', 
             'updatedByUser.name as UpdatedBy')
             ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
             ->orderBy('Created', 'desc')

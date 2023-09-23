@@ -78,10 +78,7 @@
   
     <!-- Background image -->
     <div class="p-5 text-center bg-image"
-      style="
-        background-image: url('/img/header.jpg');
-        height: 600px;
-      "
+      style="background-image: url('/img/header.jpg');height: 600px; background-attachment: fixed;"
     >
       <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
         <div class="d-flex justify-content-center align-items-center h-100">
