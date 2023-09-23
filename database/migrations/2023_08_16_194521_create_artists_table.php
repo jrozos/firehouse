@@ -14,7 +14,9 @@ class CreateArtistsTable extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->string('phone_number')->nullable();
+            $table->string('instagram')->nullable();
             $table->text('description')->nullable();
+            $table->integer('sort')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
