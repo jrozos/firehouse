@@ -15,7 +15,9 @@ class Artist extends Model{
         'last_name',
         'email',
         'phone_number',
+        'instagram',
         'description',
+        'sort',
         'created_by',
         'modified_by'
     ];
