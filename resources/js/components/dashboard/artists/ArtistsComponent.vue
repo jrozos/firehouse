@@ -212,6 +212,14 @@
                       </div>
                     </div>
                   </div>
+                  <!-- Dropzone -->
+                  <div class="row">
+                    <vue-dropzone
+                      ref="myVueDropzone"
+                      id="dropzone"
+                      :options="dropzoneOptions"
+                    ></vue-dropzone>
+                  </div>
                   <div class="text-center">
                     <div v-if="loaderSave">
                       <span class="display-6"
@@ -371,12 +379,20 @@
 
 <script>
 import moment from 'moment';
+import vue2Dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 export default {
+  components: {
+    vueDropzone: vue2Dropzone,
+  },
   data() {
     return {
-      // activeSave:false,
-      // activeReset:false,
-      // aproved:false,
+      dropzoneOptions: {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 150,
+        maxFilesize: 0.5,
+        headers: { 'My-Awesome-Header': 'header value' },
+      },
       artists: [],
 
       loaderSave: false,
