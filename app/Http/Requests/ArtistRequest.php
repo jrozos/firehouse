@@ -26,6 +26,10 @@ class ArtistRequest extends FormRequest
         return [
             'name'=> 'required|min:2|max:20',
             'last_name'=> 'required|min:2|max:20',
+            'email'=> '',
+            'sort'=> '',
+            'instagram'=> '',
+            'phone_number'=> '',
             'description'=> 'max:1200',
         ];
     }

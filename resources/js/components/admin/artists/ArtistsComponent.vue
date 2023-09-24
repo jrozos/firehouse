@@ -27,7 +27,13 @@
             <a href="" class="btn btn-outline-dark btn-rounded">Ver más</a>
           </div>
           <div class="card-footer">
-            <a class="float-end" href="#!" role="button">
+            <a
+              v-if="artist.Instagram != null"
+              class="float-end"
+              :href="artist.Instagram"
+              role="button"
+              target="_blank"
+            >
               <i class="fab fa-instagram fs-4"></i>
             </a>
           </div>

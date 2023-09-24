@@ -3299,6 +3299,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3924,6 +3930,8 @@ __webpack_require__.r(__webpack_exports__);
         last_name: this.Info.LastName,
         email: this.Info.Email,
         phone_number: this.Info.Phone,
+        instagram: this.Info.Instagram,
+        sort: this.Info.Sort,
         description: this.Info.Description
       }).then(function (res) {
         if (res.data.message === 'Success') {
@@ -50941,7 +50949,22 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _vm._m(0, true),
+                _c("div", { staticClass: "card-footer" }, [
+                  artist.Instagram != null
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "float-end",
+                          attrs: {
+                            href: artist.Instagram,
+                            role: "button",
+                            target: "_blank",
+                          },
+                        },
+                        [_c("i", { staticClass: "fab fa-instagram fs-4" })]
+                      )
+                    : _vm._e(),
+                ]),
               ]
             ),
           ]
@@ -50951,20 +50974,7 @@ var render = function () {
     ),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c(
-        "a",
-        { staticClass: "float-end", attrs: { href: "#!", role: "button" } },
-        [_c("i", { staticClass: "fab fa-instagram fs-4" })]
-      ),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
