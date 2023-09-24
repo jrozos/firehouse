@@ -145,12 +145,60 @@
                         />
                       </div>
                     </div>
-                    <div class="col-12">
-                      <label>Descripcion</label>
+                    <div class="col-6">
+                      <label>Instagram</label>
                       <p
-                        v-if="InfoErrors.Description"
+                        v-if="InfoErrors.Instagram"
                         class="wow animate__animated animate__headShake"
                       >
+                        <small class="text-danger">
+                          {{ InfoErrors.Instagram }}
+                        </small>
+                      </p>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.Instagram"
+                          type="text"
+                          :class="[
+                            (Info.Instagram != '') &
+                            (InfoErrors.Instagram === '')
+                              ? 'is-valid'
+                              : InfoErrors.Instagram != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label>Orden</label>
+                      <p
+                        v-if="InfoErrors.Sort"
+                        class="wow animate__animated animate__headShake"
+                      >
+                        <small class="text-danger">
+                          {{ InfoErrors.Sort }}
+                        </small>
+                      </p>
+                      <div class="input-group mb-3">
+                        <input
+                          v-model="Info.Sort"
+                          type="text"
+                          :class="[
+                            (Info.Sort != '') & (InfoErrors.Sort === '')
+                              ? 'is-valid'
+                              : InfoErrors.Sort != ''
+                              ? 'is-invalid'
+                              : '',
+                            'form-control',
+                          ]"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label>Descripcion</label>
+                      <p v-if="InfoErrors.Description" class="">
                         <small class="text-danger">
                           {{ InfoErrors.Description }}
                         </small>
@@ -191,7 +239,7 @@
                           </button>
                           <button
                             class="btn bg-gradient-danger btn-sm mb-0"
-                            @click="clearErrors()"
+                            @click="cancelForm()"
                           >
                             Cancelar
                           </button>
@@ -318,39 +366,6 @@
         </div>
       </div>
     </div>
-    <!-- dialogs of Success or Error -->
-    <div v-if="Alert.Show" class="confirm-bg">
-      <div class="row">
-        <!-- Alerta de éxito -->
-        <div class="col-12 col-sm-10 col-md-6 col-lg-4 center-center">
-          <div class="card shadow-sm wow fadeInUp">
-            <div
-              v-if="Alert.Title !== ''"
-              :class="{
-                'card-header py-2': true,
-                'card-header-info': Alert.Type,
-                'card-header-danger': !Alert.Type,
-              }"
-            >
-              <h3 class="card-title text-center">{{ Alert.Title }}</h3>
-            </div>
-            <div class="card-body">
-              <div class="row" v-html="Alert.Message"></div>
-              <div class="row">
-                <div class="col-12 pt-3 text-center">
-                  <button
-                    class="btn btn-round bg-gradient-danger btn-lg w-100 mt-4 mb-0"
-                    @click="Alert.Show = false"
-                  >
-                    Cerrar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -372,6 +387,8 @@ export default {
         LastName: '',
         Email: '',
         Phone: '',
+        Instagram: '',
+        Sort: '',
         Description: '',
       },
 
@@ -380,19 +397,14 @@ export default {
         LastName: '',
         Email: '',
         Phone: '',
+        Instagram: '',
+        Sort: '',
         Description: '',
         isValid: '',
       },
 
       Button: {
         flag: 'create',
-      },
-
-      Alert: {
-        Show: false,
-        Type: false, // false to Error or true to Success
-        Title: '',
-        Message: '',
       },
     };
   },
@@ -420,12 +432,17 @@ export default {
       this.Button.flag = 'create';
       this.clearInfo();
     },
-    clearErrors() {
+    cancelForm() {
       this.Info.Show = false;
+      this.clearErrors();
+    },
+    clearErrors() {
       this.InfoErrors.Name = '';
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Instagram = '';
+      this.InfoErrors.Sort = '';
       this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
@@ -435,29 +452,37 @@ export default {
       this.Info.LastName = '';
       this.Info.Email = '';
       this.Info.Phone = '';
+      this.Info.Instagram = '';
+      this.Info.Sort = '';
       this.Info.Description = '';
     },
     validateForm(_Artist) {
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
 
       this.InfoErrors.Name =
         this.Info.Name.trim() === '' ? 'El nombre es requerido.' : '';
       this.InfoErrors.LastName =
         this.Info.LastName.trim() === '' ? 'El apellido es requerido.' : '';
       this.InfoErrors.Email =
-        !this.Info.Email.trim() === ''
-          ? 'El e-mail es requerido.'
-          : !this.validEmail(this.Info.Email)
-          ? 'E-mail invalido ej: aaa@aaa.aaa'
+        this.Info.Email && !this.validEmail(this.Info.Email)
+          ? 'E-mail inválido ej: aaa@aaa.aaa'
           : '';
-      this.InfoErrors.Phone = !this.validatePhoneNumber(this.Info.Phone)
-        ? 'Teléfono invalido ej: 999-99-99-99-9'
+      this.InfoErrors.Phone = !this.Info.Phone
+        ? '' // Allow empty field
+        : !this.validatePhoneNumber(this.Info.Phone)
+        ? 'Teléfono inválido ej: 999-99-99-99-9'
         : '';
+      if (this.Instagram !== undefined) {
+        this.Instagram = this.Instagram.trim();
+      }
+
+      if (this.Sort !== undefined) {
+        this.Sort = this.Sort.trim();
+      }
+
+      if (this.Description !== undefined) {
+        this.Description = this.Description.trim();
+      }
 
       if (
         !this.InfoErrors.Name &&
@@ -483,18 +508,15 @@ export default {
     },
     saveInfo() {
       this.loaderSave = true;
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
       axios
         .post('/dashboard/artists/store', {
           name: this.Info.Name,
           last_name: this.Info.LastName,
           email: this.Info.Email,
           phone_number: this.Info.Phone,
+          instagram: this.Info.Instagram,
+          sort: this.Info.Sort,
           description: this.Info.Description,
         })
         .then((res) => {
@@ -508,6 +530,8 @@ export default {
             this.InfoErrors.LastName = res.data.last_name;
             this.InfoErrors.Email = res.data.email;
             this.InfoErrors.Phone = res.data.phone_number;
+            this.InfoErrors.Instagram = res.data.instagram;
+            this.InfoErrors.Sort = res.data.sort;
             this.InfoErrors.Description = res.data.description;
           }
         })
@@ -528,6 +552,12 @@ export default {
               : '';
             this.InfoErrors.Phone = error.response.data.errors.phone_number
               ? error.response.data.errors.phone_number[0]
+              : '';
+            this.InfoErrors.Instagram = error.response.data.errors.instagram
+              ? error.response.data.errors.instagram[0]
+              : '';
+            this.InfoErrors.Sort = error.response.data.errors.sort
+              ? error.response.data.errors.sort[0]
               : '';
             this.InfoErrors.Description = error.response.data.errors.description
               ? error.response.data.errors.description[0]
@@ -559,6 +589,8 @@ export default {
             this.Info.LastName = res.data.artist.LastName;
             this.Info.Email = res.data.artist.Email;
             this.Info.Phone = res.data.artist.Phone;
+            this.Info.Instagram = res.data.artist.Instagram;
+            this.Info.Sort = res.data.artist.Sort;
             this.Info.Description = res.data.artist.Description;
           } else {
             // Handle the case where the server response indicates an error
@@ -581,12 +613,7 @@ export default {
     },
     updateInfo(_Artist) {
       this.loaderSave = true;
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
       axios
         .post('/dashboard/artists/update', {
           _Artist: _Artist,
@@ -606,6 +633,8 @@ export default {
             this.InfoErrors.LastName = res.data.last_name;
             this.InfoErrors.Email = res.data.email;
             this.InfoErrors.Phone = res.data.phone_number;
+            this.InfoErrors.Instagram = res.data.instagram;
+            this.InfoErrors.Sort = res.data.sort;
             this.InfoErrors.Description = res.data.description;
           }
         })
@@ -626,6 +655,12 @@ export default {
               : '';
             this.InfoErrors.Phone = error.response.data.errors.phone_number
               ? error.response.data.errors.phone_number[0]
+              : '';
+            this.InfoErrors.Instagram = error.response.data.errors.instagram
+              ? error.response.data.errors.instagram[0]
+              : '';
+            this.InfoErrors.Sort = error.response.data.errors.sort
+              ? error.response.data.errors.sort[0]
               : '';
             this.InfoErrors.Description = error.response.data.errors.description
               ? error.response.data.errors.description[0]
