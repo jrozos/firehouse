@@ -3750,10 +3750,17 @@ __webpack_require__.r(__webpack_exports__);
     return {
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
-        thumbnailWidth: 150,
-        maxFilesize: 0.5,
+        thumbnailWidth: 200,
+        maxFilesize: 1,
+        maxFiles: 1,
+        acceptedFiles: 'image/*',
+        addRemoveLinks: true,
+        dictDefaultMessage: "<i class='fa fa-cloud-upload'></i>UPLOAD ME",
         headers: {
-          'My-Awesome-Header': 'header value'
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        params: {
+          _Artist: this._Artist
         }
       },
       artists: [],
@@ -51946,20 +51953,22 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "row" },
-                            [
-                              _c("vue-dropzone", {
-                                ref: "myVueDropzone",
-                                attrs: {
-                                  id: "dropzone",
-                                  options: _vm.dropzoneOptions,
-                                },
-                              }),
-                            ],
-                            1
-                          ),
+                          _vm.Button.flag === "update"
+                            ? _c(
+                                "div",
+                                { staticClass: "row" },
+                                [
+                                  _c("vue-dropzone", {
+                                    ref: "myVueDropzone",
+                                    attrs: {
+                                      id: "dropzone",
+                                      options: _vm.dropzoneOptions,
+                                    },
+                                  }),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("div", { staticClass: "text-center" }, [
                             _vm.loaderSave

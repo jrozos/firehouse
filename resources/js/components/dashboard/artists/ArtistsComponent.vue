@@ -213,7 +213,7 @@
                     </div>
                   </div>
                   <!-- Dropzone -->
-                  <div class="row">
+                  <div v-if="Button.flag === 'update'" class="row">
                     <vue-dropzone
                       ref="myVueDropzone"
                       id="dropzone"
@@ -389,9 +389,20 @@ export default {
     return {
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
-        thumbnailWidth: 150,
-        maxFilesize: 0.5,
-        headers: { 'My-Awesome-Header': 'header value' },
+        thumbnailWidth: 200,
+        maxFilesize: 1,
+        maxFiles: 1,
+        acceptedFiles: 'image/*',
+        addRemoveLinks: true,
+        dictDefaultMessage: "<i class='fa fa-cloud-upload'></i>UPLOAD ME",
+        headers: {
+          'X-CSRF-TOKEN': document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute('content'),
+        },
+        params: {
+          _Artist: this._Artist,
+        },
       },
       artists: [],
 
