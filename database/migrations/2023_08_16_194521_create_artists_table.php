@@ -12,7 +12,7 @@ class CreateArtistsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('instagram')->nullable();
             $table->text('description')->nullable();

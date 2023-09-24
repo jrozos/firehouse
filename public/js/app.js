@@ -3706,6 +3706,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3723,6 +3738,8 @@ __webpack_require__.r(__webpack_exports__);
         LastName: '',
         Email: '',
         Phone: '',
+        Instagram: '',
+        Sort: '',
         Description: ''
       },
       InfoErrors: {
@@ -3730,18 +3747,13 @@ __webpack_require__.r(__webpack_exports__);
         LastName: '',
         Email: '',
         Phone: '',
+        Instagram: '',
+        Sort: '',
         Description: '',
         isValid: ''
       },
       Button: {
         flag: 'create'
-      },
-      Alert: {
-        Show: false,
-        Type: false,
-        // false to Error or true to Success
-        Title: '',
-        Message: ''
       }
     };
   },
@@ -3766,12 +3778,17 @@ __webpack_require__.r(__webpack_exports__);
       this.Button.flag = 'create';
       this.clearInfo();
     },
-    clearErrors: function clearErrors() {
+    cancelForm: function cancelForm() {
       this.Info.Show = false;
+      this.clearErrors();
+    },
+    clearErrors: function clearErrors() {
       this.InfoErrors.Name = '';
       this.InfoErrors.LastName = '';
       this.InfoErrors.Email = '';
       this.InfoErrors.Phone = '';
+      this.InfoErrors.Instagram = '';
+      this.InfoErrors.Sort = '';
       this.InfoErrors.Description = '';
       this.InfoErrors.isValid = '';
     },
@@ -3781,19 +3798,26 @@ __webpack_require__.r(__webpack_exports__);
       this.Info.LastName = '';
       this.Info.Email = '';
       this.Info.Phone = '';
+      this.Info.Instagram = '';
+      this.Info.Sort = '';
       this.Info.Description = '';
     },
     validateForm: function validateForm(_Artist) {
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
       this.InfoErrors.Name = this.Info.Name.trim() === '' ? 'El nombre es requerido.' : '';
       this.InfoErrors.LastName = this.Info.LastName.trim() === '' ? 'El apellido es requerido.' : '';
-      this.InfoErrors.Email = !this.Info.Email.trim() === '' ? 'El e-mail es requerido.' : !this.validEmail(this.Info.Email) ? 'E-mail invalido ej: aaa@aaa.aaa' : '';
-      this.InfoErrors.Phone = !this.validatePhoneNumber(this.Info.Phone) ? 'Teléfono invalido ej: 999-99-99-99-9' : '';
+      this.InfoErrors.Email = this.Info.Email && !this.validEmail(this.Info.Email) ? 'E-mail inválido ej: aaa@aaa.aaa' : '';
+      this.InfoErrors.Phone = !this.Info.Phone ? '' // Allow empty field
+      : !this.validatePhoneNumber(this.Info.Phone) ? 'Teléfono inválido ej: 999-99-99-99-9' : '';
+      if (this.Instagram !== undefined) {
+        this.Instagram = this.Instagram.trim();
+      }
+      if (this.Sort !== undefined) {
+        this.Sort = this.Sort.trim();
+      }
+      if (this.Description !== undefined) {
+        this.Description = this.Description.trim();
+      }
       if (!this.InfoErrors.Name && !this.InfoErrors.LastName && !this.InfoErrors.Email && !this.InfoErrors.Phone) {
         if (_Artist) {
           this.updateInfo(_Artist);
@@ -3813,17 +3837,14 @@ __webpack_require__.r(__webpack_exports__);
     saveInfo: function saveInfo() {
       var _this2 = this;
       this.loaderSave = true;
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
       axios.post('/dashboard/artists/store', {
         name: this.Info.Name,
         last_name: this.Info.LastName,
         email: this.Info.Email,
         phone_number: this.Info.Phone,
+        instagram: this.Info.Instagram,
+        sort: this.Info.Sort,
         description: this.Info.Description
       }).then(function (res) {
         _this2.artist = res.data.artist;
@@ -3836,6 +3857,8 @@ __webpack_require__.r(__webpack_exports__);
           _this2.InfoErrors.LastName = res.data.last_name;
           _this2.InfoErrors.Email = res.data.email;
           _this2.InfoErrors.Phone = res.data.phone_number;
+          _this2.InfoErrors.Instagram = res.data.instagram;
+          _this2.InfoErrors.Sort = res.data.sort;
           _this2.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
@@ -3844,6 +3867,8 @@ __webpack_require__.r(__webpack_exports__);
           _this2.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
           _this2.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
           _this2.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this2.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
+          _this2.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
           _this2.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
@@ -3869,6 +3894,8 @@ __webpack_require__.r(__webpack_exports__);
           _this3.Info.LastName = res.data.artist.LastName;
           _this3.Info.Email = res.data.artist.Email;
           _this3.Info.Phone = res.data.artist.Phone;
+          _this3.Info.Instagram = res.data.artist.Instagram;
+          _this3.Info.Sort = res.data.artist.Sort;
           _this3.Info.Description = res.data.artist.Description;
         } else {
           // Handle the case where the server response indicates an error
@@ -3890,12 +3917,7 @@ __webpack_require__.r(__webpack_exports__);
     updateInfo: function updateInfo(_Artist) {
       var _this4 = this;
       this.loaderSave = true;
-      this.InfoErrors.Name = '';
-      this.InfoErrors.LastName = '';
-      this.InfoErrors.Email = '';
-      this.InfoErrors.Phone = '';
-      this.InfoErrors.Description = '';
-      this.InfoErrors.isValid = '';
+      this.clearErrors();
       axios.post('/dashboard/artists/update', {
         _Artist: _Artist,
         name: this.Info.Name,
@@ -3913,6 +3935,8 @@ __webpack_require__.r(__webpack_exports__);
           _this4.InfoErrors.LastName = res.data.last_name;
           _this4.InfoErrors.Email = res.data.email;
           _this4.InfoErrors.Phone = res.data.phone_number;
+          _this4.InfoErrors.Instagram = res.data.instagram;
+          _this4.InfoErrors.Sort = res.data.sort;
           _this4.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
@@ -3921,6 +3945,8 @@ __webpack_require__.r(__webpack_exports__);
           _this4.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
           _this4.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
           _this4.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this4.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
+          _this4.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
           _this4.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
@@ -51305,10 +51331,10 @@ var render = function () {
                               ]),
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "col-12" }, [
-                              _c("label", [_vm._v("Descripcion")]),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Instagram")]),
                               _vm._v(" "),
-                              _vm.InfoErrors.Description
+                              _vm.InfoErrors.Instagram
                                 ? _c(
                                     "p",
                                     {
@@ -51322,15 +51348,132 @@ var render = function () {
                                         [
                                           _vm._v(
                                             "\n                        " +
-                                              _vm._s(
-                                                _vm.InfoErrors.Description
-                                              ) +
+                                              _vm._s(_vm.InfoErrors.Instagram) +
                                               "\n                      "
                                           ),
                                         ]
                                       ),
                                     ]
                                   )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Instagram,
+                                      expression: "Info.Instagram",
+                                    },
+                                  ],
+                                  class: [
+                                    (_vm.Info.Instagram != "") &
+                                    (_vm.InfoErrors.Instagram === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.Instagram != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
+                                  attrs: { type: "text" },
+                                  domProps: { value: _vm.Info.Instagram },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Instagram",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("label", [_vm._v("Orden")]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.Sort
+                                ? _c(
+                                    "p",
+                                    {
+                                      staticClass:
+                                        "wow animate__animated animate__headShake",
+                                    },
+                                    [
+                                      _c(
+                                        "small",
+                                        { staticClass: "text-danger" },
+                                        [
+                                          _vm._v(
+                                            "\n                        " +
+                                              _vm._s(_vm.InfoErrors.Sort) +
+                                              "\n                      "
+                                          ),
+                                        ]
+                                      ),
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "input-group mb-3" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.Info.Sort,
+                                      expression: "Info.Sort",
+                                    },
+                                  ],
+                                  class: [
+                                    (_vm.Info.Sort != "") &
+                                    (_vm.InfoErrors.Sort === "")
+                                      ? "is-valid"
+                                      : _vm.InfoErrors.Sort != ""
+                                      ? "is-invalid"
+                                      : "",
+                                    "form-control",
+                                  ],
+                                  attrs: { type: "text" },
+                                  domProps: { value: _vm.Info.Sort },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.Info,
+                                        "Sort",
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-12" }, [
+                              _c("label", [_vm._v("Descripcion")]),
+                              _vm._v(" "),
+                              _vm.InfoErrors.Description
+                                ? _c("p", {}, [
+                                    _c(
+                                      "small",
+                                      { staticClass: "text-danger" },
+                                      [
+                                        _vm._v(
+                                          "\n                        " +
+                                            _vm._s(_vm.InfoErrors.Description) +
+                                            "\n                      "
+                                        ),
+                                      ]
+                                    ),
+                                  ])
                                 : _vm._e(),
                               _vm._v(" "),
                               _c("div", { staticClass: "input-group mb-3" }, [
@@ -51422,7 +51565,7 @@ var render = function () {
                                                 "btn bg-gradient-danger btn-sm mb-0",
                                               on: {
                                                 click: function ($event) {
-                                                  return _vm.clearErrors()
+                                                  return _vm.cancelForm()
                                                 },
                                               },
                                             },
@@ -51598,69 +51741,6 @@ var render = function () {
         ]),
       ]),
     ]),
-    _vm._v(" "),
-    _vm.Alert.Show
-      ? _c("div", { staticClass: "confirm-bg" }, [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              {
-                staticClass: "col-12 col-sm-10 col-md-6 col-lg-4 center-center",
-              },
-              [
-                _c("div", { staticClass: "card shadow-sm wow fadeInUp" }, [
-                  _vm.Alert.Title !== ""
-                    ? _c(
-                        "div",
-                        {
-                          class: {
-                            "card-header py-2": true,
-                            "card-header-info": _vm.Alert.Type,
-                            "card-header-danger": !_vm.Alert.Type,
-                          },
-                        },
-                        [
-                          _c("h3", { staticClass: "card-title text-center" }, [
-                            _vm._v(_vm._s(_vm.Alert.Title)),
-                          ]),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("div", {
-                      staticClass: "row",
-                      domProps: { innerHTML: _vm._s(_vm.Alert.Message) },
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-12 pt-3 text-center" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass:
-                              "btn btn-round bg-gradient-danger btn-lg w-100 mt-4 mb-0",
-                            on: {
-                              click: function ($event) {
-                                _vm.Alert.Show = false
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                  Cerrar\n                "
-                            ),
-                          ]
-                        ),
-                      ]),
-                    ]),
-                  ]),
-                ]),
-              ]
-            ),
-          ]),
-        ])
-      : _vm._e(),
   ])
 }
 var staticRenderFns = [
