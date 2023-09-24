@@ -621,6 +621,8 @@ export default {
           last_name: this.Info.LastName,
           email: this.Info.Email,
           phone_number: this.Info.Phone,
+          instagram: this.Info.Instagram,
+          sort: this.Info.Sort,
           description: this.Info.Description,
         })
         .then((res) => {

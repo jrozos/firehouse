@@ -50,7 +50,7 @@ class ArtistController extends Controller
             ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.description as Description','ART.instagram as Instagram','ART.created_at as Created','ART.updated_at as Updated','createdByUser.name as CreatedBy', 
             'updatedByUser.name as UpdatedBy')
             ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
-            ->orderBy('Created', 'desc')
+            ->orderBy('Sort', 'asc')
             ->get();
             
             foreach ($artists as $key => $artist) {
@@ -72,6 +72,7 @@ class ArtistController extends Controller
      */
     public function store(ArtistRequest $request){
         if ($request->ajax()) {
+            // dd($request);
             $validatedData = $request->validated();
             $artist = (new Artist)->fill($validatedData);
             $artist->save();
@@ -92,7 +93,7 @@ class ArtistController extends Controller
             }
             
             $artist = Artist::where('id',$_Artist)
-            ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','description as Description','instagram as Instagram')
+            ->select('id as _Artist','name as Name','last_name as LastName','email as Email','phone_number as Phone','description as Description','instagram as Instagram','sort as Sort')
             ->first();
 
             
@@ -114,7 +115,7 @@ class ArtistController extends Controller
      */
     public function update(Request $request) {
         if ($request->ajax()) {
-            // dd($request->_Artist);
+            // dd($request);
             try {
                 $_Artist = Crypt::decrypt($request->_Artist);
             } catch (DecryptException $e) {
@@ -130,6 +131,7 @@ class ArtistController extends Controller
             $artist->phone_number = $request->phone_number;
             $artist->description = $request->description;
             $artist->instagram = $request->instagram;
+            $artist->sort = $request->sort;
             
             $artist->update();
             
