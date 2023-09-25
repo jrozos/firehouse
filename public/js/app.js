@@ -3749,7 +3749,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        url: '/dashboard/artists/store-media',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -3762,6 +3762,10 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           _Artist: this._Artist
         }
+      },
+      Artist_Media: {
+        Files: [],
+        Images: []
       },
       artists: [],
       loaderSave: false,

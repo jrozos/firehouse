@@ -388,7 +388,7 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        url: '/dashboard/artists/store-media',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -403,6 +403,10 @@ export default {
         params: {
           _Artist: this._Artist,
         },
+      },
+      Artist_Media: {
+        Files: [],
+        Images: [],
       },
       artists: [],
 

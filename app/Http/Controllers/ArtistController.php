@@ -83,6 +83,7 @@ class ArtistController extends Controller
             abort(404);
         }
     }
+    
     public function edit(Request $request){
         if ($request->ajax()) {
             // dd($request->_Artist);
