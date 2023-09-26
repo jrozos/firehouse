@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArtistMediaTable extends Migration
+class CreateArtistAssetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateArtistMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('artist_media', function (Blueprint $table) {
+        Schema::create('artist_asset', function (Blueprint $table) {
             $table->id();
+            $table->integer('asset_id')->unsigned();
+            $table->integer('artist_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateArtistMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('artist_media');
+        Schema::dropIfExists('artist_asset');
     }
 }

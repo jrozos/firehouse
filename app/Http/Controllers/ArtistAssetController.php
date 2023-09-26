@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ArtistMedia;
-use App\Http\Requests\StoreArtistMediaRequest;
-use App\Http\Requests\UpdateArtistMediaRequest;
+use App\Models\Artist;
+use App\Models\Asset;
+use App\Models\ArtistAsset;
+use App\Http\Requests\StoreArtistAssetRequest;
+use App\Http\Requests\UpdateArtistAssetRequest;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
-class ArtistMediaController extends Controller
+class ArtistAssetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,14 +38,14 @@ class ArtistMediaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreArtistMediaRequest  $request
+     * @param  \App\Http\Requests\StoreArtistAssetRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArtistMediaRequest $request)
+    public function store(StoreArtistAssetRequest $request)
     {
         //
     }
-    public function storeMedia(Request $request) {
+    public function storeAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());
             try {
@@ -54,51 +58,53 @@ class ArtistMediaController extends Controller
                 ], "message"=>"No se encontro el usuario"], 422) );
             }
             // dd($_Artist);
-
-            $file = ArtistMedia::where([
-                    ['artist_id',$_Artist],
-                    ['type','image'],
-                ])->count();
-            // dd($file);
-            if ($file >= 1) {
-                abort( response()->json(["errors"=>[
-                    'file'=>[
-                        'Ya no puedes agregar más archivos | Max a file.'
-                    ]
-                ], "message"=>"Ha ocurrido un error, intente recargar la página."], 422) );
-            }
+            // Tal vez ya no se use
+            // $file = ArtistAsset::where([
+            //         ['artist_id',$_Artist],
+            //     ])->count();
+            // if ($file >= 1) {
+            //     abort( response()->json(["errors"=>[
+            //         'file'=>[
+            //             'Ya no puedes agregar más archivos | Max a file.'
+            //         ]
+            //     ], "message"=>"Ha ocurrido un error, intente recargar la página."], 422) );
+            // }
 
             if ($request->hasFile('file')) {
                 //  Let's do everything here
                 if ($request->file('file')->isValid()) {
                     $validated = $request->validate([
-                        'file' => 'required|mimes:pdf|max:204800',
+                        'file' => 'required|image|mimes:jpeg,png,jpg,svg|max:10240',
                     ]);
-                    $user = User::select('email')->where('id',$_Artist)->first();
-                    // dd($user);
+                    $artist = Artist::select('name')->where('id',$_Artist)->first();
+                    // dd($artist);
         
-                    if (!is_null($user)) {
-                        $newV = new ArtistMedia;
-                        $newV->user_id = $_Artist;
-                        $newV->url = '';
-                        $newV->name = $request->file->getClientOriginalName();
-                        $newV->type = 'file';
-                        $newV->save();
-                        // dd($newV->id);
+                    if (!is_null($artist)) {
+                        $asset = new Asset;
+                        $asset->url = '';
+                        $asset->alt = $artist->name;
+                        $asset->name = $request->file->getClientOriginalName();
+                        $asset->type = 'img';
+                        $asset->save();
+
+                        $asset->artists()->attach($_Artist);
+                        // dd($asset->id);
                     
-                        $folderReal = public_path('documents/users/'.$user->email.'/files');
-                        $folderHost = URL::to('documents/users/'.$user->email.'/files');
-                        $fileName = $newV->id.'_'.$request->file->getClientOriginalName();
-                        // $fileName = $request->file->getClientOriginalName().$newV->id.$request->file->extension();
+                        $folderReal = public_path('assets/artists/'.$artist->name.'/profile');
+                        $folderHost = URL::to('assets/artists/'.$artist->name.'/profile');
+                        $fileName = $request->file->getClientOriginalName();
+                        // $fileName = $request->file->getClientOriginalName().$asset->id.$request->file->extension();
                         // dd($fileName);
                         $request->file->move($folderReal, $fileName);
 
-                        $newV->url = $folderHost.'/'.$fileName;
-                        $newV->update();
+                        $asset->url = $folderHost.'/'.$fileName;
+                        $asset->update();
 
-                        $files = ArtistMedia::select('id as _URL', 'url as URL','name as Name')->where([
-                            ['user_id',$_Artist],
-                            ['type','file'],
+                        $files = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
+                        ->join('artist_asset as AWM', 'assets.id', '=', 'AWM.asset_id')
+                        ->where([
+                            ['AWM.artist_id', $_Artist],
+                            ['assets.type', 'img'],
                         ])->get();
                         foreach ($files as $key => $file) {
                             $file->_URL = Crypt::encrypt($file->_URL);
@@ -128,10 +134,10 @@ class ArtistMediaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ArtistMedia  $artistMedia
+     * @param  \App\Models\ArtistAsset  $artistAsset
      * @return \Illuminate\Http\Response
      */
-    public function show(ArtistMedia $artistMedia)
+    public function show(ArtistAsset $artistAsset)
     {
         //
     }
@@ -149,24 +155,24 @@ class ArtistMediaController extends Controller
 
             switch ($request->type) {
                 case 'both':
-                    $images = ArtistMedia::select('id as _URL', 'url as URL', 'name as Name')->where([
+                    $images = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
                         ['user_id',$_Artist],
                         ['type','img'],
                     ])->get();
 
-                    $files = ArtistMedia::select('id as _URL', 'url as URL', 'name as Name')->where([
+                    $files = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
                         ['user_id',$_Artist],
                         ['type','file'],
                     ])->get();
                     break;
                 case 'image':
-                    $images = ArtistMedia::select('id as _URL', 'url as URL', 'name as Name')->where([
+                    $images = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
                         ['user_id',$_Artist],
                         ['type','img'],
                     ])->get();
                     break;
                 case 'file':
-                    $files = ArtistMedia::select('id as _URL', 'url as URL', 'name as Name')->where([
+                    $files = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
                         ['user_id',$_Artist],
                         ['type','file'],
                     ])->get();
@@ -193,7 +199,7 @@ class ArtistMediaController extends Controller
                 return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
 
-            $file_media = ArtistMedia::select('id', 'url as URL')->where([
+            $file_media = ArtistAsset::select('id', 'url as URL')->where([
                 ['id',$_media],
                 ['type',$request->array[2]],
             ])->first();
@@ -224,10 +230,10 @@ class ArtistMediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ArtistMedia  $artistMedia
+     * @param  \App\Models\ArtistAsset  $artistAsset
      * @return \Illuminate\Http\Response
      */
-    public function edit(ArtistMedia $artistMedia)
+    public function edit(ArtistAsset $artistAsset)
     {
         //
     }
@@ -235,11 +241,11 @@ class ArtistMediaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateArtistMediaRequest  $request
-     * @param  \App\Models\ArtistMedia  $artistMedia
+     * @param  \App\Http\Requests\UpdateArtistAssetRequest  $request
+     * @param  \App\Models\ArtistAsset  $artistAsset
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArtistMediaRequest $request, ArtistMedia $artistMedia)
+    public function update(UpdateArtistAssetRequest $request, ArtistAsset $artistAsset)
     {
         //
     }
@@ -247,10 +253,10 @@ class ArtistMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ArtistMedia  $artistMedia
+     * @param  \App\Models\ArtistAsset  $artistAsset
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ArtistMedia $artistMedia)
+    public function destroy(ArtistAsset $artistAsset)
     {
         //
     }

@@ -217,7 +217,7 @@
                     <vue-dropzone
                       ref="myVueDropzone"
                       id="dropzone"
-                      :options="dropzoneOptions"
+                      :options="computedDropzoneOptions"
                     ></vue-dropzone>
                   </div>
                   <div class="text-center">
@@ -387,8 +387,9 @@ export default {
   },
   data() {
     return {
+      _Artist: '', // Initialize _Artist with the value you want to send
       dropzoneOptions: {
-        url: '/dashboard/artists/store-media',
+        url: '/dashboard/artists/storeasset',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -400,11 +401,8 @@ export default {
             .querySelector('meta[name="csrf-token"]')
             .getAttribute('content'),
         },
-        params: {
-          _Artist: this._Artist,
-        },
       },
-      Artist_Media: {
+      Artist_Asset: {
         Files: [],
         Images: [],
       },
@@ -438,6 +436,25 @@ export default {
         flag: 'create',
       },
     };
+  },
+  computed: {
+    computedDropzoneOptions() {
+      const optionsCopy = { ...this.dropzoneOptions };
+
+      // Add or update the _Artist property in the optionsCopy
+      optionsCopy._Artist = this._Artist;
+
+      // Add a custom `sending` callback
+      optionsCopy.sending = (file, xhr, formData) => {
+        // Add the _Artist value to the formData
+        formData.append('_Artist', this._Artist);
+
+        // You can also append other form fields if needed
+        formData.append('otherField', 'otherValue');
+      };
+
+      return optionsCopy;
+    },
   },
   methods: {
     startComponent() {
@@ -738,7 +755,6 @@ export default {
         });
     },
   },
-  computed: {},
   mounted() {
     this.startComponent();
   },

@@ -6,7 +6,7 @@ use App\Models\ArtistMedia;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ArtistMediaPolicy
+class ArtistAssetPolicy
 {
     use HandlesAuthorization;
 

@@ -3359,6 +3359,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-dropzone */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.js");
 /* harmony import */ var vue2_dropzone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_dropzone__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue2_dropzone_dist_vue2Dropzone_min_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-dropzone/dist/vue2Dropzone.min.css */ "./node_modules/vue2-dropzone/dist/vue2Dropzone.min.css");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 //
 //
 //
@@ -3748,8 +3751,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      _Artist: '',
+      // Initialize _Artist with the value you want to send
       dropzoneOptions: {
-        url: '/dashboard/artists/store-media',
+        url: '/dashboard/artists/storeasset',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -3758,12 +3763,9 @@ __webpack_require__.r(__webpack_exports__);
         dictDefaultMessage: "<i class='fa fa-cloud-upload'></i>UPLOAD ME",
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        params: {
-          _Artist: this._Artist
         }
       },
-      Artist_Media: {
+      Artist_Asset: {
         Files: [],
         Images: []
       },
@@ -3795,16 +3797,35 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  computed: {
+    computedDropzoneOptions: function computedDropzoneOptions() {
+      var _this = this;
+      var optionsCopy = _objectSpread({}, this.dropzoneOptions);
+
+      // Add or update the _Artist property in the optionsCopy
+      optionsCopy._Artist = this._Artist;
+
+      // Add a custom `sending` callback
+      optionsCopy.sending = function (file, xhr, formData) {
+        // Add the _Artist value to the formData
+        formData.append('_Artist', _this._Artist);
+
+        // You can also append other form fields if needed
+        formData.append('otherField', 'otherValue');
+      };
+      return optionsCopy;
+    }
+  },
   methods: {
     startComponent: function startComponent() {
-      var _this = this;
+      var _this2 = this;
       this.loaderSave = true;
       axios.get('/dashboard/artists/list').then(function (res) {
-        _this.artists = res.data.artists;
+        _this2.artists = res.data.artists;
       })["catch"](function (error) {
         // this.errorNewVilla = error.response.data.errors.name[0];
       })["finally"](function (fin) {
-        _this.loaderSave = false;
+        _this2.loaderSave = false;
       });
     },
     formatFriendlyDate: function formatFriendlyDate(date) {
@@ -3873,7 +3894,7 @@ __webpack_require__.r(__webpack_exports__);
       return re.test(phone);
     },
     saveInfo: function saveInfo() {
-      var _this2 = this;
+      var _this3 = this;
       this.loaderSave = true;
       this.clearErrors();
       axios.post('/dashboard/artists/store', {
@@ -3885,39 +3906,39 @@ __webpack_require__.r(__webpack_exports__);
         sort: this.Info.Sort,
         description: this.Info.Description
       }).then(function (res) {
-        _this2.artist = res.data.artist;
+        _this3.artist = res.data.artist;
         if (res.data.message === 'Success') {
-          _this2.Info.Show = false;
-          _this2.clearInfo();
-          _this2.startComponent();
+          _this3.Info.Show = false;
+          _this3.clearInfo();
+          _this3.startComponent();
         } else {
-          _this2.InfoErrors.Name = res.data.name;
-          _this2.InfoErrors.LastName = res.data.last_name;
-          _this2.InfoErrors.Email = res.data.email;
-          _this2.InfoErrors.Phone = res.data.phone_number;
-          _this2.InfoErrors.Instagram = res.data.instagram;
-          _this2.InfoErrors.Sort = res.data.sort;
-          _this2.InfoErrors.Description = res.data.description;
+          _this3.InfoErrors.Name = res.data.name;
+          _this3.InfoErrors.LastName = res.data.last_name;
+          _this3.InfoErrors.Email = res.data.email;
+          _this3.InfoErrors.Phone = res.data.phone_number;
+          _this3.InfoErrors.Instagram = res.data.instagram;
+          _this3.InfoErrors.Sort = res.data.sort;
+          _this3.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
         if (error.response && error.response.data && error.response.data.errors) {
-          _this2.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
-          _this2.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
-          _this2.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
-          _this2.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
-          _this2.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
-          _this2.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
-          _this2.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
+          _this3.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
+          _this3.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
+          _this3.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
+          _this3.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this3.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
+          _this3.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
+          _this3.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
         }
         console.log('------------ Errors ------------');
       })["finally"](function (fin) {
-        _this2.loaderSave = false;
+        _this3.loaderSave = false;
       });
     },
     editInfo: function editInfo(_Artist) {
-      var _this3 = this;
+      var _this4 = this;
       this._Artist = _Artist;
       this.Button.flag = 'update';
       axios.get('/dashboard/artists/edit', {
@@ -3926,15 +3947,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this3.Info.Show = true;
-          _this3.Info._Artist = res.data.artist._Artist;
-          _this3.Info.Name = res.data.artist.Name;
-          _this3.Info.LastName = res.data.artist.LastName;
-          _this3.Info.Email = res.data.artist.Email;
-          _this3.Info.Phone = res.data.artist.Phone;
-          _this3.Info.Instagram = res.data.artist.Instagram;
-          _this3.Info.Sort = res.data.artist.Sort;
-          _this3.Info.Description = res.data.artist.Description;
+          _this4.Info.Show = true;
+          _this4.Info._Artist = res.data.artist._Artist;
+          _this4.Info.Name = res.data.artist.Name;
+          _this4.Info.LastName = res.data.artist.LastName;
+          _this4.Info.Email = res.data.artist.Email;
+          _this4.Info.Phone = res.data.artist.Phone;
+          _this4.Info.Instagram = res.data.artist.Instagram;
+          _this4.Info.Sort = res.data.artist.Sort;
+          _this4.Info.Description = res.data.artist.Description;
         } else {
           // Handle the case where the server response indicates an error
           console.error('Server response indicates an error:', res.data);
@@ -3949,11 +3970,11 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         // This block is executed whether the request succeeds or fails
         // You can use it to clean up, e.g., hiding loaders
-        _this3.loaderSave = false;
+        _this4.loaderSave = false;
       });
     },
     updateInfo: function updateInfo(_Artist) {
-      var _this4 = this;
+      var _this5 = this;
       this.loaderSave = true;
       this.clearErrors();
       axios.post('/dashboard/artists/update', {
@@ -3967,37 +3988,37 @@ __webpack_require__.r(__webpack_exports__);
         description: this.Info.Description
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this4.Info.Show = false;
-          _this4.clearInfo();
-          _this4.startComponent();
+          _this5.Info.Show = false;
+          _this5.clearInfo();
+          _this5.startComponent();
         } else {
-          _this4.InfoErrors.Name = res.data.name;
-          _this4.InfoErrors.LastName = res.data.last_name;
-          _this4.InfoErrors.Email = res.data.email;
-          _this4.InfoErrors.Phone = res.data.phone_number;
-          _this4.InfoErrors.Instagram = res.data.instagram;
-          _this4.InfoErrors.Sort = res.data.sort;
-          _this4.InfoErrors.Description = res.data.description;
+          _this5.InfoErrors.Name = res.data.name;
+          _this5.InfoErrors.LastName = res.data.last_name;
+          _this5.InfoErrors.Email = res.data.email;
+          _this5.InfoErrors.Phone = res.data.phone_number;
+          _this5.InfoErrors.Instagram = res.data.instagram;
+          _this5.InfoErrors.Sort = res.data.sort;
+          _this5.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
         if (error.response && error.response.data && error.response.data.errors) {
-          _this4.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
-          _this4.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
-          _this4.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
-          _this4.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
-          _this4.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
-          _this4.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
-          _this4.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
+          _this5.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
+          _this5.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
+          _this5.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
+          _this5.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
+          _this5.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
+          _this5.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
+          _this5.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
         }
         console.log('------------ Errors ------------');
       })["finally"](function (fin) {
-        _this4.loaderSave = false;
+        _this5.loaderSave = false;
       });
     },
     deleteInfo: function deleteInfo(_Artist) {
-      var _this5 = this;
+      var _this6 = this;
       this.loaderSave = true;
       axios.get('/dashboard/artists/delete', {
         params: {
@@ -4005,7 +4026,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (res) {
         if (res.data.message === 'Success') {
-          _this5.startComponent();
+          _this6.startComponent();
         } else {
           // Handle the case where the server response indicates an error
           console.error('Server response indicates an error:', res.data);
@@ -4020,11 +4041,10 @@ __webpack_require__.r(__webpack_exports__);
       })["finally"](function () {
         // This block is executed whether the request succeeds or fails
         // You can use it to clean up, e.g., hiding loaders
-        _this5.loaderSave = false;
+        _this6.loaderSave = false;
       });
     }
   },
-  computed: {},
   mounted: function mounted() {
     this.startComponent();
   }
@@ -51966,7 +51986,7 @@ var render = function () {
                                     ref: "myVueDropzone",
                                     attrs: {
                                       id: "dropzone",
-                                      options: _vm.dropzoneOptions,
+                                      options: _vm.computedDropzoneOptions,
                                     },
                                   }),
                                 ],
