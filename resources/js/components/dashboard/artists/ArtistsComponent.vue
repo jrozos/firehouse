@@ -214,11 +214,30 @@
                   </div>
                   <!-- Dropzone -->
                   <div v-if="Button.flag === 'update'" class="row">
-                    <vue-dropzone
-                      ref="myVueDropzone"
-                      id="dropzone"
-                      :options="computedDropzoneOptions"
-                    ></vue-dropzone>
+                    <div v-if="Artist_Asset.Images.length < 1">
+                      <vue-dropzone
+                        ref="myVueDropzone"
+                        id="dropzone"
+                        :options="computedDropzoneOptions"
+                      ></vue-dropzone>
+                    </div>
+                    <div v-if="Artist_Asset.Images.length">
+                      <div class="row">
+                        <div
+                          v-for="(Image, index) in Artist_Asset.Images"
+                          :key="index"
+                          class="col-lg-2"
+                        >
+                          <img :src="Image.URL" alt="" class="img-fluid" />
+                          <!-- <button
+                            class="btn btn-link m-0"
+                            @click="preDeleteMedia(File._URL, index, 'file')"
+                          >
+                            <i class="fas fa-trash-alt text-danger"></i>
+                          </button> -->
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="text-center">
                     <div v-if="loaderSave">
@@ -389,7 +408,7 @@ export default {
     return {
       _Artist: '', // Initialize _Artist with the value you want to send
       dropzoneOptions: {
-        url: '/dashboard/artists/storeasset',
+        url: '/dashboard/artists/store-asset',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -406,6 +425,7 @@ export default {
         Files: [],
         Images: [],
       },
+
       artists: [],
 
       loaderSave: false,
@@ -448,9 +468,6 @@ export default {
       optionsCopy.sending = (file, xhr, formData) => {
         // Add the _Artist value to the formData
         formData.append('_Artist', this._Artist);
-
-        // You can also append other form fields if needed
-        formData.append('otherField', 'otherValue');
       };
 
       return optionsCopy;
@@ -622,6 +639,7 @@ export default {
     editInfo(_Artist) {
       this._Artist = _Artist;
       this.Button.flag = 'update';
+      this.searchAsset('image', this._Artist);
 
       axios
         .get('/dashboard/artists/edit', {
@@ -752,6 +770,37 @@ export default {
           // This block is executed whether the request succeeds or fails
           // You can use it to clean up, e.g., hiding loaders
           this.loaderSave = false;
+        });
+    },
+    searchAsset(type, _Artist) {
+      axios
+        .post('/dashboard/artists/show-asset', {
+          _Artist: _Artist,
+          type: type,
+        })
+        .then((res) => {
+          switch (type) {
+            case 'both':
+              this.Artist_Asset.Images = res.data.Images;
+              this.Artist_Asset.Files = res.data.Files;
+              break;
+            case 'image':
+              this.Artist_Asset.Images = res.data.Images;
+              break;
+
+            case 'file':
+              this.Artist_Asset.Files = res.data.Files;
+              break;
+            default:
+            // code block
+          }
+          console.log(res.data.Files);
+        })
+        .catch((error) => {
+          // this.errorNewVilla = error.response.data.errors.name[0];
+        })
+        .finally((fin) => {
+          // this.loadingVilla = false;
         });
     },
   },

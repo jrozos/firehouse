@@ -3741,6 +3741,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3754,7 +3773,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _Artist: '',
       // Initialize _Artist with the value you want to send
       dropzoneOptions: {
-        url: '/dashboard/artists/storeasset',
+        url: '/dashboard/artists/store-asset',
         thumbnailWidth: 200,
         maxFilesize: 1,
         maxFiles: 1,
@@ -3809,9 +3828,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       optionsCopy.sending = function (file, xhr, formData) {
         // Add the _Artist value to the formData
         formData.append('_Artist', _this._Artist);
-
-        // You can also append other form fields if needed
-        formData.append('otherField', 'otherValue');
       };
       return optionsCopy;
     }
@@ -3941,6 +3957,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this4 = this;
       this._Artist = _Artist;
       this.Button.flag = 'update';
+      this.searchAsset('image', this._Artist);
       axios.get('/dashboard/artists/edit', {
         params: {
           _Artist: this._Artist
@@ -4042,6 +4059,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // This block is executed whether the request succeeds or fails
         // You can use it to clean up, e.g., hiding loaders
         _this6.loaderSave = false;
+      });
+    },
+    searchAsset: function searchAsset(type, _Artist) {
+      var _this7 = this;
+      axios.post('/dashboard/artists/show-asset', {
+        _Artist: _Artist,
+        type: type
+      }).then(function (res) {
+        switch (type) {
+          case 'both':
+            _this7.Artist_Asset.Images = res.data.Images;
+            _this7.Artist_Asset.Files = res.data.Files;
+            break;
+          case 'image':
+            _this7.Artist_Asset.Images = res.data.Images;
+            break;
+          case 'file':
+            _this7.Artist_Asset.Files = res.data.Files;
+            break;
+          default:
+          // code block
+        }
+
+        console.log(res.data.Files);
+      })["catch"](function (error) {
+        // this.errorNewVilla = error.response.data.errors.name[0];
+      })["finally"](function (fin) {
+        // this.loadingVilla = false;
       });
     }
   },
@@ -51978,20 +52023,55 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _vm.Button.flag === "update"
-                            ? _c(
-                                "div",
-                                { staticClass: "row" },
-                                [
-                                  _c("vue-dropzone", {
-                                    ref: "myVueDropzone",
-                                    attrs: {
-                                      id: "dropzone",
-                                      options: _vm.computedDropzoneOptions,
-                                    },
-                                  }),
-                                ],
-                                1
-                              )
+                            ? _c("div", { staticClass: "row" }, [
+                                _vm.Artist_Asset.Images.length < 1
+                                  ? _c(
+                                      "div",
+                                      [
+                                        _c("vue-dropzone", {
+                                          ref: "myVueDropzone",
+                                          attrs: {
+                                            id: "dropzone",
+                                            options:
+                                              _vm.computedDropzoneOptions,
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.Artist_Asset.Images.length
+                                  ? _c("div", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "row" },
+                                        _vm._l(
+                                          _vm.Artist_Asset.Images,
+                                          function (Image, index) {
+                                            return _c(
+                                              "div",
+                                              {
+                                                key: index,
+                                                staticClass: "col-lg-2",
+                                              },
+                                              [
+                                                _c("img", {
+                                                  staticClass: "img-fluid",
+                                                  attrs: {
+                                                    src: Image.URL,
+                                                    alt: "",
+                                                  },
+                                                }),
+                                              ]
+                                            )
+                                          }
+                                        ),
+                                        0
+                                      ),
+                                    ])
+                                  : _vm._e(),
+                              ])
                             : _vm._e(),
                           _vm._v(" "),
                           _c("div", { staticClass: "text-center" }, [

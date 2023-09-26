@@ -100,17 +100,17 @@ class ArtistAssetController extends Controller
                         $asset->url = $folderHost.'/'.$fileName;
                         $asset->update();
 
-                        $files = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
+                        $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
                         ->join('artist_asset as AWM', 'assets.id', '=', 'AWM.asset_id')
                         ->where([
                             ['AWM.artist_id', $_Artist],
                             ['assets.type', 'img'],
                         ])->get();
-                        foreach ($files as $key => $file) {
-                            $file->_URL = Crypt::encrypt($file->_URL);
+                        foreach ($images as $key => $image) {
+                            $image->_URL = Crypt::encrypt($image->_URL);
                         }
-                        // $files->_URL = Crypt::encrypt($file->_URL);
-                        return response()->json(["msg"=>"success","content"=>"File uploaded.","Files"=>$files]);
+                        // $images->_URL = Crypt::encrypt($file->_URL);
+                        return response()->json(["msg"=>"success","content"=>"File uploaded.","Images"=>$images]);
                     } else {
                         abort( response()->json(["errors"=>[
                             'file'=>[
@@ -141,7 +141,7 @@ class ArtistAssetController extends Controller
     {
         //
     }
-    public function showMedia(Request $request) {
+    public function showAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());
             try {
@@ -150,42 +150,21 @@ class ArtistAssetController extends Controller
                 return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
             $images = [];
-            $video = null;
             // dd($_Artist);
+            $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
+            ->join('artist_asset as AWM', 'assets.id', '=', 'AWM.asset_id')
+            ->where([
+                ['AWM.artist_id', $_Artist],
+                ['assets.type', 'img'],
+            ])->get();
 
-            switch ($request->type) {
-                case 'both':
-                    $images = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
-                        ['user_id',$_Artist],
-                        ['type','img'],
-                    ])->get();
-
-                    $files = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
-                        ['user_id',$_Artist],
-                        ['type','file'],
-                    ])->get();
-                    break;
-                case 'image':
-                    $images = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
-                        ['user_id',$_Artist],
-                        ['type','img'],
-                    ])->get();
-                    break;
-                case 'file':
-                    $files = ArtistAsset::select('id as _URL', 'url as URL', 'name as Name')->where([
-                        ['user_id',$_Artist],
-                        ['type','file'],
-                    ])->get();
-                    break;
-            }
-
-            foreach ($files as $key => $file) {
-                $file->user_id = Crypt::encrypt($file->user_id);
-                $file->_URL = Crypt::encrypt($file->_URL);
+            foreach ($images as $key => $image) {
+                $image->artist_id = Crypt::encrypt($image->artist_id);
+                $image->_URL = Crypt::encrypt($image->_URL);
             }
 
 
-            return response()->json(["msg"=>"success","Files"=>$files]);
+            return response()->json(["msg"=>"success","Images"=>$images]);
         } else {
             abort(404);
         }
