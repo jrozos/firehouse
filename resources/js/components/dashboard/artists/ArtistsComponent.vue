@@ -324,9 +324,16 @@
                     <div class="d-flex py-1">
                       <div>
                         <img
-                          src="/assets/img/team-2.jpg"
+                          v-if="artist.Asset && artist.Asset.URL"
+                          :src="artist.Asset.URL"
                           class="avatar avatar-sm me-3"
-                          alt="user1"
+                          :alt="artist.Asset.Alt"
+                        />
+                        <img
+                          v-else
+                          src="fallback-image-url.jpg"
+                          class="avatar avatar-sm me-3"
+                          alt="Fallback Alt Text"
                         />
                       </div>
                       <div class="d-flex flex-column justify-content-center">

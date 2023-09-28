@@ -3305,6 +3305,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3362,6 +3363,13 @@ __webpack_require__.r(__webpack_exports__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -51419,18 +51427,20 @@ var render = function () {
                   "card rounded-3 wow animate__animated animate__fadeIn",
               },
               [
-                _c("img", {
-                  staticClass: "card-img-top clip-1",
-                  attrs: {
-                    src: "img/team/mario.jpg",
-                    alt:
-                      "Portrait of " +
-                      artist.Name +
-                      " " +
-                      artist.LastName +
-                      ", a tattoo artist at Firehouse Tattoo",
-                  },
-                }),
+                artist.Asset && artist.Asset.URL
+                  ? _c("img", {
+                      staticClass: "card-img-top clip-1",
+                      attrs: {
+                        src: artist.Asset.URL,
+                        alt:
+                          "Portrait of " +
+                          artist.Asset.Alt +
+                          " " +
+                          artist.LastName +
+                          ", a tattoo artist at Firehouse Tattoo",
+                      },
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("h5", { staticClass: "card-title" }, [
@@ -52173,7 +52183,23 @@ var render = function () {
                   return _c("tr", { key: artist.id }, [
                     _c("td", [
                       _c("div", { staticClass: "d-flex py-1" }, [
-                        _vm._m(4, true),
+                        _c("div", [
+                          artist.Asset && artist.Asset.URL
+                            ? _c("img", {
+                                staticClass: "avatar avatar-sm me-3",
+                                attrs: {
+                                  src: artist.Asset.URL,
+                                  alt: artist.Asset.Alt,
+                                },
+                              })
+                            : _c("img", {
+                                staticClass: "avatar avatar-sm me-3",
+                                attrs: {
+                                  src: "fallback-image-url.jpg",
+                                  alt: "Fallback Alt Text",
+                                },
+                              }),
+                        ]),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -52389,17 +52415,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-secondary opacity-7" }),
       ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("img", {
-        staticClass: "avatar avatar-sm me-3",
-        attrs: { src: "/assets/img/team-2.jpg", alt: "user1" },
-      }),
     ])
   },
 ]

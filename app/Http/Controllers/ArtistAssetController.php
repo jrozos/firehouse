@@ -101,9 +101,9 @@ class ArtistAssetController extends Controller
                         $asset->update();
 
                         $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
-                        ->join('artist_asset as AWM', 'assets.id', '=', 'AWM.asset_id')
+                        ->join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
                         ->where([
-                            ['AWM.artist_id', $_Artist],
+                            ['AWA.artist_id', $_Artist],
                             ['assets.type', 'img'],
                         ])->get();
                         foreach ($images as $key => $image) {
@@ -152,9 +152,9 @@ class ArtistAssetController extends Controller
             $images = [];
             // dd($_Artist);
             $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
-            ->join('artist_asset as AWM', 'assets.id', '=', 'AWM.asset_id')
+            ->join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
             ->where([
-                ['AWM.artist_id', $_Artist],
+                ['AWA.artist_id', $_Artist],
                 ['assets.type', 'img'],
             ])->get();
 
