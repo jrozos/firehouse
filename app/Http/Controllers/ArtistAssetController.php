@@ -9,6 +9,7 @@ use App\Http\Requests\StoreArtistAssetRequest;
 use App\Http\Requests\UpdateArtistAssetRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -151,15 +152,15 @@ class ArtistAssetController extends Controller
             }
             $images = [];
             // dd($_Artist);
-            $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name')
-            ->join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
+            $images = Asset::join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
+            ->select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','AWA.artist_id as _Artist')
             ->where([
                 ['AWA.artist_id', $_Artist],
                 ['assets.type', 'img'],
             ])->get();
 
             foreach ($images as $key => $image) {
-                $image->artist_id = Crypt::encrypt($image->artist_id);
+                $image->_Artist = Crypt::encrypt($image->_Artist);
                 $image->_URL = Crypt::encrypt($image->_URL);
             }
 
@@ -169,35 +170,56 @@ class ArtistAssetController extends Controller
             abort(404);
         }
     }
-    public function deleteMedia(Request $request) {
+    public function deleteAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());
             try {
-                $_media = Crypt::decrypt($request->array[0]);
+                $_URL = Crypt::decrypt($request->_URL);
             } catch (DecryptException $e) {
                 return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
-
-            $file_media = ArtistAsset::select('id', 'url as URL')->where([
-                ['id',$_media],
-                ['type',$request->array[2]],
-            ])->first();
-            // dd($file_media);
-
-            if (!is_null($file_media)) {
-                $url = 'documents'.explode('/documents', $file_media->URL)[1];
-                // dd($url);
-                if (is_file( public_path($url) )) {
-                    // dd('entro');
-                    if(file_exists($url)) {
-                        unlink($url);
-                    }
-                    // @unlink($url);
-                }
-                $file_media->forceDelete();
+            try {
+                $_Artist = Crypt::decrypt($request->_Artist);
+            } catch (DecryptException $e) {
+                return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
+            // dd($_URL,$_Artist);
 
-            // public_path('media\villas\\'.$villa->name.'\video');
+            $file_media = Asset::select('assets.url as URL','AWA.asset_id')
+            ->join('artist_asset as AWA', 'AWA.asset_id', '=', 'assets.id')
+            ->where([
+                ['AWA.asset_id', $_URL],
+                ['AWA.artist_id', $_Artist],
+            ])
+            ->first();
+            // dd($file_media);
+            if (!is_null($file_media)) {
+                $assetId = $file_media->asset_id; // Get the asset_id
+                $url = $file_media->URL; // Get the URL
+                // dd($assetId,$url);
+                try {
+                    // Database operations and file deletion code
+                    // Delete the relationship in the pivot table (artist_asset)
+                    $pivotDeleted = DB::table('artist_asset')->where('asset_id', $assetId)->delete();
+                    // dd($pivotDeleted);
+
+                    // Delete the asset record from the "assets" table
+                    $assetDeleted = Asset::where('id', $assetId)->forcedelete();
+                    // dd($assetDeleted);
+
+                    // Delete the asset file from the public path
+                    $publicPath = public_path($url);
+                    // dd($publicPath, is_file($publicPath));
+
+                    if (is_file($publicPath)) {
+                        unlink($publicPath);
+                    }
+                } catch (\Exception $e) {
+                    // Handle the exception (e.g., log or display an error message)
+                    dd($e->getMessage());
+                }
+                
+            }
 
             return response()->json(["msg"=>"success", "content"=>"Success Operations."]);
 

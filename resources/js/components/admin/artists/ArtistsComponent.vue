@@ -11,7 +11,7 @@
           <img
             v-if="artist.Asset && artist.Asset.URL"
             :src="artist.Asset.URL"
-            class="card-img-top clip-1"
+            class="card-img-top clip-2"
             :alt="
               'Portrait of ' +
               artist.Asset.Alt +

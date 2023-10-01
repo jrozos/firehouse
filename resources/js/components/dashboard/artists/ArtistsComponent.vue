@@ -212,33 +212,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Dropzone -->
-                  <div v-if="Button.flag === 'update'" class="row">
-                    <div v-if="Artist_Asset.Images.length < 1">
-                      <vue-dropzone
-                        ref="myVueDropzone"
-                        id="dropzone"
-                        :options="computedDropzoneOptions"
-                      ></vue-dropzone>
-                    </div>
-                    <div v-if="Artist_Asset.Images.length">
-                      <div class="row">
-                        <div
-                          v-for="(Image, index) in Artist_Asset.Images"
-                          :key="index"
-                          class="col-lg-2"
-                        >
-                          <img :src="Image.URL" alt="" class="img-fluid" />
-                          <!-- <button
-                            class="btn btn-link m-0"
-                            @click="preDeleteMedia(File._URL, index, 'file')"
-                          >
-                            <i class="fas fa-trash-alt text-danger"></i>
-                          </button> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
                   <div class="text-center">
                     <div v-if="loaderSave">
                       <span class="display-6"
@@ -270,6 +244,68 @@
                           >
                             Cancelar
                           </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Dropzone -->
+        <div v-if="Profile.Show" class="confirm-bg">
+          <div class="row">
+            <div class="col-12 col-sm-10 col-md-4 col-lg-4 center-center">
+              <div
+                class="card shadow-sm wow animate__animated animate__fadeInUp"
+              >
+                <div class="card-body">
+                  <div v-if="Artist_Asset.Images.length < 1">
+                    <vue-dropzone
+                      ref="myVueDropzone"
+                      id="dropzone"
+                      :options="computedDropzoneOptions"
+                    ></vue-dropzone>
+                  </div>
+                  <div class="row justify-content-end">
+                    <div class="col-12 pt-3 text-end">
+                      <button
+                        class="btn bg-gradient-danger btn-sm"
+                        @click="closeProfile()"
+                      >
+                        Cerrar
+                      </button>
+                    </div>
+                  </div>
+                  <div v-if="Artist_Asset.Images.length">
+                    <div class="row justify-content-center text-center">
+                      <div
+                        v-for="(Image, index) in Artist_Asset.Images"
+                        :key="index"
+                      >
+                        <div class="col-lg-12">
+                          <img
+                            :src="Image.URL"
+                            alt=""
+                            class="img-fluid border-radius-lg"
+                          />
+                        </div>
+                        <div class="row justify-content-end">
+                          <div class="col-12 pt-3 text-end">
+                            <button
+                              class="btn bg-gradient-info btn-sm"
+                              @click="preDeleteAsset(Image._URL, Image._Artist)"
+                            >
+                              Editar
+                            </button>
+                            <button
+                              class="btn bg-gradient-danger btn-sm"
+                              @click="cancelForm()"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -328,12 +364,14 @@
                           :src="artist.Asset.URL"
                           class="avatar avatar-sm me-3"
                           :alt="artist.Asset.Alt"
+                          @click="editProfile(artist._Artist)"
                         />
                         <img
                           v-else
-                          src="fallback-image-url.jpg"
+                          src="/img/user-solid.svg"
                           class="avatar avatar-sm me-3"
-                          alt="Fallback Alt Text"
+                          alt="User"
+                          @click="editProfile(artist._Artist)"
                         />
                       </div>
                       <div class="d-flex flex-column justify-content-center">
@@ -432,6 +470,10 @@ export default {
         Files: [],
         Images: [],
       },
+      preDelete: {
+        _Url: '',
+        _Artist: '',
+      },
 
       artists: [],
 
@@ -446,6 +488,9 @@ export default {
         Instagram: '',
         Sort: '',
         Description: '',
+      },
+      Profile: {
+        Show: false,
       },
 
       InfoErrors: {
@@ -506,7 +551,12 @@ export default {
     },
     cancelForm() {
       this.Info.Show = false;
+
       this.clearErrors();
+    },
+    closeProfile() {
+      this.Profile.Show = false;
+      this.startComponent();
     },
     clearErrors() {
       this.InfoErrors.Name = '';
@@ -643,10 +693,14 @@ export default {
           this.loaderSave = false;
         });
     },
+    editProfile(_Artist) {
+      this._Artist = _Artist;
+      this.Profile.Show = true;
+      this.searchAsset('image', this._Artist);
+    },
     editInfo(_Artist) {
       this._Artist = _Artist;
       this.Button.flag = 'update';
-      this.searchAsset('image', this._Artist);
 
       axios
         .get('/dashboard/artists/edit', {
@@ -809,6 +863,37 @@ export default {
         .finally((fin) => {
           // this.loadingVilla = false;
         });
+    },
+    preDeleteAsset(_URL, _Artist) {
+      this._URL = _URL;
+      this._Artist = _Artist;
+      this.deleteMedia(_URL, _Artist);
+    },
+    deleteMedia(_URL, _Artist) {
+      axios
+        .post('/dashboard/artists/delete-asset', {
+          _URL: _URL,
+          _Artist: _Artist,
+        })
+
+        .then((res) => {
+          if (res.data.msg == 'success') {
+            this.closeProfile();
+          }
+        })
+        .catch((error) => {
+          // this.errorNewVilla = error.response.data.errors.name[0];
+          // this.preDelete.Loading = !1;
+        })
+        .finally((fin) => {
+          // this.loadingVilla = false;
+        });
+    },
+    clearPreDelete() {
+      this.preDelete.Flag = !1;
+      this.preDelete.Loading = !1;
+      this.preDelete.Confirm = !1;
+      this.preDelete.Array = [];
     },
   },
   mounted() {

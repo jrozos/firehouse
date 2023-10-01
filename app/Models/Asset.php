@@ -38,6 +38,7 @@ class Asset extends Model{
     }
     
     public function artists(){
-        return $this->belongsToMany(Artist::class)->withTimestamps();
+        return $this->belongsToMany(Artist::class, 'artist_asset', 'asset_id', 'artist_id')->withTimestamps();
+        // return $this->belongsToMany(Artist::class)->withTimestamps();
     }
 }

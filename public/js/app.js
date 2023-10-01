@@ -3768,6 +3768,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3796,6 +3834,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         Files: [],
         Images: []
       },
+      preDelete: {
+        _Url: '',
+        _Artist: ''
+      },
       artists: [],
       loaderSave: false,
       Info: {
@@ -3808,6 +3850,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         Instagram: '',
         Sort: '',
         Description: ''
+      },
+      Profile: {
+        Show: false
       },
       InfoErrors: {
         Name: '',
@@ -3864,6 +3909,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     cancelForm: function cancelForm() {
       this.Info.Show = false;
       this.clearErrors();
+    },
+    closeProfile: function closeProfile() {
+      this.Profile.Show = false;
+      this.startComponent();
     },
     clearErrors: function clearErrors() {
       this.InfoErrors.Name = '';
@@ -3961,11 +4010,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this3.loaderSave = false;
       });
     },
+    editProfile: function editProfile(_Artist) {
+      this._Artist = _Artist;
+      this.Profile.Show = true;
+      this.searchAsset('image', this._Artist);
+    },
     editInfo: function editInfo(_Artist) {
       var _this4 = this;
       this._Artist = _Artist;
       this.Button.flag = 'update';
-      this.searchAsset('image', this._Artist);
       axios.get('/dashboard/artists/edit', {
         params: {
           _Artist: this._Artist
@@ -4096,6 +4149,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["finally"](function (fin) {
         // this.loadingVilla = false;
       });
+    },
+    preDeleteAsset: function preDeleteAsset(_URL, _Artist) {
+      this._URL = _URL;
+      this._Artist = _Artist;
+      this.deleteMedia(_URL, _Artist);
+    },
+    deleteMedia: function deleteMedia(_URL, _Artist) {
+      var _this8 = this;
+      axios.post('/dashboard/artists/delete-asset', {
+        _URL: _URL,
+        _Artist: _Artist
+      }).then(function (res) {
+        if (res.data.msg == 'success') {
+          _this8.closeProfile();
+        }
+      })["catch"](function (error) {
+        // this.errorNewVilla = error.response.data.errors.name[0];
+        // this.preDelete.Loading = !1;
+      })["finally"](function (fin) {
+        // this.loadingVilla = false;
+      });
+    },
+    clearPreDelete: function clearPreDelete() {
+      this.preDelete.Flag = !1;
+      this.preDelete.Loading = !1;
+      this.preDelete.Confirm = !1;
+      this.preDelete.Array = [];
     }
   },
   mounted: function mounted() {
@@ -51429,7 +51509,7 @@ var render = function () {
               [
                 artist.Asset && artist.Asset.URL
                   ? _c("img", {
-                      staticClass: "card-img-top clip-1",
+                      staticClass: "card-img-top clip-2",
                       attrs: {
                         src: artist.Asset.URL,
                         alt:
@@ -52032,58 +52112,6 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _vm.Button.flag === "update"
-                            ? _c("div", { staticClass: "row" }, [
-                                _vm.Artist_Asset.Images.length < 1
-                                  ? _c(
-                                      "div",
-                                      [
-                                        _c("vue-dropzone", {
-                                          ref: "myVueDropzone",
-                                          attrs: {
-                                            id: "dropzone",
-                                            options:
-                                              _vm.computedDropzoneOptions,
-                                          },
-                                        }),
-                                      ],
-                                      1
-                                    )
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                _vm.Artist_Asset.Images.length
-                                  ? _c("div", [
-                                      _c(
-                                        "div",
-                                        { staticClass: "row" },
-                                        _vm._l(
-                                          _vm.Artist_Asset.Images,
-                                          function (Image, index) {
-                                            return _c(
-                                              "div",
-                                              {
-                                                key: index,
-                                                staticClass: "col-lg-2",
-                                              },
-                                              [
-                                                _c("img", {
-                                                  staticClass: "img-fluid",
-                                                  attrs: {
-                                                    src: Image.URL,
-                                                    alt: "",
-                                                  },
-                                                }),
-                                              ]
-                                            )
-                                          }
-                                        ),
-                                        0
-                                      ),
-                                    ])
-                                  : _vm._e(),
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
                           _c("div", { staticClass: "text-center" }, [
                             _vm.loaderSave
                               ? _c("div", [_vm._m(1)])
@@ -52168,6 +52196,169 @@ var render = function () {
             ])
           : _vm._e(),
         _vm._v(" "),
+        _vm.Profile.Show
+          ? _c("div", { staticClass: "confirm-bg" }, [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-12 col-sm-10 col-md-4 col-lg-4 center-center",
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card shadow-sm wow animate__animated animate__fadeInUp",
+                      },
+                      [
+                        _c("div", { staticClass: "card-body" }, [
+                          _vm.Artist_Asset.Images.length < 1
+                            ? _c(
+                                "div",
+                                [
+                                  _c("vue-dropzone", {
+                                    ref: "myVueDropzone",
+                                    attrs: {
+                                      id: "dropzone",
+                                      options: _vm.computedDropzoneOptions,
+                                    },
+                                  }),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "row justify-content-end" },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "col-12 pt-3 text-end" },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn bg-gradient-danger btn-sm",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.closeProfile()
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                      Cerrar\n                    "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.Artist_Asset.Images.length
+                            ? _c("div", [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "row justify-content-center text-center",
+                                  },
+                                  _vm._l(
+                                    _vm.Artist_Asset.Images,
+                                    function (Image, index) {
+                                      return _c("div", { key: index }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "col-lg-12" },
+                                          [
+                                            _c("img", {
+                                              staticClass:
+                                                "img-fluid border-radius-lg",
+                                              attrs: {
+                                                src: Image.URL,
+                                                alt: "",
+                                              },
+                                            }),
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "row justify-content-end",
+                                          },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  "col-12 pt-3 text-end",
+                                              },
+                                              [
+                                                _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn bg-gradient-info btn-sm",
+                                                    on: {
+                                                      click: function ($event) {
+                                                        return _vm.preDeleteAsset(
+                                                          Image._URL,
+                                                          Image._Artist
+                                                        )
+                                                      },
+                                                    },
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                            Editar\n                          "
+                                                    ),
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "btn bg-gradient-danger btn-sm",
+                                                    on: {
+                                                      click: function ($event) {
+                                                        return _vm.cancelForm()
+                                                      },
+                                                    },
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                            Cancelar\n                          "
+                                                    ),
+                                                  ]
+                                                ),
+                                              ]
+                                            ),
+                                          ]
+                                        ),
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                              ])
+                            : _vm._e(),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+              ]),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "card-body px-0 pt-0 pb-2" }, [
           _vm.loaderSave
             ? _c("div", { staticClass: "text-center" }, [_vm._m(2)])
@@ -52191,12 +52382,22 @@ var render = function () {
                                   src: artist.Asset.URL,
                                   alt: artist.Asset.Alt,
                                 },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editProfile(artist._Artist)
+                                  },
+                                },
                               })
                             : _c("img", {
                                 staticClass: "avatar avatar-sm me-3",
                                 attrs: {
-                                  src: "fallback-image-url.jpg",
-                                  alt: "Fallback Alt Text",
+                                  src: "/img/user-solid.svg",
+                                  alt: "User",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editProfile(artist._Artist)
+                                  },
                                 },
                               }),
                         ]),
