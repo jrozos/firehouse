@@ -261,24 +261,28 @@
                 class="card shadow-sm wow animate__animated animate__fadeInUp"
               >
                 <div class="card-body">
-                  <div v-if="Artist_Asset.Images.length < 1">
+                  <div
+                    v-if="
+                      !Artist_Asset.Images || Artist_Asset.Images.length < 1
+                    "
+                  >
                     <vue-dropzone
                       ref="myVueDropzone"
                       id="dropzone"
                       :options="computedDropzoneOptions"
                     ></vue-dropzone>
-                  </div>
-                  <div class="row justify-content-end">
-                    <div class="col-12 pt-3 text-end">
-                      <button
-                        class="btn bg-gradient-danger btn-sm"
-                        @click="closeProfile()"
-                      >
-                        Cerrar
-                      </button>
+                    <div class="row justify-content-end">
+                      <div class="col-12 pt-3 text-end">
+                        <button
+                          class="btn bg-gradient-danger btn-sm"
+                          @click="closeProfile()"
+                        >
+                          Cerrar
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div v-if="Artist_Asset.Images.length">
+                  <div v-else>
                     <div class="row justify-content-center text-center">
                       <div
                         v-for="(Image, index) in Artist_Asset.Images"
@@ -878,7 +882,7 @@ export default {
 
         .then((res) => {
           if (res.data.msg == 'success') {
-            this.closeProfile();
+            this.Artist_Asset.Images = res.data.Images;
           }
         })
         .catch((error) => {

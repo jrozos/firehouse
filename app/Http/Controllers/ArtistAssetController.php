@@ -26,26 +26,6 @@ class ArtistAssetController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreArtistAssetRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreArtistAssetRequest $request)
-    {
-        //
-    }
     public function storeAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());
@@ -58,18 +38,6 @@ class ArtistAssetController extends Controller
                     ]
                 ], "message"=>"No se encontro el usuario"], 422) );
             }
-            // dd($_Artist);
-            // Tal vez ya no se use
-            // $file = ArtistAsset::where([
-            //         ['artist_id',$_Artist],
-            //     ])->count();
-            // if ($file >= 1) {
-            //     abort( response()->json(["errors"=>[
-            //         'file'=>[
-            //             'Ya no puedes agregar más archivos | Max a file.'
-            //         ]
-            //     ], "message"=>"Ha ocurrido un error, intente recargar la página."], 422) );
-            // }
 
             if ($request->hasFile('file')) {
                 //  Let's do everything here
@@ -132,16 +100,6 @@ class ArtistAssetController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ArtistAsset  $artistAsset
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ArtistAsset $artistAsset)
-    {
-        //
-    }
     public function showAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());
@@ -192,73 +150,48 @@ class ArtistAssetController extends Controller
                 ['AWA.artist_id', $_Artist],
             ])
             ->first();
+            
             // dd($file_media);
             if (!is_null($file_media)) {
                 $assetId = $file_media->asset_id; // Get the asset_id
                 $url = $file_media->URL; // Get the URL
-                // dd($assetId,$url);
-                try {
-                    // Database operations and file deletion code
-                    // Delete the relationship in the pivot table (artist_asset)
-                    $pivotDeleted = DB::table('artist_asset')->where('asset_id', $assetId)->delete();
-                    // dd($pivotDeleted);
+                
+               // Split the URL by the constant "/assets"
+                $urlParts = explode('/assets', $url);
 
-                    // Delete the asset record from the "assets" table
-                    $assetDeleted = Asset::where('id', $assetId)->forcedelete();
-                    // dd($assetDeleted);
+                if (count($urlParts) > 1) {
+                    // The second part of the exploded URL is the relative file path
+                    $relativeFilePath = '/assets' . $urlParts[1];
 
-                    // Delete the asset file from the public path
-                    $publicPath = public_path($url);
-                    // dd($publicPath, is_file($publicPath));
+                    // Combine the relative file path with the public path
+                    $publicPath = public_path($relativeFilePath);
 
                     if (is_file($publicPath)) {
+                        // File exists in the public path, delete it
                         unlink($publicPath);
+
+                        // Delete the relationship in the pivot table (artist_asset)
+                        DB::table('artist_asset')->where('asset_id', $assetId)->delete();
+
+                        // Delete the asset record from the "assets" table
+                        Asset::where('id', $assetId)->forcedelete();
+                        
+                        $images = Asset::select('assets.url as URL','AWA.asset_id')
+                        ->join('artist_asset as AWA', 'AWA.asset_id', '=', 'assets.id')
+                        ->where([
+                            ['AWA.asset_id', $_URL],
+                            ['AWA.artist_id', $_Artist],
+                        ])
+                        ->first();
                     }
-                } catch (\Exception $e) {
-                    // Handle the exception (e.g., log or display an error message)
-                    dd($e->getMessage());
                 }
                 
             }
 
-            return response()->json(["msg"=>"success", "content"=>"Success Operations."]);
+            return response()->json(["msg"=>"success","Images"=>$images]);
 
         } else {
             abort(404);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ArtistAsset  $artistAsset
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ArtistAsset $artistAsset)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateArtistAssetRequest  $request
-     * @param  \App\Models\ArtistAsset  $artistAsset
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateArtistAssetRequest $request, ArtistAsset $artistAsset)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ArtistAsset  $artistAsset
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ArtistAsset $artistAsset)
-    {
-        //
     }
 }
