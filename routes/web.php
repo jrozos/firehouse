@@ -19,6 +19,10 @@ Route::get('/reset', function (){
     Artisan::call('config:cache');
     return 'Done';
 });
+Route::get('/migrate', function (){
+    Artisan::call('migrate');
+    return 'Migrated :)';
+});
 Route::get('/key-generate', function (){
     Artisan::call('key:generate');
     return 'Done';
