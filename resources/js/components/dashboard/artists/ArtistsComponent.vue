@@ -212,6 +212,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="text-center">
                     <div v-if="loaderSave">
                       <span class="display-6"
@@ -243,6 +244,72 @@
                           >
                             Cancelar
                           </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Dropzone -->
+        <div v-if="Profile.Show" class="confirm-bg">
+          <div class="row">
+            <div class="col-12 col-sm-10 col-md-4 col-lg-4 center-center">
+              <div
+                class="card shadow-sm wow animate__animated animate__fadeInUp"
+              >
+                <div class="card-body">
+                  <div
+                    v-if="
+                      !Artist_Asset.Images || Artist_Asset.Images.length < 1
+                    "
+                  >
+                    <vue-dropzone
+                      ref="myVueDropzone"
+                      id="dropzone"
+                      :options="computedDropzoneOptions"
+                    ></vue-dropzone>
+                    <div class="row justify-content-end">
+                      <div class="col-12 pt-3 text-end">
+                        <button
+                          class="btn bg-gradient-danger btn-sm"
+                          @click="closeProfile()"
+                        >
+                          Cerrar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <div class="row justify-content-center text-center">
+                      <div
+                        v-for="(Image, index) in Artist_Asset.Images"
+                        :key="index"
+                      >
+                        <div class="col-lg-12">
+                          <img
+                            :src="Image.URL"
+                            alt=""
+                            class="img-fluid border-radius-lg"
+                          />
+                        </div>
+                        <div class="row justify-content-end">
+                          <div class="col-12 pt-3 text-end">
+                            <button
+                              class="btn bg-gradient-info btn-sm"
+                              @click="preDeleteAsset(Image._URL, Image._Artist)"
+                            >
+                              Editar
+                            </button>
+                            <button
+                              class="btn bg-gradient-danger btn-sm"
+                              @click="cancelForm()"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -297,9 +364,18 @@
                     <div class="d-flex py-1">
                       <div>
                         <img
-                          src="/assets/img/team-2.jpg"
+                          v-if="artist.Asset && artist.Asset.URL"
+                          :src="artist.Asset.URL"
                           class="avatar avatar-sm me-3"
-                          alt="user1"
+                          :alt="artist.Asset.Alt"
+                          @click="editProfile(artist._Artist)"
+                        />
+                        <img
+                          v-else
+                          src="/img/user-solid.svg"
+                          class="avatar avatar-sm me-3"
+                          alt="User"
+                          @click="editProfile(artist._Artist)"
                         />
                       </div>
                       <div class="d-flex flex-column justify-content-center">
@@ -371,12 +447,38 @@
 
 <script>
 import moment from 'moment';
+import vue2Dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 export default {
+  components: {
+    vueDropzone: vue2Dropzone,
+  },
   data() {
     return {
-      // activeSave:false,
-      // activeReset:false,
-      // aproved:false,
+      _Artist: '', // Initialize _Artist with the value you want to send
+      dropzoneOptions: {
+        url: '/dashboard/artists/store-asset',
+        thumbnailWidth: 200,
+        maxFilesize: 1,
+        maxFiles: 1,
+        acceptedFiles: 'image/*',
+        addRemoveLinks: true,
+        dictDefaultMessage: "<i class='fa fa-cloud-upload'></i>UPLOAD ME",
+        headers: {
+          'X-CSRF-TOKEN': document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute('content'),
+        },
+      },
+      Artist_Asset: {
+        Files: [],
+        Images: [],
+      },
+      preDelete: {
+        _Url: '',
+        _Artist: '',
+      },
+
       artists: [],
 
       loaderSave: false,
@@ -390,6 +492,9 @@ export default {
         Instagram: '',
         Sort: '',
         Description: '',
+      },
+      Profile: {
+        Show: false,
       },
 
       InfoErrors: {
@@ -407,6 +512,22 @@ export default {
         flag: 'create',
       },
     };
+  },
+  computed: {
+    computedDropzoneOptions() {
+      const optionsCopy = { ...this.dropzoneOptions };
+
+      // Add or update the _Artist property in the optionsCopy
+      optionsCopy._Artist = this._Artist;
+
+      // Add a custom `sending` callback
+      optionsCopy.sending = (file, xhr, formData) => {
+        // Add the _Artist value to the formData
+        formData.append('_Artist', this._Artist);
+      };
+
+      return optionsCopy;
+    },
   },
   methods: {
     startComponent() {
@@ -434,7 +555,12 @@ export default {
     },
     cancelForm() {
       this.Info.Show = false;
+
       this.clearErrors();
+    },
+    closeProfile() {
+      this.Profile.Show = false;
+      this.startComponent();
     },
     clearErrors() {
       this.InfoErrors.Name = '';
@@ -571,6 +697,11 @@ export default {
           this.loaderSave = false;
         });
     },
+    editProfile(_Artist) {
+      this._Artist = _Artist;
+      this.Profile.Show = true;
+      this.searchAsset('image', this._Artist);
+    },
     editInfo(_Artist) {
       this._Artist = _Artist;
       this.Button.flag = 'update';
@@ -706,8 +837,69 @@ export default {
           this.loaderSave = false;
         });
     },
+    searchAsset(type, _Artist) {
+      axios
+        .post('/dashboard/artists/show-asset', {
+          _Artist: _Artist,
+          type: type,
+        })
+        .then((res) => {
+          switch (type) {
+            case 'both':
+              this.Artist_Asset.Images = res.data.Images;
+              this.Artist_Asset.Files = res.data.Files;
+              break;
+            case 'image':
+              this.Artist_Asset.Images = res.data.Images;
+              break;
+
+            case 'file':
+              this.Artist_Asset.Files = res.data.Files;
+              break;
+            default:
+            // code block
+          }
+          console.log(res.data.Files);
+        })
+        .catch((error) => {
+          // this.errorNewVilla = error.response.data.errors.name[0];
+        })
+        .finally((fin) => {
+          // this.loadingVilla = false;
+        });
+    },
+    preDeleteAsset(_URL, _Artist) {
+      this._URL = _URL;
+      this._Artist = _Artist;
+      this.deleteMedia(_URL, _Artist);
+    },
+    deleteMedia(_URL, _Artist) {
+      axios
+        .post('/dashboard/artists/delete-asset', {
+          _URL: _URL,
+          _Artist: _Artist,
+        })
+
+        .then((res) => {
+          if (res.data.msg == 'success') {
+            this.Artist_Asset.Images = res.data.Images;
+          }
+        })
+        .catch((error) => {
+          // this.errorNewVilla = error.response.data.errors.name[0];
+          // this.preDelete.Loading = !1;
+        })
+        .finally((fin) => {
+          // this.loadingVilla = false;
+        });
+    },
+    clearPreDelete() {
+      this.preDelete.Flag = !1;
+      this.preDelete.Loading = !1;
+      this.preDelete.Confirm = !1;
+      this.preDelete.Array = [];
+    },
   },
-  computed: {},
   mounted() {
     this.startComponent();
   },

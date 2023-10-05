@@ -37,4 +37,7 @@ class Artist extends Model{
             $artist->updated_by = $user->id;
         });
     }
+    public function assets(){
+        return $this->belongsToMany(Asset::class)->withTimestamps();
+    }
 }

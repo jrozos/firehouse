@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/edit', [App\Http\Controllers\ArtistController::class, 'edit'])->name('/dashboard/artists/edit');
             Route::post('/update', [App\Http\Controllers\ArtistController::class, 'update'])->name('/dashboard/artists/update');
             Route::get('/delete', [App\Http\Controllers\ArtistController::class, 'delete'])->name('/dashboard/artists/delete');
+            Route::post('/store-asset', [App\Http\Controllers\ArtistAssetController::class, 'storeAsset'])->name('/dashboard/artists/store-asset');
+            Route::post('/show-asset', [App\Http\Controllers\ArtistAssetController::class, 'showAsset'])->name('//dashboard/artists/show-asset');
+            Route::post('/delete-asset', [App\Http\Controllers\ArtistAssetController::class, 'deleteAsset'])->name('//dashboard/artists/delete-asset');
         });
     });
 });

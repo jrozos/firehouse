@@ -52,6 +52,14 @@ class ArtistController extends Controller
             ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
             ->orderBy('Sort', 'asc')
             ->get();
+
+            foreach ($artists as $key => $artist) {
+                $artist->Asset = DB::table('artist_asset as AWA')
+                ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
+                ->select('AST.url as URL', 'AST.alt as Alt')
+                ->where('AWA.artist_id','=',$artist->_Artist)
+                ->first();
+            }
             
             foreach ($artists as $key => $artist) {
                 $artistModel = Artist::find($artist->_Artist);
@@ -83,6 +91,7 @@ class ArtistController extends Controller
             abort(404);
         }
     }
+    
     public function edit(Request $request){
         if ($request->ajax()) {
             // dd($request->_Artist);

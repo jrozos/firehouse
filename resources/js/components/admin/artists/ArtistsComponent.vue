@@ -9,11 +9,12 @@
       >
         <div class="card rounded-3 wow animate__animated animate__fadeIn">
           <img
-            src="img/team/mario.jpg"
-            class="card-img-top clip-1"
+            v-if="artist.Asset && artist.Asset.URL"
+            :src="artist.Asset.URL"
+            class="card-img-top clip-2"
             :alt="
               'Portrait of ' +
-              artist.Name +
+              artist.Asset.Alt +
               ' ' +
               artist.LastName +
               ', a tattoo artist at Firehouse Tattoo'
