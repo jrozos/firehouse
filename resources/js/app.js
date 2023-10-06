@@ -34,7 +34,7 @@ Vue.component(
 );
 Vue.component(
   'artists-admin-index',
-  require('./components/admin/artists/ArtistsComponent.vue').default,
+  require('./components/admin/artists/ArtistsIndex.vue').default,
 );
 
 /**
@@ -45,4 +45,12 @@ Vue.component(
 
 const app = new Vue({
   el: '#app',
+  data() {
+    return {
+      Artist: {
+        Selected: '',
+        Cleared: false,
+      },
+    };
+  },
 });

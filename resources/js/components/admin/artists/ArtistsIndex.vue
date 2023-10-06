@@ -1,7 +1,6 @@
 <template>
   <div class="container my-5 py-5">
-    <div class="row">
-      <!-- {{-- Carlos --}} -->
+    <div v-if="$root.Artist.Selected === ''" class="row">
       <div
         v-for="artist in artists"
         class="mt-5 col-12 col-md-6 col-lg-4"
@@ -25,7 +24,12 @@
             <p class="card-text text-preline">
               {{ truncatedDescription(artist.Description) }}
             </p>
-            <a href="" class="btn btn-outline-dark btn-rounded">Ver más</a>
+            <button
+              class="btn btn-outline-dark btn-rounded"
+              @click="artistDetail(artist._Artist)"
+            >
+              Ver más
+            </button>
           </div>
           <div class="card-footer">
             <a
@@ -41,11 +45,18 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <ArtistDetail :_Artist="$root.Artist.Selected"></ArtistDetail>
+    </div>
   </div>
 </template>
 
 <script>
+import ArtistDetail from './ArtistDetail.vue';
 export default {
+  components: {
+    ArtistDetail,
+  },
   data() {
     return {
       artists: [],
@@ -75,6 +86,9 @@ export default {
         .finally(() => {
           this.loaderSave = false;
         });
+    },
+    artistDetail(_Artist) {
+      this.$root.Artist.Selected = _Artist;
     },
   },
   mounted() {
