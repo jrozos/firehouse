@@ -12,21 +12,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/reset', function (){
-    Artisan::call('route:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('config:clear');
-    Artisan::call('config:cache');
-    return 'Done';
-});
-Route::get('/migrate', function (){
-    Artisan::call('migrate');
-    return 'Migrated :)';
-});
-Route::get('/key-generate', function (){
-    Artisan::call('key:generate');
-    return 'Done';
-});
+// Route::get('/reset', function (){
+//     Artisan::call('route:clear');
+//     Artisan::call('cache:clear');
+//     Artisan::call('config:clear');
+//     Artisan::call('config:cache');
+//     return 'Done';
+// });
+// Route::get('/migrate', function (){
+//     Artisan::call('migrate');
+//     return 'Migrated :)';
+// });
+// Route::get('/key-generate', function (){
+//     Artisan::call('key:generate');
+//     return 'Done';
+// });
 
 Auth::routes(["register"=>false]);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
