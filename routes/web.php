@@ -39,6 +39,7 @@ Route::get('/lukas', [App\Http\Controllers\ArtistController::class, 'artistLukas
 Route::prefix('admin')->group(function () {
     Route::group(['prefix' => 'artists'], function() {
         Route::get('/list', [App\Http\Controllers\ArtistController::class, 'list'])->name('/admin/artists/list');
+        Route::get('/artist', [App\Http\Controllers\ArtistController::class, 'artist'])->name('/admin/artists/artist');
     });
 });
 

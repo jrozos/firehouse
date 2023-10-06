@@ -25,29 +25,8 @@
             />
           </a>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                role="button"
-                data-mdb-toggle="dropdown"
-                aria-expanded="false"
-              >
-              Artistas
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li>
-                  <a class="dropdown-item" href="/carlos">Carlos</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/mario">Mario</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="/aida">Aida</a>
-                </li>
-              </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="#artist">Artistas</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#tattoos">Tattoos</a>

@@ -71,6 +71,36 @@ class ArtistController extends Controller
             abort(404);
         }
     }
+    public function artist(Request $request){
+        if ($request->ajax()) {
+            try {
+                $_Artist = Crypt::decrypt($request->_Artist);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
+
+            $artist = DB::table('artists as ART')
+            ->select('ART.id as _Artist','ART.name as Name','ART.last_name as LastName','ART.email as Email','ART.phone_number as Phone','ART.description as Description','ART.instagram as Instagram')
+            ->where('ART.id',$_Artist)
+            ->whereNull('ART.deleted_at') // Use whereNull to check for null in deleted_at
+            ->first();
+
+            $artist->Asset = DB::table('artist_asset as AWA')
+                ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
+                ->select('AST.url as URL', 'AST.alt as Alt')
+                ->where('AWA.artist_id','=',$_Artist)
+                ->first();
+            // dd($artist);
+            
+            $artistModel = Artist::find($artist->_Artist);
+            $artist->_Artist = Crypt::encrypt($artist->_Artist);
+
+            return response()->json(["message"=>"Success", "artist"=>$artist], 200);
+
+        } else{
+            abort(404);
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
