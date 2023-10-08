@@ -5,12 +5,12 @@
       <!-- Section: Social media -->
       <section class="mb-4">
         <!-- Facebook -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/firehousetattoomx" target="_Blank" role="button"
           ><i class="fab fa-facebook-f"></i
         ></a>
   
         <!-- Instagram -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/firehouse_tattoo/" target="_Blank" role="button"
           ><i class="fab fa-instagram"></i
         ></a>
   

@@ -305,7 +305,7 @@
                             </button>
                             <button
                               class="btn bg-gradient-danger btn-sm"
-                              @click="cancelForm()"
+                              @click="closeProfile()"
                             >
                               Cancelar
                             </button>

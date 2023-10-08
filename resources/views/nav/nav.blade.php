@@ -43,10 +43,10 @@
         <!-- Right elements -->
         <div class="d-flex align-items-center">
           <!-- Icon -->
-          <a class="text-light me-3" href="https://www.facebook.com/firehousetattoomx">
+          <a class="text-light me-3" href="https://www.facebook.com/firehousetattoomx" target="_Blank">
             <i class="fab fa-facebook-f"></i>
           </a>
-          <a class="text-light me-3" href="https://www.instagram.com/firehouse_tattoo/">
+          <a class="text-light me-3" href="https://www.instagram.com/firehouse_tattoo/" target="_Blank">
             <i class="fab fa-instagram"></i>
           </a>
         </div>
