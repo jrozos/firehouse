@@ -7,7 +7,30 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'FireHouse') }}</title>
+        <title>Firehouse Tattoo Puerto Vallarta</title>
+
+        {{-- SEO --}}
+        <!-- Meta Description -->
+        <meta name="description" content="Welcome to Firehouse Tattoo in Puerto Vallarta, where artistry meets passion! Carlos Munguía, with 8 years of tattoo experience and a focus on vibrant colors and intricate micro-realism, brings your dream tattoo to life. Descubre tatuajes de calidad y diseños surrealistas en nuestro estudio de tatuajes en Puerto Vallarta.">
+        
+        <!-- Meta Keywords (English and Spanish) -->
+        <meta name="keywords" content="Tattoo shop Puerto Vallarta, Tattoo artist Carlos Munguía, Micro-realism tattoos, Colorful tattoos, Surrealistic designs, Puerto Vallarta tattoo studio, Tattoo artistry, Puerto Vallarta ink, Firehouse Tattoo Puerto Vallarta, Tattoo studio in Jalisco, Estudio de tatuajes Puerto Vallarta, Tatuador Carlos Munguía, Tatuajes de micro realismo, Tatuajes coloridos, Diseños surrealistas, Estudio de tatuajes en Puerto Vallarta, Arte del tatuaje, Tinta en Puerto Vallarta, Estudio de tatuajes en Jalisco">
+        
+        <!-- Author -->
+        <meta name="author" content="Carlos Munguía">
+        
+        <!-- Robots Meta Tag (To control indexing and following) -->
+        <meta name="robots" content="index, follow">
+
+        <!-- Canonical URL (If necessary, to specify the preferred version of a page) -->
+        <link rel="canonical" href="https://www.firehousetattoo.mx">
+        
+        <!-- Open Graph Meta Tags (For social media sharing) -->
+        <meta property="og:title" content="Firehouse Tattoo Puerto Vallarta">
+        <meta property="og:description" content="Welcome to Firehouse Tattoo in Puerto Vallarta, where artistry meets passion! Carlos Munguía, with 8 years of tattoo experience and a focus on vibrant colors and intricate micro-realism, brings your dream tattoo to life. Descubre tatuajes de calidad y diseños surrealistas en nuestro estudio de tatuajes en Puerto Vallarta.">
+        <meta property="og:image" content="{{asset('img/firehouse-logo.jpg')}}">
+        <meta property="og:url" content="https://www.firehousetattoo.mx">
+        <meta property="og:type" content="website">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
