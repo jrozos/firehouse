@@ -30,11 +30,6 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(["register"=>false]);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/carlos', [App\Http\Controllers\ArtistController::class, 'artistCarlos'])->name('carlos');
-Route::get('/aida', [App\Http\Controllers\ArtistController::class, 'artistAida'])->name('aida');
-Route::get('/mario', [App\Http\Controllers\ArtistController::class, 'artistMario'])->name('mario');
-Route::get('/rekzone', [App\Http\Controllers\ArtistController::class, 'artistRekzone'])->name('rekzone');
-Route::get('/lukas', [App\Http\Controllers\ArtistController::class, 'artistLukas'])->name('lukas');
 
 Route::prefix('admin')->group(function () {
     Route::group(['prefix' => 'artists'], function() {
