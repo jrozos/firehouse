@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/show-asset', [App\Http\Controllers\ArtistAssetController::class, 'showAsset'])->name('//dashboard/artists/show-asset');
             Route::post('/delete-asset', [App\Http\Controllers\ArtistAssetController::class, 'deleteAsset'])->name('//dashboard/artists/delete-asset');
         });
+        
+        Route::get('/assets', [App\Http\Controllers\AssetController::class, 'index'])->name('/dashboard/assets');
     });
 });
 
