@@ -9,8 +9,8 @@
     </div>
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 py-5">
         @for ($i = 1; $i < 10; $i++)
-        <div class="col">
-        <img src="img/tattoos/{{$i}}.jpg" class="card-img-top rounded-3 wow animate__animated animate__fadeIn" alt="Puerto Vallarta tattoo studio"/>
+        <div class="col img-hover-zoom">
+            <img src="img/tattoos/{{$i}}.jpg" class="card-img-top rounded-3 wow animate__animated animate__fadeIn" alt="Puerto Vallarta tattoo studio"/>
         </div>
         @endfor
     </div>
