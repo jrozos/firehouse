@@ -700,7 +700,7 @@ export default {
     editProfile(_Artist) {
       this._Artist = _Artist;
       this.Profile.Show = true;
-      this.searchAsset('image', this._Artist);
+      this.searchAsset('profile', this._Artist);
     },
     editInfo(_Artist) {
       this._Artist = _Artist;
@@ -844,21 +844,7 @@ export default {
           type: type,
         })
         .then((res) => {
-          switch (type) {
-            case 'both':
-              this.Artist_Asset.Images = res.data.Images;
-              this.Artist_Asset.Files = res.data.Files;
-              break;
-            case 'image':
-              this.Artist_Asset.Images = res.data.Images;
-              break;
-
-            case 'file':
-              this.Artist_Asset.Files = res.data.Files;
-              break;
-            default:
-            // code block
-          }
+          this.Artist_Asset.Images = res.data.Images;
           console.log(res.data.Files);
         })
         .catch((error) => {

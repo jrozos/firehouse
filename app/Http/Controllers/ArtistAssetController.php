@@ -53,7 +53,7 @@ class ArtistAssetController extends Controller
                         $asset->url = '';
                         $asset->alt = $artist->name;
                         $asset->name = $request->file->getClientOriginalName();
-                        $asset->type = 'img';
+                        $asset->type = 'profile';
                         $asset->save();
 
                         $asset->artists()->attach($_Artist);
@@ -73,7 +73,7 @@ class ArtistAssetController extends Controller
                         ->join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
                         ->where([
                             ['AWA.artist_id', $_Artist],
-                            ['assets.type', 'img'],
+                            ['assets.type', 'profile'],
                         ])->get();
                         foreach ($images as $key => $image) {
                             $image->_URL = Crypt::encrypt($image->_URL);
@@ -108,13 +108,13 @@ class ArtistAssetController extends Controller
             } catch (DecryptException $e) {
                 return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
-            $images = [];
+            
             // dd($_Artist);
             $images = Asset::join('artist_asset as AWA', 'assets.id', '=', 'AWA.asset_id')
             ->select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','AWA.artist_id as _Artist')
             ->where([
                 ['AWA.artist_id', $_Artist],
-                ['assets.type', 'img'],
+                ['assets.type', $request->type],
             ])->get();
 
             foreach ($images as $key => $image) {
