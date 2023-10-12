@@ -1,72 +1,134 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <vue-dropzone
-        ref="myVueDropzone"
-        id="dropzone"
-        :options="dropzoneOptions"
-        @vdropzone-complete="handleDropzoneComplete"
-      ></vue-dropzone>
-    </div>
-    <div class="col-12 mt-4">
-      <div class="card mb-4">
-        <div class="card-header pb-0 p-3">
-          <h6 class="mb-1">Assets</h6>
-          <p class="text-sm">Architects design houses</p>
-        </div>
-        <div class="card-body p-3">
-          <div class="row">
-            <div
-              v-for="(Image, index) in Assets.Images"
-              :key="index"
-              class="col-xl-3 col-md-6 mb-xl-0 mb-4"
-            >
-              <div class="card card-blog card-plain">
-                <div class="position-relative">
-                  <a class="d-block shadow-sm border-radius-xl">
-                    <img
-                      :src="Image.URL"
-                      alt="img-blur-shadow"
-                      class="img-fluid shadow-sm border-radius-xl"
-                    />
-                  </a>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <vue-dropzone
+          ref="myVueDropzone"
+          id="dropzone"
+          :options="dropzoneOptions"
+          @vdropzone-complete="handleDropzoneComplete"
+        ></vue-dropzone>
+      </div>
+      <div class="col-12 mt-4">
+        <div class="card mb-4">
+          <div class="card-header pb-0 p-3">
+            <h6 class="mb-1">Assets</h6>
+            <p class="text-sm">Architects design houses</p>
+          </div>
+          <div class="card-body p-3">
+            <div class="row">
+              <div
+                v-for="(Image, index) in Assets.Images"
+                :key="index"
+                class="col-xl-3 col-md-6 mb-xl-0 mb-4"
+              >
+                <div class="card card-blog card-plain">
+                  <div class="position-relative">
+                    <a class="d-block shadow-sm border-radius-xl">
+                      <img
+                        :src="Image.URL"
+                        alt="img-blur-shadow"
+                        class="img-fluid shadow-sm border-radius-xl"
+                      />
+                    </a>
+                  </div>
+                  <div class="card-body px-1 pb-0 py-2">
+                    <p class="text-gradient text-dark mb-1 text-sm">
+                      Nombre: {{ Image.Name }}
+                    </p>
+                    <p class="mb-1 text-sm">
+                      Descripción: {{ Image.Description }}
+                    </p>
+                    <p class="mb-1 text-sm">Autor</p>
+                    <span class="text-secondary text-xs font-weight-bold">
+                      {{ formatFriendlyDate(Image.Created) }}
+                    </span>
+                    <div
+                      class="d-flex align-items-center justify-content-end mb-4"
+                    >
+                      <a
+                        href="javascript:;"
+                        class="text-secondary font-weight-bold text-xs pe-4"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Editar"
+                        data-container="body"
+                        data-animation="true"
+                      >
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </a>
+                      <a
+                        href="javascript:;"
+                        class="text-secondary font-weight-bold text-xs"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Borrar"
+                        data-container="body"
+                        data-animation="true"
+                        @click="
+                          preDeleteAsset({
+                            _URL: Image._URL,
+                            Action: 'open',
+                          })
+                        "
+                      >
+                        <i class="fa-solid fa-trash-can"></i>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body px-1 pb-0 py-2">
-                  <p class="text-gradient text-dark mb-1 text-sm">
-                    Nombre: {{ Image.Name }}
-                  </p>
-                  <p class="mb-1 text-sm">
-                    Descripción: {{ Image.Description }}
-                  </p>
-                  <p class="mb-1 text-sm">Autor</p>
-                  <span class="text-secondary text-xs font-weight-bold">
-                    {{ formatFriendlyDate(Image.Created) }}
-                  </span>
-                  <div
-                    class="d-flex align-items-center justify-content-end mb-4"
-                  >
-                    <a
-                      href="javascript:;"
-                      class="text-secondary font-weight-bold text-xs pe-4"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Editar"
-                      data-container="body"
-                      data-animation="true"
-                    >
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                    <a
-                      href="javascript:;"
-                      class="text-secondary font-weight-bold text-xs"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Borrar"
-                      data-container="body"
-                      data-animation="true"
-                    >
-                      <i class="fa-solid fa-trash-can"></i>
-                    </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="preDelete.Show" class="confirm-bg">
+      <div class="row">
+        <div class="col-12 col-sm-10 col-md-6 col-lg-4 center-center">
+          <div class="card shadow-sm wow animate__animated animate__fadeInUp">
+            <div class="card-header pb-0 text-left">
+              <h3 class="card-title text-center">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </h3>
+              <h4 class="card-title text-center">
+                ¿Estás seguro de que deseas eliminar esta imagen?
+              </h4>
+            </div>
+            <div class="card-body">
+              <div class="row"></div>
+
+              <div class="text-center">
+                <div v-if="loaderSave">
+                  <span class="display-6"
+                    ><i class="fa-solid fa-spinner fa-spin"></i
+                  ></span>
+                </div>
+                <div v-else>
+                  <div class="row justify-content-justify">
+                    <div class="col-12 pt-3 text-center">
+                      <button
+                        type="button"
+                        class="btn bg-gradient-info btn-sm mb-0"
+                        @click="
+                          preDeleteAsset({
+                            Action: 'delete',
+                          })
+                        "
+                      >
+                        Confirmar
+                      </button>
+                      <button
+                        class="btn bg-gradient-danger btn-sm mb-0"
+                        @click="
+                          preDeleteAsset({
+                            Action: 'close',
+                          })
+                        "
+                      >
+                        Cancelar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -106,8 +168,10 @@ export default {
         Files: [],
         Images: [],
       },
+      loaderSave: false,
       preDelete: {
         _Url: '',
+        Show: false,
       },
     };
   },
@@ -135,9 +199,26 @@ export default {
           // this.loadingVilla = false;
         });
     },
-    preDeleteAsset(_URL) {
-      this._URL = _URL;
-      this.deleteMedia(_URL);
+    preDeleteAsset(data) {
+      console.log(data.Action);
+
+      switch (data.Action) {
+        case 'open':
+          this.preDelete.Show = true;
+          this.preDelete._URL = data._URL;
+          break;
+        case 'close':
+          this.preDelete.Show = false;
+          this.preDelete._URL = '';
+          break;
+        case 'delete':
+          this.deleteMedia(this.preDelete._URL);
+          break;
+
+        default:
+          break;
+      }
+      console.log(this.preDelete._URL);
     },
     deleteMedia(_URL) {
       axios
@@ -147,7 +228,8 @@ export default {
 
         .then((res) => {
           if (res.data.msg == 'success') {
-            this.Assets.Images = res.data.Images;
+            this.preDelete.Show = false;
+            this.searchAsset('img');
           }
         })
         .catch((error) => {

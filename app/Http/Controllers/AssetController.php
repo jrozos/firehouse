@@ -95,59 +95,46 @@ class AssetController extends Controller
             } catch (DecryptException $e) {
                 return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
             }
-            try {
-                $_Artist = Crypt::decrypt($request->_Artist);
-            } catch (DecryptException $e) {
-                return response()->json(["msg"=>"error", "title"=>"", "content"=>"An error has occured, try reloading the page."]);
-            }
             // dd($_URL,$_Artist);
 
-            $file_media = Asset::select('assets.url as URL','AWA.asset_id')
-            ->join('artist_asset as AWA', 'AWA.asset_id', '=', 'assets.id')
-            ->where([
-                ['AWA.asset_id', $_URL],
-                ['AWA.artist_id', $_Artist],
-            ])
+            $file_media = Asset::select('assets.url as URL','assets.id as _URL')
+            ->where('assets.id', $_URL)
             ->first();
             
             // dd($file_media);
             if (!is_null($file_media)) {
-                $assetId = $file_media->asset_id; // Get the asset_id
+                $assetId = $file_media->_URL; // Get the asset_id
                 $url = $file_media->URL; // Get the URL
                 
                // Split the URL by the constant "/assets"
                 $urlParts = explode('/assets', $url);
-
+                // dd($urlParts);
                 if (count($urlParts) > 1) {
                     // The second part of the exploded URL is the relative file path
                     $relativeFilePath = '/assets' . $urlParts[1];
+                    // dd($relativeFilePath);
 
                     // Combine the relative file path with the public path
                     $publicPath = public_path($relativeFilePath);
+                    // dd( $publicPath);
 
                     if (is_file($publicPath)) {
                         // File exists in the public path, delete it
                         unlink($publicPath);
+                        
 
                         // Delete the relationship in the pivot table (artist_asset)
-                        DB::table('artist_asset')->where('asset_id', $assetId)->delete();
+                        // DB::table('artist_asset')->where('asset_id', $assetId)->delete();
 
                         // Delete the asset record from the "assets" table
                         Asset::where('id', $assetId)->forcedelete();
                         
-                        $images = Asset::select('assets.url as URL','AWA.asset_id')
-                        ->join('artist_asset as AWA', 'AWA.asset_id', '=', 'assets.id')
-                        ->where([
-                            ['AWA.asset_id', $_URL],
-                            ['AWA.artist_id', $_Artist],
-                        ])
-                        ->first();
                     }
                 }
                 
             }
 
-            return response()->json(["msg"=>"success","Images"=>$images]);
+            return response()->json(["msg"=>"success"]);
 
         } else {
             abort(404);
