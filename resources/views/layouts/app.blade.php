@@ -49,6 +49,15 @@
         <link rel="stylesheet" href="css/mdb.min.css" />
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-77FBRQ9HBW"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-77FBRQ9HBW');
+        </script>
     </head>
 <body>
     @include('nav.nav')
