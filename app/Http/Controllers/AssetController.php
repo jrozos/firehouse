@@ -16,6 +16,26 @@ class AssetController extends Controller
     public function index(){
         return view('dashboard.assets.index');
     }
+    public function list(Request $request){
+        if ($request->ajax()) {
+            // dd($request->all());
+            
+            // dd($_Artist);
+            $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','assets.description as Description','assets.created_at as Created')
+            ->where('assets.type', $request->type)
+            ->orderBy('Created', 'desc')
+            ->get();
+            
+            foreach ($images as $key => $image) {
+                $image->_URL = Crypt::encrypt($image->_URL);
+            }
+
+
+            return response()->json(["msg"=>"success","Images"=>$images]);
+        } else {
+            abort(404);
+        }
+    }
 
     public function storeAsset(Request $request) {
         if ($request->ajax()) {
@@ -30,7 +50,6 @@ class AssetController extends Controller
         
                     $asset = new Asset;
                     $asset->url = '';
-                    $asset->alt = '';
                     $asset->name = $request->file->getClientOriginalName();
                     $asset->type = 'img';
                     $asset->save();
@@ -47,7 +66,7 @@ class AssetController extends Controller
                     $asset->url = $folderHost.'/'.$fileName;
                     $asset->update();
 
-                    $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','assets.description as Description','assets.alt as ALT')
+                    $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','assets.description as Description')
                     ->where('assets.type', 'img')->get();
                     foreach ($images as $key => $image) {
                         $image->_URL = Crypt::encrypt($image->_URL);
@@ -72,7 +91,7 @@ class AssetController extends Controller
             // dd($request->all());
             
             // dd($_Artist);
-            $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','assets.description as Description','assets.alt as ALT','assets.created_at as Created')
+            $images = Asset::select('assets.id as _URL', 'assets.url as URL', 'assets.name as Name','assets.description as Description','assets.created_at as Created')
             ->where('assets.type', $request->type)
             ->orderBy('Created', 'desc')
             ->get();

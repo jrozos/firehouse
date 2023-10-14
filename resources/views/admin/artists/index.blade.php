@@ -1,3 +1,3 @@
 <div id="artist">
-    <artists-admin-index></artists-admin-index>
+    <admin-artists-index></admin-artists-index>
 </div>

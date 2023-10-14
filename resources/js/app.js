@@ -40,8 +40,12 @@ Vue.component(
 
 // ADMIN
 Vue.component(
-  'artists-admin-index',
+  'admin-artists-index',
   require('./components/admin/artists/ArtistsIndex.vue').default,
+);
+Vue.component(
+  'admin-tattoos-index',
+  require('./components/admin/tattoos/TattoosIndex.vue').default,
 );
 
 /**

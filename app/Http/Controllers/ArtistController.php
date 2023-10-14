@@ -41,7 +41,7 @@ class ArtistController extends Controller
             foreach ($artists as $key => $artist) {
                 $artist->Asset = DB::table('artist_asset as AWA')
                 ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
-                ->select('AST.url as URL', 'AST.alt as Alt')
+                ->select('AST.url as URL')
                 ->where('AWA.artist_id','=',$artist->_Artist)
                 ->first();
             }
@@ -72,7 +72,7 @@ class ArtistController extends Controller
 
             $artist->Asset = DB::table('artist_asset as AWA')
                 ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
-                ->select('AST.url as URL', 'AST.alt as Alt')
+                ->select('AST.url as URL')
                 ->where('AWA.artist_id','=',$_Artist)
                 ->first();
             // dd($artist);

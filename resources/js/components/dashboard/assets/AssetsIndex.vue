@@ -13,7 +13,7 @@
         <div class="card mb-4">
           <div class="card-header pb-0 p-3">
             <h6 class="mb-1">Assets</h6>
-            <p class="text-sm">Architects design houses</p>
+            <p class="text-sm">Lista de Tattoos</p>
           </div>
           <div class="card-body p-3">
             <div class="row">

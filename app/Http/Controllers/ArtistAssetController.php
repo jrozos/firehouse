@@ -51,7 +51,7 @@ class ArtistAssetController extends Controller
                     if (!is_null($artist)) {
                         $asset = new Asset;
                         $asset->url = '';
-                        $asset->alt = $artist->name;
+                        $asset->description = $artist->name;
                         $asset->name = $request->file->getClientOriginalName();
                         $asset->type = 'profile';
                         $asset->save();

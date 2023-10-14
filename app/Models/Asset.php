@@ -15,7 +15,6 @@ class Asset extends Model{
         'url',
         'type',
         'metadata',
-        'alt',
         'description',
         'created_by',
         'modified_by'

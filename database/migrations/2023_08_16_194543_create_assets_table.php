@@ -14,7 +14,6 @@ class CreateAssetsTable extends Migration
             $table->string('url');
             $table->string('type');
             $table->json('metadata')->nullable();
-            $table->text('alt')->nullable();
             $table->text('description')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

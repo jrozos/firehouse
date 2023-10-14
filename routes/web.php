@@ -36,6 +36,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/list', [App\Http\Controllers\ArtistController::class, 'list'])->name('/admin/artists/list');
         Route::get('/artist', [App\Http\Controllers\ArtistController::class, 'artist'])->name('/admin/artists/artist');
     });
+    Route::group(['prefix' => 'tattoos'], function() {
+        Route::get('/list', [App\Http\Controllers\AssetController::class, 'list'])->name('/admin/tattoos/list');
+    });
 });
 
 Route::group(['middleware' => ['auth']], function () {
