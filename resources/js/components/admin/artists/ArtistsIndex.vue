@@ -13,7 +13,7 @@
             class="card-img-top clip-2"
             :alt="
               'Portrait of ' +
-              artist.Asset.Alt +
+              artist.Asset.Description +
               ' ' +
               artist.LastName +
               ', a tattoo artist at Firehouse Tattoo'

@@ -9,7 +9,7 @@
             class="img-fluid rounded-start"
             :alt="
               'Portrait of ' +
-              artist.Asset.Alt +
+              artist.Asset.Description +
               ' ' +
               artist.LastName +
               ', a tattoo artist at Firehouse Tattoo'

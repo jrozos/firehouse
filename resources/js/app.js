@@ -20,6 +20,7 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// DASHBOARD
 Vue.component(
   'dashboard-index',
   require('./components/dashboard/dashboard/DashboardComponent.vue').default,
@@ -33,8 +34,18 @@ Vue.component(
   require('./components/dashboard/artists/ArtistsComponent.vue').default,
 );
 Vue.component(
-  'artists-admin-index',
+  'assets-index',
+  require('./components/dashboard/assets/AssetsIndex.vue').default,
+);
+
+// ADMIN
+Vue.component(
+  'admin-artists-index',
   require('./components/admin/artists/ArtistsIndex.vue').default,
+);
+Vue.component(
+  'admin-tattoos-index',
+  require('./components/admin/tattoos/TattoosIndex.vue').default,
 );
 
 /**

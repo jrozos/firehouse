@@ -36,6 +36,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/list', [App\Http\Controllers\ArtistController::class, 'list'])->name('/admin/artists/list');
         Route::get('/artist', [App\Http\Controllers\ArtistController::class, 'artist'])->name('/admin/artists/artist');
     });
+    Route::group(['prefix' => 'tattoos'], function() {
+        Route::get('/list', [App\Http\Controllers\AssetController::class, 'list'])->name('/admin/tattoos/list');
+    });
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -55,8 +58,15 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/update', [App\Http\Controllers\ArtistController::class, 'update'])->name('/dashboard/artists/update');
             Route::get('/delete', [App\Http\Controllers\ArtistController::class, 'delete'])->name('/dashboard/artists/delete');
             Route::post('/store-asset', [App\Http\Controllers\ArtistAssetController::class, 'storeAsset'])->name('/dashboard/artists/store-asset');
-            Route::post('/show-asset', [App\Http\Controllers\ArtistAssetController::class, 'showAsset'])->name('//dashboard/artists/show-asset');
-            Route::post('/delete-asset', [App\Http\Controllers\ArtistAssetController::class, 'deleteAsset'])->name('//dashboard/artists/delete-asset');
+            Route::post('/show-asset', [App\Http\Controllers\ArtistAssetController::class, 'showAsset'])->name('/dashboard/artists/show-asset');
+            Route::post('/delete-asset', [App\Http\Controllers\ArtistAssetController::class, 'deleteAsset'])->name('/dashboard/artists/delete-asset');
+        });
+        
+        Route::get('/assets', [App\Http\Controllers\AssetController::class, 'index'])->name('/dashboard/assets');
+        Route::group(['prefix' => 'assets'], function() {
+            Route::post('/store-asset', [App\Http\Controllers\AssetController::class, 'storeAsset'])->name('/dashboard/artists/store-asset');
+            Route::post('/show-asset', [App\Http\Controllers\AssetController::class, 'showAsset'])->name('/dashboard/artists/show-asset');
+            Route::post('/delete-asset', [App\Http\Controllers\AssetController::class, 'deleteAsset'])->name('/dashboard/artists/delete-asset');
         });
     });
 });
