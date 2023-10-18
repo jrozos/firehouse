@@ -13,7 +13,7 @@
         <div class="row row-cols-1 row-cols-md-2 g-4">
             @for ($i = 1; $i < 5; $i++)
             <div class="col">
-            <img src="img/estudio/{{$i}}.jpg" class="card-img-top rounded-3 wow animate__animated animate__fadeIn" alt="Hollywood Sign on The Hill"/>
+            <img src="img/estudio/{{$i}}.webp" class="card-img-top rounded-3 wow animate__animated animate__fadeIn" alt="Firehouse by Carlos Munguia Studio"/>
             </div>
             @endfor
         </div>
