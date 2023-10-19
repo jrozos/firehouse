@@ -27,9 +27,13 @@ use Illuminate\Support\Facades\Route;
 //     Artisan::call('key:generate');
 //     return 'Done';
 // });
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//For REDIRECT 301
+Route::get('/aida', [App\Http\Controllers\HomeController::class, 'aida'])->name('aida');
+Route::get('/carlos', [App\Http\Controllers\HomeController::class, 'carlos'])->name('carlos');
+Route::get('/mario', [App\Http\Controllers\HomeController::class, 'mario'])->name('mario');
 
 Auth::routes(["register"=>false]);
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('admin')->group(function () {
     Route::group(['prefix' => 'artists'], function() {

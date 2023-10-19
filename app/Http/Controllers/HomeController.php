@@ -25,4 +25,13 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    public function aida(){
+        return redirect()->route('home');
+    }
+    public function carlos(){
+        return redirect()->route('home');
+    }
+    public function mario(){
+        return redirect()->route('home');
+    }
 }
