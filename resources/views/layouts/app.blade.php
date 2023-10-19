@@ -67,6 +67,13 @@
             @yield('content')
         </div>
     </main>
+    <nav class="fixed-bottom">
+        <div class="container-fluid">
+            <a class="btn btn-dark btn-rounded btn-lg float-end mb-4 me-4" data-mdb-toggle="tooltip" data-mdb-placement="left" title="¿Agendar una cita?" href="https://www.instagram.com/firehouse_tattoo/" target="_Blank" role="button">
+                Agendar
+            </a>
+        </div>
+    </nav>
 
     @include('footer.footer')
             
