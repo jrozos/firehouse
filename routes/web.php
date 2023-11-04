@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::group(['prefix' => 'assets'], function() {
             Route::post('/store-asset', [App\Http\Controllers\AssetController::class, 'storeAsset'])->name('/dashboard/artists/store-asset');
             Route::post('/show-asset', [App\Http\Controllers\AssetController::class, 'showAsset'])->name('/dashboard/artists/show-asset');
+            Route::get('/show-artist', [App\Http\Controllers\AssetController::class, 'showArtist'])->name('/dashboard/artists/show-artist');
             Route::post('/delete-asset', [App\Http\Controllers\AssetController::class, 'deleteAsset'])->name('/dashboard/artists/delete-asset');
         });
     });

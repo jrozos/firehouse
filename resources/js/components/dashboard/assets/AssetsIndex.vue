@@ -54,6 +54,7 @@
                         title="Editar"
                         data-container="body"
                         data-animation="true"
+                        @click="createInfo(Image._URL)"
                       >
                         <i class="fa-solid fa-pen-to-square"></i>
                       </a>
@@ -74,6 +75,106 @@
                       >
                         <i class="fa-solid fa-trash-can"></i>
                       </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="Info.Show" class="confirm-bg">
+            <div class="row">
+              <div class="col-12 col-sm-10 col-md-6 col-lg-6 center-center">
+                <div
+                  class="card shadow-sm wow animate__animated animate__fadeInUp"
+                >
+                  <div class="card-header pb-0 text-left">
+                    <h3 class="card-title text-center">Asset</h3>
+                    <p class="mb-0">Ingresa la información del asset</p>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="itemSelect">Autor:</label>
+                        <select
+                          class="form-control"
+                          id="itemSelect"
+                          v-model="selectedArtist"
+                          @change="addItem"
+                        >
+                          <option value="" disabled>Selecciona un autor</option>
+                          <option
+                            v-for="artist in artists"
+                            :value="artist"
+                            :key="artist._Artist"
+                          >
+                            {{ artist.Name }}
+                          </option>
+                        </select>
+                        <div v-if="selectedArtists.length > 0">
+                          <div class="d-flex justify-content-start my-1">
+                            <div
+                              v-for="(artist, index) in selectedArtists"
+                              :key="artist._Artist"
+                              class="me-1 animate__animated animate__fadeIn"
+                            >
+                              <button
+                                class="btn btn-default"
+                                @click="removeItem(index)"
+                              >
+                                {{ artist.Name }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label>Descripcion</label>
+                        <p v-if="InfoErrors.Description" class="">
+                          <small class="text-danger">
+                            {{ InfoErrors.Description }}
+                          </small>
+                        </p>
+                        <div class="input-group mb-3">
+                          <textarea
+                            v-model="Info.Description"
+                            class="form-control"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="text-center">
+                      <div v-if="loaderSave">
+                        <span class="display-6"
+                          ><i class="fa-solid fa-spinner fa-spin"></i
+                        ></span>
+                      </div>
+                      <div v-else>
+                        <div class="row justify-content-end">
+                          <div class="col-6 pt-3 text-end">
+                            <button
+                              type="button"
+                              class="btn bg-gradient-info btn-sm mb-0"
+                              @click="
+                                validateForm({
+                                  _URL: Image._URL,
+                                  _Author: 1,
+                                })
+                              "
+                            >
+                              Actualizar
+                            </button>
+                            <button
+                              class="btn bg-gradient-danger btn-sm mb-0"
+                              @click="cancelForm()"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -168,6 +269,19 @@ export default {
         Files: [],
         Images: [],
       },
+      artists: {},
+      selectedArtist: '',
+      selectedArtists: [],
+      Info: {
+        _Asset: '',
+        Show: false,
+        Description: '',
+        Author: '',
+      },
+      InfoErrors: {
+        Author: '',
+        Description: '',
+      },
       loaderSave: false,
       preDelete: {
         _Url: '',
@@ -197,6 +311,131 @@ export default {
         })
         .finally((fin) => {
           // this.loadingVilla = false;
+        });
+    },
+    searchArtists() {
+      axios
+        .get('/dashboard/assets/show-artist', {})
+        .then((res) => {
+          if (res.data.message === 'success') {
+            this.artists = res.data.artists;
+          } else {
+            // Handle the case where the server response indicates an error
+            console.error('Server response indicates an error:', res.data);
+            // You can display an error message to the user if needed
+            // this.errorMessage = 'An error occurred while fetching artist information.';
+          }
+        })
+        .catch((error) => {
+          // Handle Axios or network errors
+          console.error('An error occurred:', error);
+          // You can set an error message or perform other error handling actions here
+          // this.errorMessage = 'An error occurred while fetching artist information.';
+        })
+        .finally(() => {
+          // This block is executed whether the request succeeds or fails
+          // You can use it to clean up, e.g., hiding loaders
+        });
+    },
+    addItem() {
+      if (
+        this.selectedArtist &&
+        !this.selectedArtists.includes(this.selectedArtist)
+      ) {
+        this.selectedArtists.push(this.selectedArtist);
+      }
+      this.selectedArtist = '';
+    },
+
+    removeItem(index) {
+      this.selectedArtists.splice(index, 1);
+    },
+    createInfo(_Asset) {
+      this.Info.Show = true;
+      this.Info._Asset = _Asset;
+      // this.Button.flag = 'create';
+      this.clearInfo();
+    },
+    clearInfo() {
+      // this.Info._Artist = '';
+      this.Info.Author = '';
+      this.Info.Description = '';
+    },
+    clearErrors() {
+      this.InfoErrors.Author = '';
+      this.InfoErrors.Description = '';
+    },
+    validateForm(_Artist) {
+      this.clearErrors();
+
+      if (this.Description !== undefined) {
+        this.Description = this.Description.trim();
+      }
+      this.updateInfo(_Artist);
+    },
+    updateInfo(_Artist) {
+      this.loaderSave = true;
+      this.clearErrors();
+      axios
+        .post('/dashboard/artists/update', {
+          _Artist: _Artist,
+          name: this.Info.Name,
+          last_name: this.Info.LastName,
+          email: this.Info.Email,
+          phone_number: this.Info.Phone,
+          instagram: this.Info.Instagram,
+          sort: this.Info.Sort,
+          description: this.Info.Description,
+        })
+        .then((res) => {
+          if (res.data.message === 'Success') {
+            this.Info.Show = false;
+            this.clearInfo();
+            this.startComponent();
+          } else {
+            this.InfoErrors.Name = res.data.name;
+            this.InfoErrors.LastName = res.data.last_name;
+            this.InfoErrors.Email = res.data.email;
+            this.InfoErrors.Phone = res.data.phone_number;
+            this.InfoErrors.Instagram = res.data.instagram;
+            this.InfoErrors.Sort = res.data.sort;
+            this.InfoErrors.Description = res.data.description;
+          }
+        })
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.errors
+          ) {
+            this.InfoErrors.Name = error.response.data.errors.name
+              ? error.response.data.errors.name[0]
+              : '';
+            this.InfoErrors.LastName = error.response.data.errors.last_name
+              ? error.response.data.errors.last_name[0]
+              : '';
+            this.InfoErrors.Email = error.response.data.errors.email
+              ? error.response.data.errors.email[0]
+              : '';
+            this.InfoErrors.Phone = error.response.data.errors.phone_number
+              ? error.response.data.errors.phone_number[0]
+              : '';
+            this.InfoErrors.Instagram = error.response.data.errors.instagram
+              ? error.response.data.errors.instagram[0]
+              : '';
+            this.InfoErrors.Sort = error.response.data.errors.sort
+              ? error.response.data.errors.sort[0]
+              : '';
+            this.InfoErrors.Description = error.response.data.errors.description
+              ? error.response.data.errors.description[0]
+              : '';
+          } else {
+            console.error('Invalid error response structure:', error.response);
+          }
+          console.log('------------ Errors ------------');
+        })
+        .finally((fin) => {
+          this.loaderSave = false;
         });
     },
     preDeleteAsset(data) {
@@ -245,13 +484,18 @@ export default {
     },
   },
   computed: {
-    items() {
-      // Generate an array of 20 items (you can change the count as needed)
-      return Array.from({ length: 20 }, (_, index) => index);
+    selectedItemsWithKeys() {
+      return this.selectedArtists.map((item) => {
+        return {
+          ...item,
+          key: item._Artist, // Assuming 'name' is a unique identifier for artists
+        };
+      });
     },
   },
   mounted() {
     this.searchAsset('img');
+    this.searchArtists();
   },
 };
 </script>

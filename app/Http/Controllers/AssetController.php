@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Artist;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -102,6 +103,26 @@ class AssetController extends Controller
 
 
             return response()->json(["msg"=>"success","Images"=>$images]);
+        } else {
+            abort(404);
+        }
+    }
+    public function showArtist(Request $request) {
+        if ($request->ajax()) {
+            // dd($request->all());
+            
+            // dd($_Artist);
+            $artists = Artist::select('id as _Artist', 'name as Name','last_name as LastName')
+            ->whereNull('deleted_at')
+            ->orderBy('Name', 'asc')
+            ->get();
+            
+            foreach ($artists as $key => $artist) {
+                $artist->_Artist = Crypt::encrypt($artist->_Artist);
+            }
+
+
+            return response()->json(["message"=>"success","artists"=>$artists]);
         } else {
             abort(404);
         }
