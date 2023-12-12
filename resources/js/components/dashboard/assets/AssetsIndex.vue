@@ -159,8 +159,7 @@
                               class="btn bg-gradient-info btn-sm mb-0"
                               @click="
                                 validateForm({
-                                  _URL: Image._URL,
-                                  _Author: 1,
+                                  _Asset: Info._Asset,
                                 })
                               "
                             >
@@ -365,40 +364,29 @@ export default {
       this.InfoErrors.Author = '';
       this.InfoErrors.Description = '';
     },
-    validateForm(_Artist) {
+    validateForm(_Asset) {
       this.clearErrors();
 
       if (this.Description !== undefined) {
         this.Description = this.Description.trim();
       }
-      this.updateInfo(_Artist);
+      this.updateInfo(_Asset);
     },
-    updateInfo(_Artist) {
+    updateInfo(_Asset) {
       this.loaderSave = true;
       this.clearErrors();
       axios
-        .post('/dashboard/artists/update', {
-          _Artist: _Artist,
-          name: this.Info.Name,
-          last_name: this.Info.LastName,
-          email: this.Info.Email,
-          phone_number: this.Info.Phone,
-          instagram: this.Info.Instagram,
-          sort: this.Info.Sort,
+        .post('/dashboard/assets/update-asset', {
+          _Artists: this.selectedArtists,
+          _Asset: this.Info._Asset,
           description: this.Info.Description,
         })
         .then((res) => {
           if (res.data.message === 'Success') {
             this.Info.Show = false;
             this.clearInfo();
-            this.startComponent();
+            this.searchAsset('img');
           } else {
-            this.InfoErrors.Name = res.data.name;
-            this.InfoErrors.LastName = res.data.last_name;
-            this.InfoErrors.Email = res.data.email;
-            this.InfoErrors.Phone = res.data.phone_number;
-            this.InfoErrors.Instagram = res.data.instagram;
-            this.InfoErrors.Sort = res.data.sort;
             this.InfoErrors.Description = res.data.description;
           }
         })
@@ -408,24 +396,6 @@ export default {
             error.response.data &&
             error.response.data.errors
           ) {
-            this.InfoErrors.Name = error.response.data.errors.name
-              ? error.response.data.errors.name[0]
-              : '';
-            this.InfoErrors.LastName = error.response.data.errors.last_name
-              ? error.response.data.errors.last_name[0]
-              : '';
-            this.InfoErrors.Email = error.response.data.errors.email
-              ? error.response.data.errors.email[0]
-              : '';
-            this.InfoErrors.Phone = error.response.data.errors.phone_number
-              ? error.response.data.errors.phone_number[0]
-              : '';
-            this.InfoErrors.Instagram = error.response.data.errors.instagram
-              ? error.response.data.errors.instagram[0]
-              : '';
-            this.InfoErrors.Sort = error.response.data.errors.sort
-              ? error.response.data.errors.sort[0]
-              : '';
             this.InfoErrors.Description = error.response.data.errors.description
               ? error.response.data.errors.description[0]
               : '';

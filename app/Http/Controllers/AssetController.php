@@ -127,6 +127,43 @@ class AssetController extends Controller
             abort(404);
         }
     }
+    public function updateAsset(Request $request) {
+        if ($request->ajax()) {
+            // dd($request->_Artists);
+            try {
+                $_Asset = Crypt::decrypt($request->_Asset);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
+            
+            $asset = Asset::where('id',$_Asset)->first();
+
+            $asset->description = $request->description;
+            
+            foreach ($request->_Artists as $position => $artistArray) {
+                try {
+                    // Check if the property '_Artist' exists in the array
+                    if (is_array($artistArray) && isset($artistArray['_Artist'])) {
+                        $_Artist = Crypt::decrypt($artistArray['_Artist']);
+            
+                        // Now you have the decrypted $_Artist value for the current array position
+                        // Use $_Artist as needed in your code
+                        $asset->artists()->attach($_Artist);
+                    }
+                } catch (DecryptException $e) {
+                    return response()->json(["message" => "error", "title" => "", "content" => "Ha ocurrido un error, intente recargar la página."]);
+                }
+            }
+            
+            $asset->update();
+            
+
+            return response()->json(["message"=>"Success", "asset"=>$asset], 200);
+
+        } else {
+            abort(404);
+        }
+    }
     public function deleteAsset(Request $request) {
         if ($request->ajax()) {
             // dd($request->all());

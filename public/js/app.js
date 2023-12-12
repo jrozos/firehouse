@@ -4648,7 +4648,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -4761,48 +4760,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.InfoErrors.Author = '';
       this.InfoErrors.Description = '';
     },
-    validateForm: function validateForm(_Artist) {
+    validateForm: function validateForm(_Asset) {
       this.clearErrors();
       if (this.Description !== undefined) {
         this.Description = this.Description.trim();
       }
-      this.updateInfo(_Artist);
+      this.updateInfo(_Asset);
     },
-    updateInfo: function updateInfo(_Artist) {
+    updateInfo: function updateInfo(_Asset) {
       var _this3 = this;
       this.loaderSave = true;
       this.clearErrors();
-      axios.post('/dashboard/artists/update', {
-        _Artist: _Artist,
-        name: this.Info.Name,
-        last_name: this.Info.LastName,
-        email: this.Info.Email,
-        phone_number: this.Info.Phone,
-        instagram: this.Info.Instagram,
-        sort: this.Info.Sort,
+      axios.post('/dashboard/assets/update-asset', {
+        _Artists: this.selectedArtists,
+        _Asset: this.Info._Asset,
         description: this.Info.Description
       }).then(function (res) {
         if (res.data.message === 'Success') {
           _this3.Info.Show = false;
           _this3.clearInfo();
-          _this3.startComponent();
+          _this3.searchAsset('img');
         } else {
-          _this3.InfoErrors.Name = res.data.name;
-          _this3.InfoErrors.LastName = res.data.last_name;
-          _this3.InfoErrors.Email = res.data.email;
-          _this3.InfoErrors.Phone = res.data.phone_number;
-          _this3.InfoErrors.Instagram = res.data.instagram;
-          _this3.InfoErrors.Sort = res.data.sort;
           _this3.InfoErrors.Description = res.data.description;
         }
       })["catch"](function (error) {
         if (error.response && error.response.data && error.response.data.errors) {
-          _this3.InfoErrors.Name = error.response.data.errors.name ? error.response.data.errors.name[0] : '';
-          _this3.InfoErrors.LastName = error.response.data.errors.last_name ? error.response.data.errors.last_name[0] : '';
-          _this3.InfoErrors.Email = error.response.data.errors.email ? error.response.data.errors.email[0] : '';
-          _this3.InfoErrors.Phone = error.response.data.errors.phone_number ? error.response.data.errors.phone_number[0] : '';
-          _this3.InfoErrors.Instagram = error.response.data.errors.instagram ? error.response.data.errors.instagram[0] : '';
-          _this3.InfoErrors.Sort = error.response.data.errors.sort ? error.response.data.errors.sort[0] : '';
           _this3.InfoErrors.Description = error.response.data.errors.description ? error.response.data.errors.description[0] : '';
         } else {
           console.error('Invalid error response structure:', error.response);
@@ -54122,8 +54104,7 @@ var render = function () {
                                                 on: {
                                                   click: function ($event) {
                                                     return _vm.validateForm({
-                                                      _URL: _vm.Image._URL,
-                                                      _Author: 1,
+                                                      _Asset: _vm.Info._Asset,
                                                     })
                                                   },
                                                 },
