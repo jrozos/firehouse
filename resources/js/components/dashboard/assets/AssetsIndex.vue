@@ -39,7 +39,9 @@
                     <p class="mb-1 text-sm">
                       Descripción: {{ Image.Description }}
                     </p>
-                    <p class="mb-1 text-sm">Autor</p>
+                    <div v-for="Author in Image.author">
+                      <h4 class="mb-1 text-sm">Autor: {{ Author.Name }}</h4>
+                    </div>
                     <span class="text-secondary text-xs font-weight-bold">
                       {{ formatFriendlyDate(Image.Created) }}
                     </span>
@@ -359,6 +361,7 @@ export default {
       // this.Info._Artist = '';
       this.Info.Author = '';
       this.Info.Description = '';
+      this.selectedArtists = [];
     },
     clearErrors() {
       this.InfoErrors.Author = '';

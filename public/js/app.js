@@ -4648,6 +4648,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -4755,6 +4757,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // this.Info._Artist = '';
       this.Info.Author = '';
       this.Info.Description = '';
+      this.selectedArtists = [];
     },
     clearErrors: function clearErrors() {
       this.InfoErrors.Author = '';
@@ -53771,112 +53774,124 @@ var render = function () {
                         ),
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "card-body px-1 pb-0 py-2" }, [
-                        _c(
-                          "p",
-                          {
-                            staticClass: "text-gradient text-dark mb-1 text-sm",
-                          },
-                          [
-                            _vm._v(
-                              "\n                    Nombre: " +
-                                _vm._s(Image.Name) +
-                                "\n                  "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "mb-1 text-sm" }, [
-                          _vm._v(
-                            "\n                    Descripción: " +
-                              _vm._s(Image.Description) +
-                              "\n                  "
+                      _c(
+                        "div",
+                        { staticClass: "card-body px-1 pb-0 py-2" },
+                        [
+                          _c(
+                            "p",
+                            {
+                              staticClass:
+                                "text-gradient text-dark mb-1 text-sm",
+                            },
+                            [
+                              _vm._v(
+                                "\n                    Nombre: " +
+                                  _vm._s(Image.Name) +
+                                  "\n                  "
+                              ),
+                            ]
                           ),
-                        ]),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "mb-1 text-sm" }, [
-                          _vm._v("Autor"),
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "text-secondary text-xs font-weight-bold",
-                          },
-                          [
+                          _vm._v(" "),
+                          _c("p", { staticClass: "mb-1 text-sm" }, [
                             _vm._v(
-                              "\n                    " +
-                                _vm._s(_vm.formatFriendlyDate(Image.Created)) +
+                              "\n                    Descripción: " +
+                                _vm._s(Image.Description) +
                                 "\n                  "
                             ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "d-flex align-items-center justify-content-end mb-4",
-                          },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "text-secondary font-weight-bold text-xs pe-4",
-                                attrs: {
-                                  href: "javascript:;",
-                                  "data-bs-toggle": "tooltip",
-                                  "data-bs-placement": "top",
-                                  title: "Editar",
-                                  "data-container": "body",
-                                  "data-animation": "true",
-                                },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.createInfo(Image._URL)
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(Image.author, function (Author) {
+                            return _c("div", [
+                              _c("h4", { staticClass: "mb-1 text-sm" }, [
+                                _vm._v("Autor: " + _vm._s(Author.Name)),
+                              ]),
+                            ])
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            {
+                              staticClass:
+                                "text-secondary text-xs font-weight-bold",
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(
+                                    _vm.formatFriendlyDate(Image.Created)
+                                  ) +
+                                  "\n                  "
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex align-items-center justify-content-end mb-4",
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "text-secondary font-weight-bold text-xs pe-4",
+                                  attrs: {
+                                    href: "javascript:;",
+                                    "data-bs-toggle": "tooltip",
+                                    "data-bs-placement": "top",
+                                    title: "Editar",
+                                    "data-container": "body",
+                                    "data-animation": "true",
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.createInfo(Image._URL)
+                                    },
                                   },
                                 },
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa-solid fa-pen-to-square",
-                                }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "text-secondary font-weight-bold text-xs",
-                                attrs: {
-                                  href: "javascript:;",
-                                  "data-bs-toggle": "tooltip",
-                                  "data-bs-placement": "top",
-                                  title: "Borrar",
-                                  "data-container": "body",
-                                  "data-animation": "true",
-                                },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.preDeleteAsset({
-                                      _URL: Image._URL,
-                                      Action: "open",
-                                    })
+                                [
+                                  _c("i", {
+                                    staticClass: "fa-solid fa-pen-to-square",
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "text-secondary font-weight-bold text-xs",
+                                  attrs: {
+                                    href: "javascript:;",
+                                    "data-bs-toggle": "tooltip",
+                                    "data-bs-placement": "top",
+                                    title: "Borrar",
+                                    "data-container": "body",
+                                    "data-animation": "true",
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.preDeleteAsset({
+                                        _URL: Image._URL,
+                                        Action: "open",
+                                      })
+                                    },
                                   },
                                 },
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa-solid fa-trash-can",
-                                }),
-                              ]
-                            ),
-                          ]
-                        ),
-                      ]),
+                                [
+                                  _c("i", {
+                                    staticClass: "fa-solid fa-trash-can",
+                                  }),
+                                ]
+                              ),
+                            ]
+                          ),
+                        ],
+                        2
+                      ),
                     ]),
                   ]
                 )

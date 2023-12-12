@@ -96,10 +96,18 @@ class AssetController extends Controller
             ->where('assets.type', $request->type)
             ->orderBy('Created', 'desc')
             ->get();
+
             
             foreach ($images as $key => $image) {
+                $image->author = DB::table('artist_asset as AWA')
+                ->join('artists as ART', 'ART.id','=','AWA.artist_id')
+                ->select('ART.name as Name')
+                ->where('AWA.asset_id', $image->_URL)
+                ->get();
                 $image->_URL = Crypt::encrypt($image->_URL);
             }
+
+            // dd($images);
 
 
             return response()->json(["msg"=>"success","Images"=>$images]);
