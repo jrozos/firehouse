@@ -43,6 +43,7 @@ class ArtistController extends Controller
                 ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
                 ->select('AST.url as URL')
                 ->where('AWA.artist_id','=',$artist->_Artist)
+                ->where('AST.type','=','profile')
                 ->first();
             }
             

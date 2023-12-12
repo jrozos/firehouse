@@ -3515,6 +3515,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3543,9 +3546,9 @@ __webpack_require__.r(__webpack_exports__);
     getImageAltText: function getImageAltText(description) {
       if (description === null) {
         // Devuelve una cadena alternativa si la descripción es nula
-        return 'Tattoo hecho en Firehouse Puerto Vallarta';
+        return 'Tatuaje hecho en Firehouse Puerto Vallarta';
       } else {
-        return "".concat(description, ", Tattoo hecho en Firehouse Puerto Vallarta");
+        return "".concat(description, ", Tatuaje hecho en Firehouse Puerto Vallarta");
       }
     }
   },
@@ -52627,18 +52630,34 @@ var render = function () {
             "row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 py-5",
         },
         _vm._l(_vm.Assets.Images, function (Image, index) {
-          return _c("div", { key: index, staticClass: "col img-hover-zoom" }, [
-            Image && Image.URL
-              ? _c("img", {
-                  staticClass:
-                    "img-fluid rounded-3 wow animate__ animate__fadeIn animated",
-                  attrs: {
-                    src: Image.URL,
-                    alt: _vm.getImageAltText(Image.Description),
-                  },
-                })
-              : _vm._e(),
-          ])
+          return _c(
+            "div",
+            { key: index, staticClass: "col" },
+            [
+              _c("div", { staticClass: "img-hover-zoom pb-3" }, [
+                Image && Image.URL
+                  ? _c("img", {
+                      staticClass:
+                        "img-fluid rounded-3 wow animate__ animate__fadeIn animated",
+                      attrs: {
+                        src: Image.URL,
+                        alt: _vm.getImageAltText(Image.Description),
+                      },
+                    })
+                  : _vm._e(),
+              ]),
+              _vm._v(" "),
+              _vm._l(Image.author, function (Author) {
+                return _c("div", { staticClass: "text-white" }, [
+                  _c("h6", { staticClass: "card-title" }, [
+                    _c("i", { staticClass: "fas fa-pen-nib me-2" }),
+                    _vm._v(_vm._s(Author.Name) + "\n        "),
+                  ]),
+                ])
+              }),
+            ],
+            2
+          )
         }),
         0
       ),
