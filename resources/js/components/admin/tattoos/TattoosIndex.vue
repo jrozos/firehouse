@@ -10,17 +10,20 @@
     <div
       class="row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 py-5"
     >
-      <div
-        v-for="(Image, index) in Assets.Images"
-        :key="index"
-        class="col img-hover-zoom"
-      >
-        <img
-          v-if="Image && Image.URL"
-          :src="Image.URL"
-          class="img-fluid rounded-3 wow animate__ animate__fadeIn animated"
-          :alt="getImageAltText(Image.Description)"
-        />
+      <div v-for="(Image, index) in Assets.Images" :key="index" class="col">
+        <div class="img-hover-zoom pb-3">
+          <img
+            v-if="Image && Image.URL"
+            :src="Image.URL"
+            class="img-fluid rounded-3 wow animate__ animate__fadeIn animated"
+            :alt="getImageAltText(Image.Description)"
+          />
+        </div>
+        <div class="text-white" v-for="Author in Image.author">
+          <h6 class="card-title">
+            <i class="fas fa-tint me-2"></i>{{ Author.Name }}
+          </h6>
+        </div>
       </div>
     </div>
   </div>
@@ -57,9 +60,9 @@ export default {
     getImageAltText(description) {
       if (description === null) {
         // Devuelve una cadena alternativa si la descripción es nula
-        return 'Tattoo hecho en Firehouse Puerto Vallarta';
+        return 'Tatuaje hecho en Firehouse Puerto Vallarta';
       } else {
-        return `${description}, Tattoo hecho en Firehouse Puerto Vallarta`;
+        return `${description}, Tatuaje hecho en Firehouse Puerto Vallarta`;
       }
     },
   },

@@ -43,6 +43,7 @@ class ArtistController extends Controller
                 ->join('assets as AST', 'AST.id','=', 'AWA.asset_id')
                 ->select('AST.url as URL')
                 ->where('AWA.artist_id','=',$artist->_Artist)
+                ->where('AST.type','=','profile')
                 ->first();
             }
             
@@ -139,7 +140,7 @@ class ArtistController extends Controller
      */
     public function update(Request $request) {
         if ($request->ajax()) {
-            // dd($request);
+            dd($request);
             try {
                 $_Artist = Crypt::decrypt($request->_Artist);
             } catch (DecryptException $e) {

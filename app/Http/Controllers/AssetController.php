@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
-
+use App\Models\Artist;
+use App\Models\ArtistAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -27,6 +28,11 @@ class AssetController extends Controller
             ->get();
             
             foreach ($images as $key => $image) {
+                $image->author = DB::table('artist_asset as AWA')
+                ->join('artists as ART', 'ART.id','=','AWA.artist_id')
+                ->select('ART.name as Name')
+                ->where('AWA.asset_id', $image->_URL)
+                ->get();
                 $image->_URL = Crypt::encrypt($image->_URL);
             }
 
@@ -95,13 +101,78 @@ class AssetController extends Controller
             ->where('assets.type', $request->type)
             ->orderBy('Created', 'desc')
             ->get();
+
             
             foreach ($images as $key => $image) {
+                $image->author = DB::table('artist_asset as AWA')
+                ->join('artists as ART', 'ART.id','=','AWA.artist_id')
+                ->select('ART.name as Name')
+                ->where('AWA.asset_id', $image->_URL)
+                ->get();
                 $image->_URL = Crypt::encrypt($image->_URL);
             }
 
+            // dd($images);
+
 
             return response()->json(["msg"=>"success","Images"=>$images]);
+        } else {
+            abort(404);
+        }
+    }
+    public function showArtist(Request $request) {
+        if ($request->ajax()) {
+            // dd($request->all());
+            
+            // dd($_Artist);
+            $artists = Artist::select('id as _Artist', 'name as Name','last_name as LastName')
+            ->whereNull('deleted_at')
+            ->orderBy('Name', 'asc')
+            ->get();
+            
+            foreach ($artists as $key => $artist) {
+                $artist->_Artist = Crypt::encrypt($artist->_Artist);
+            }
+
+
+            return response()->json(["message"=>"success","artists"=>$artists]);
+        } else {
+            abort(404);
+        }
+    }
+    public function updateAsset(Request $request) {
+        if ($request->ajax()) {
+            // dd($request->_Artists);
+            try {
+                $_Asset = Crypt::decrypt($request->_Asset);
+            } catch (DecryptException $e) {
+                return response()->json(["message"=>"error", "title"=>"", "content"=>"Ha ocurrido un error, intente recargar la página."]);
+            }
+            
+            $asset = Asset::where('id',$_Asset)->first();
+
+            $asset->description = $request->description;
+            
+            foreach ($request->_Artists as $position => $artistArray) {
+                try {
+                    // Check if the property '_Artist' exists in the array
+                    if (is_array($artistArray) && isset($artistArray['_Artist'])) {
+                        $_Artist = Crypt::decrypt($artistArray['_Artist']);
+            
+                        // Now you have the decrypted $_Artist value for the current array position
+                        // Use $_Artist as needed in your code
+                        $asset->artists()->attach($_Artist);
+                    }
+                } catch (DecryptException $e) {
+                    return response()->json(["message" => "error", "title" => "", "content" => "Ha ocurrido un error, intente recargar la página."]);
+                }
+            }
+            
+            $asset->update();
+            
+
+            return response()->json(["message"=>"Success", "asset"=>$asset], 200);
+
         } else {
             abort(404);
         }
@@ -146,6 +217,8 @@ class AssetController extends Controller
                         // DB::table('artist_asset')->where('asset_id', $assetId)->delete();
 
                         // Delete the asset record from the "assets" table
+                        ArtistAsset::where('asset_id',$assetId)->delete();
+
                         Asset::where('id', $assetId)->forcedelete();
                         
                     }
