@@ -347,7 +347,6 @@ export default {
       }
       this.selectedArtist = '';
     },
-
     removeItem(index) {
       this.selectedArtists.splice(index, 1);
     },
@@ -374,6 +373,11 @@ export default {
         this.Description = this.Description.trim();
       }
       this.updateInfo(_Asset);
+    },
+    cancelForm() {
+      this.Info.Show = false;
+
+      this.clearErrors();
     },
     updateInfo(_Asset) {
       this.loaderSave = true;

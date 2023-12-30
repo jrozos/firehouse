@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Artist;
-
+use App\Models\ArtistAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -217,6 +217,8 @@ class AssetController extends Controller
                         // DB::table('artist_asset')->where('asset_id', $assetId)->delete();
 
                         // Delete the asset record from the "assets" table
+                        ArtistAsset::where('asset_id',$assetId)->delete();
+
                         Asset::where('id', $assetId)->forcedelete();
                         
                     }

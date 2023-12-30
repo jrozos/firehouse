@@ -21,7 +21,7 @@
         </div>
         <div class="text-white" v-for="Author in Image.author">
           <h6 class="card-title">
-            <i class="fas fa-pen-nib me-2"></i>{{ Author.Name }}
+            <i class="fas fa-tint me-2"></i>{{ Author.Name }}
           </h6>
         </div>
       </div>
