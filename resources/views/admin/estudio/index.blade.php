@@ -5,7 +5,7 @@
 <div class="container-fluid" style="background-color: #404E58">
     <div class="row mt-5- py-5">
         <div class="col-12">
-            <h2 class="text-light display-1 wow animate__animated animate__fadeIn">Estudio</h2>
+            <h2 class="text-light display-1 wow animate__animated animate__fadeIn">Firehouse Estudio</h2>
         </div>
     </div>
     <div class="row py-5">
