@@ -20,9 +20,7 @@
           />
         </div>
         <div class="text-white" v-for="Author in Image.author">
-          <h6 class="card-title">
-            <i class="fas fa-tint me-2"></i>{{ Author.Name }}
-          </h6>
+          <h6 class="card-title">Artista: {{ Author.Name }}</h6>
         </div>
       </div>
     </div>
